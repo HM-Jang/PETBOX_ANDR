@@ -15,12 +15,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="상품소개"
+            android:background="@drawable/g_on"
+            android:textColor="@color/colorPrimary"
             android:layout_weight="1"/>
 
         <Button
             android:id="@+id/btn_good_info_review"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/g_off"
             android:text="고객리뷰"
             android:layout_weight="1"/>
 
@@ -28,6 +31,7 @@
             android:id="@+id/btn_good_info_ship"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/g_off"
             android:text="배송/상품정보"
             android:layout_weight="1"/>
 
@@ -43,7 +47,6 @@
             android:id="@+id/webview_good_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
 
     </FrameLayout>
 

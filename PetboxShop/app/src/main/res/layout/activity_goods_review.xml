@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.petbox.shop.GoodsReviewActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:id="@+id/frame_good_review_top"
+        android:background="@color/colorPrimary"
+        android:paddingRight="15dp">
+
+        <ImageButton
+            android:id="@+id/ibtn_good_review_back"
+            android:background="#0000"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="15dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/nav_back"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_toRightOf="@id/ibtn_good_review_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffff"
+            android:text="상품 보기"
+            android:textSize="20sp"
+            android:layout_centerVertical="true" />
+
+    </LinearLayout>
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/wv_review"
+        android:layout_below="@id/frame_good_review_top"/>
+
+</LinearLayout>

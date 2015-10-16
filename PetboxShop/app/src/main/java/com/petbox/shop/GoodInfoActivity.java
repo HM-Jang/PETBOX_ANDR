@@ -1,5 +1,6 @@
 package com.petbox.shop;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -67,6 +69,9 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
     ScrollView sc_main;
 
+    FrameLayout frame_good_info_top_time;
+    FrameLayout fl_rate;
+
     /* 컨텐츠(상) */
     ImageView iv_good, iv_icon1, iv_icon2, iv_icon3; // 상품이미지, 상품특성 아이콘
     ImageButton ibtn_top, ibtn_zoom;    // 맨위로, 확대
@@ -92,7 +97,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     Button btn_intro, btn_review, btn_ship; // 상품소개, 리뷰보기, 상품/배송정보
     FrameLayout frame_middle_content;       // 컨텐츠
     //ImageView iv_intro;
-    //WebView webView;
+    WebView webView;
 
     /* 컨텐츠(하) */
     ListView listView; // 추천상품리스트
@@ -109,6 +114,8 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     ImageView iv_wish;
     WishImageThread wishThread;
     Handler wishHandler;
+
+
 
     //바로 구매하기, 장바구니 담기
     LinearLayout linear_bottom2;
@@ -206,12 +213,16 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         ibtn_back = (ImageButton) findViewById(R.id.ibtn_good_info_back);
         ibtn_back.setOnClickListener(this);
 
+        /*
         ibtn_search = (ImageButton) findViewById(R.id.ibtn_good_info_search);
         ibtn_search.setOnClickListener(this);
 
         ibtn_cart = (ImageButton) findViewById(R.id.ibtn_good_info_cart);
         ibtn_cart.setOnClickListener(this);
+        */
 
+        frame_good_info_top_time = (FrameLayout) findViewById(R.id.frame_good_info_top_time);
+        fl_rate = (FrameLayout) findViewById(R.id.fl_rate);
         sc_main = (ScrollView) findViewById(R.id.sc_good_info);
 
         iv_good = (ImageView) findViewById(R.id.iv_good_info);
@@ -256,7 +267,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         frame_middle_content = (FrameLayout)findViewById(R.id.frame_good_info_middle_content);
         //iv_intro = (ImageView)findViewById(R.id.iv_good_info_intro);
 
-       // webView = (WebView) findViewById(R.id.webview_good_info);
+         webView = (WebView) findViewById(R.id.webview_good_info);
         //webView.getSettings().setJavaScriptEnabled(true);
 
         mItemList = new ArrayList<BestGoodInfo>();
@@ -402,6 +413,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
                 break;
 
+            /*
             case R.id.ibtn_good_info_search:    // 검색
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
                 break;
@@ -409,6 +421,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             case R.id.ibtn_good_info_cart:  // 장바구니
                 Toast.makeText(this, "cart", Toast.LENGTH_SHORT).show();
                 break;
+            */
 
             case R.id.ibtn_good_info_top:   // 맨위로
                 sc_main.fullScroll(View.FOCUS_UP);
@@ -428,6 +441,10 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.btn_good_info_review: //
+                Intent reviewintent = new Intent(this,GoodsReviewActivity.class);
+                reviewintent.putExtra("goodsno",Integer.toString(goodsno));
+                startActivity(reviewintent);
+
                 Toast.makeText(this, "review", Toast.LENGTH_SHORT).show();
                 break;
 
@@ -511,7 +528,6 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                     item.order_count = 0;
 
                 }
-
             }
 
 
@@ -772,6 +788,14 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                     System.out.println("체크 : " + arr_data.getString(i) + "\n");
                 }
                 */
+
+                String urlcon = "";
+                urlcon = "http://petbox.kr/shop/data/goods/" + data.getString("img_i");
+                ImageDownloader.download(urlcon, iv_good);
+                iv_good.setScaleType(ImageView.ScaleType.FIT_XY);
+
+
+
                 goodsno = Integer.parseInt(data.getString("goodsno"));  //상품번호
                 goodsnm = data.getString("goodsnm"); //상품명
                 goods_status = data.getString("goods_status");   // 상품상태 ex) 신상품
@@ -781,8 +805,9 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 point = Integer.parseInt(data.getString("point"));   // 리뷰점수 (고객선호도)
 
                 String longdesc = data.getString("longdesc");
+                webView.loadData(longdesc, "text/html", "UTF-8");
+                webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
-                //webView.loadData(longdesc, "text/html", "UTF-8");
                 System.out.println("longdesc : " + longdesc);
 
                 img_i = data.getString("img_i");// 상품 이미지
@@ -992,8 +1017,8 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
             tv_rating.setText((point*20) +"/100");
 
-            if(review_cnt == 0)
-                frame_review.setVisibility(View.GONE);
+            if(review_cnt != 0)
+                frame_review.setVisibility(View.VISIBLE);
 
             int output_price = 0;
             double rate = ((double)(goods_consumer-goods_price)/goods_consumer) * 100;
@@ -1309,6 +1334,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                         String timeTxt = "";
 
                         if(remendTime > 0 ){    // 시간 남아 있을때 (1초까지)
+                            frame_good_info_top_time.setVisibility(View.VISIBLE);
                             int day = (int) (remendTime/60/60/24);
                             int hour = (int) (remendTime/60/60);
                             int min = (int) (remendTime/60)%60;

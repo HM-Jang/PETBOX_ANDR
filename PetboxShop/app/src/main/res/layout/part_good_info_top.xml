@@ -4,15 +4,15 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/frame_good_info_top_iv"
-        android:background="@drawable/border_bottom_black">
+        android:layout_height="320dp"
+        android:id="@+id/frame_good_info_top_iv">
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
             android:id="@+id/iv_good_info"
-            android:src="@drawable/good"/>
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/loading_l"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -78,14 +78,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/frame_good_info_top_iv"
-        android:background="@drawable/border_bottom_black"
-        android:padding="5dp">
+        android:background="@drawable/border_set_3"
+        android:padding="10dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="[파인솔] 강아지 애견 다목적 세정제 솔향/레몬/라벤더"
+            android:textSize="20sp"
             android:id="@+id/tv_good_info_name" />
 
         <LinearLayout
@@ -103,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="69%"
-                    android:textSize="40sp"
+                    android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimary"
                     android:id="@+id/tv_good_info_rate"
@@ -131,7 +132,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="1300원"
+                    android:textSize="20sp"
+                    android:text="1,300원"
+                    android:textStyle="bold"
                     android:id="@+id/tv_good_info_price_dc"/>
             </LinearLayout>
 
@@ -157,7 +160,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/linear_good_info_top_info"
-        android:background="@drawable/border_bottom_black">
+        android:background="@drawable/border_set_3"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -187,7 +191,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/frame_good_info_top_time"
-        android:paddingTop="15dp">
+        android:id="@+id/fl_rate"
+        android:background="@drawable/border_set_3"
+        android:paddingTop="15dp"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -218,6 +225,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="89/100"
+                    android:textStyle="bold"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:layout_gravity="center"/>
 

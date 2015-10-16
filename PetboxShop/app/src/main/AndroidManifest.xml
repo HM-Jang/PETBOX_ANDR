@@ -111,6 +111,8 @@
         </activity>
         <activity android:name=".DescTest" >
         </activity>
+        <activity android:name=".GoodsReviewActivity" >
+        </activity>
     </application>
 
 </manifest>

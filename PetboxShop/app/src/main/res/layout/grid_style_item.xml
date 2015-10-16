@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/iv_grid_image"
-        android:src="@drawable/no_image"
+        android:src="@drawable/loading_m"
         android:scaleType="fitXY"
         android:layout_weight="1"
         android:padding="2dp" />
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="상품명이 두줄이어도 \n 두줄까지는 노출"
+            android:text="상품명"
             android:id="@+id/tv_grid_name"
             android:textSize="14sp"
 
@@ -60,7 +60,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text="12"
+                            android:text="0"
                             android:id="@+id/tv_grid_rate"
                             android:layout_gravity="center"
                             android:layout_centerInParent="true"
@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="10,000원"
+                    android:text="99,999,999원"
                     android:textSize="11sp"
                     android:id="@+id/tv_grid_origin_price"/>
 
@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="9,000원"
+                    android:text="99,999,999원"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:id="@+id/tv_grid_price"
