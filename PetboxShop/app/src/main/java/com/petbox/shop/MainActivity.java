@@ -47,6 +47,7 @@ import com.petbox.shop.Adapter.Pager.SearchPagerAdapter;
 import com.petbox.shop.CustomView.NonSwipeableViewPager;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.DB.DBConnector;
+import com.petbox.shop.DataStructure.Tree.Tree;
 import com.petbox.shop.Delegate.CategoryDelegate;
 import com.petbox.shop.Delegate.MyPageDelegate;
 import com.petbox.shop.Fragment.Category.CategoryFragment;
@@ -61,6 +62,7 @@ import com.petbox.shop.Fragment.MyPage.MyPageOrderList;
 import com.petbox.shop.Fragment.MyPage.MypageMileage;
 import com.petbox.shop.Fragment.Search.PopularSearchFragment;
 import com.petbox.shop.Fragment.Search.RecentSearchFragment;
+import com.petbox.shop.Item.CategoryInfo;
 import com.petbox.shop.Network.LoginManager;
 
 import org.json.JSONArray;

@@ -20,6 +20,7 @@ import com.petbox.shop.Delegate.CategoryDelegate;
 import com.petbox.shop.Delegate.HttpGetDelegate;
 import com.petbox.shop.Delegate.HttpPostDelegate;
 import com.petbox.shop.Item.CategoryInfo;
+import com.petbox.shop.Network.CategoryManager;
 import com.petbox.shop.Network.HttpGetManager;
 import com.petbox.shop.Network.HttpPostManager;
 import com.petbox.shop.R;
@@ -64,14 +65,13 @@ public class CategoryFragment extends Fragment implements View.OnClickListener, 
     private LinearLayout btn_cat_feed, btn_cat_snack, btn_cat_nutrients, btn_cat_medicine, btn_cat_hygienic, btn_cat_bath, btn_cat_house
             , btn_cat_tower, btn_cat_maddaddabi, btn_cat_accesory, btn_cat_drinkers, btn_cat_beauty, btn_cat_toy;
 
-   CategoryDelegate delegate;
+    CategoryDelegate delegate;
 
     ArrayList<ArrayList<ArrayList<CategoryInfo>>> categoryList;
     Tree<CategoryInfo> dog_tree;
     Tree<CategoryInfo> cat_tree;
 
-
-
+    String param;
 
     // TODO: Rename and change types and number of parameters
     public static CategoryFragment newInstance(CategoryDelegate delegate, String param2) {
@@ -121,6 +121,9 @@ public class CategoryFragment extends Fragment implements View.OnClickListener, 
 
         cat_root.setData(categoryInfo);
         cat_tree.setRoot(cat_root);
+
+        CategoryManager categoryManager = new CategoryManager();
+
 
         View v = inflater.inflate(R.layout.fragment_category, container, false);
 
@@ -239,129 +242,154 @@ public class CategoryFragment extends Fragment implements View.OnClickListener, 
 
         switch(id){
             case R.id.btn_category_dog_feed:
-                HttpGetManager httpGetManager = new HttpGetManager(this);
-                httpGetManager.start();
+                param = "035";
+                //HttpGetManager httpGetManager = new HttpGetManager(this);
+                //httpGetManager.start();
 
                 //intent.putExtra("cate_num","035008");
-                startActivity(intent);
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_snack:
-                intent.putExtra("cate_num","035009");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num","035009");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_nutrients:
-                intent.putExtra("cate_num","035010");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num","035010");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_medicine:
-                intent.putExtra("cate_num","035011");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num","035011");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_hygienic:
-                intent.putExtra("cate_num","035012");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num","035012");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_bath:
-                intent.putExtra("cate_num","035007");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num","035007");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_house:
-                intent.putExtra("cate_num","035014");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num","035014");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_fence:
-                intent.putExtra("cate_num","035015");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num","035015");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_line:
-                intent.putExtra("cate_num","035029");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num","035029");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_accessory:
-                intent.putExtra("cate_num","035018");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num","035018");
+                //startActivity(intent);
 
             case R.id.btn_category_dog_drinkers:
-                intent.putExtra("cate_num", "035032");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num", "035032");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_beauty:
-                intent.putExtra("cate_num","035033");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num","035033");
+                //startActivity(intent);
 
             case R.id.btn_category_dog_toy:
-                intent.putExtra("cate_num", "035034");
-                startActivity(intent);
+                param = "035";
+                //intent.putExtra("cate_num", "035034");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_feed:
-                intent.putExtra("cate_num", "036005");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036005");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_snack:
-                intent.putExtra("cate_num", "036004");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036004");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_nutrients:
-                intent.putExtra("cate_num", "036003");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036003");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_medicine:
-                intent.putExtra("cate_num", "036006");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036006");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_hygienic:
-                intent.putExtra("cate_num", "036007");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036007");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_bath:
-                intent.putExtra("cate_num", "036002");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036002");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_house:
-                intent.putExtra("cate_num", "036014");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036014");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_tower:
-                intent.putExtra("cate_num", "036008");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036008");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_maddaddabi:
-                intent.putExtra("cate_num", "036010");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036010");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_drinkers:
-                intent.putExtra("cate_num", "036013");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036013");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_beauty:
-                intent.putExtra("cate_num", "036017");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036017");
+                //startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_toy:
-                intent.putExtra("cate_num", "036012");
-                startActivity(intent);
+                param = "036";
+                //intent.putExtra("cate_num", "036012");
+                //startActivity(intent);
                 break;
         }
 
@@ -403,7 +431,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener, 
     public List<NameValuePair> getNameValuePairs() {
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
-        String param = "035";
+        param = "035";
 
         nameValuePairs.add(new BasicNameValuePair("category", param));
 
@@ -418,7 +446,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void afterRunningHttpGet(String jsonData) {
         try{
-            System.out.println(jsonData);
+            //System.out.println(jsonData);
 
             JSONArray jsonArray = new JSONArray(jsonData);
             JSONObject main = jsonArray.getJSONObject(0);
@@ -429,47 +457,93 @@ public class CategoryFragment extends Fragment implements View.OnClickListener, 
             ArrayList<CategoryInfo> arrCategory2 = new ArrayList<CategoryInfo>();   // 카테고리 글자 9
             ArrayList<CategoryInfo> arrCategory3 = new ArrayList<CategoryInfo>();   // 카테고리 글자 12
 
-
             for(int i=0; i< category_data.length(); i++){
                 JSONObject obj = category_data.getJSONObject(i);
 
                 CategoryInfo item = new CategoryInfo();
 
-                item.name = obj.getString("category");
-                item.category_num = obj.getString("catnm");
+                item.name = obj.getString("catnm");
+                item.category_num = obj.getString("category");
                 item.sort  = obj.getInt("sort");
 
                 switch(item.category_num.length()){
                     case 6:
                         arrCategory1.add(item);
+                        //System.out.println("1차 : " + item.category_num + "// " + item.name);
                         break;
 
                     case 9:
                         arrCategory2.add(item);
+                        //System.out.println("2차 : " + item.category_num + "// " + item.name);
                         break;
 
                     case 12:
                         arrCategory3.add(item);
+                        //System.out.println("3차 : " + item.category_num + "// " + item.name);
                         break;
                 }
             }
 
-            //Tree의 2차 Depth에 넣음.
+            //root(1차), Tree의 2차 Depth에 넣음.
             for(int i=0; i<arrCategory1.size(); i++){
                 Node<CategoryInfo> item = new Node<CategoryInfo>();
                 item.setData(arrCategory1.get(i));
                 dog_tree.add(dog_tree.root, item);
+
+                //System.out.println("1차 : " + item.getData().category_num);
+                //ArrayList<ArrayList<CategoryInfo>> itemList = new ArrayList<ArrayList<CategoryInfo>>();
             }
 
+            //root(1차), Tree의 3차 Depth에 넣음.
             for(int i=0; i<arrCategory2.size(); i++){
-                Node<CategoryInfo> item = new Node<CategoryInfo>();
-                item.setData(arrCategory2.get(i));
-                
-                for(int j=0; j<arrCategory2.size(); j++){
+                Node<CategoryInfo> nodeItem = new Node<CategoryInfo>();
+                nodeItem.setData(arrCategory2.get(i));
+                CategoryInfo item = arrCategory2.get(i);
 
+                ArrayList<Node<CategoryInfo>> arrList = dog_tree.root.getChildList();
+
+                String split_num = item.category_num.substring(0,6);// 6자리
+
+                //System.out.println("2차(SPLIT) : " + split_num + "// root.childList.size : " +  arrList.size());
+
+                //Depth : 2의 항목들과 비교교
+               for(int j=0; j< arrList.size(); j++){
+                    CategoryInfo parentItem = arrList.get(j).getData();
+
+                   //System.out.println("2차 : " + parentItem.category_num + " - " + split_num);
+
+                    if(parentItem.category_num.equals(split_num)){
+                        arrList.get(j).addChild(nodeItem);
+                        //System.out.println("2차 : " + parentItem.category_num + " - " + item.name+"("+item.category_num+")");
+                        break;
+                    }
                 }
             }
 
+
+            for(int i=0; i<arrCategory3.size(); i++){
+                Node<CategoryInfo> nodeItem = new Node<CategoryInfo>();
+                nodeItem.setData(arrCategory3.get(i));
+                CategoryInfo item = arrCategory3.get(i);
+
+                String split_num = item.category_num.substring(0, 9);// 6자리
+
+                ArrayList<Node<CategoryInfo>> rootChildList = dog_tree.root.getChildList();
+
+                for(int j=0; j< rootChildList.size(); j++) {
+                    ArrayList<Node<CategoryInfo>> arrList = rootChildList.get(j).getChildList();
+
+                    for (int k = 0; k < arrList.size(); k++) {
+                        CategoryInfo parentItem = arrList.get(k).getData();
+
+                        if (parentItem.category_num.equals(split_num)) {
+                            arrList.get(j).addChild(nodeItem);
+                            //System.out.println("3차 : " + parentItem.category_num + " - " + item.name + "(" + item.category_num + ")");
+                            break;
+                        }
+                    }
+                }
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
