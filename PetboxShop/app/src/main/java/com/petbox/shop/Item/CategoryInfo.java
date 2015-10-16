@@ -6,6 +6,8 @@ public class CategoryInfo {
     public String category_num = "";
     public String name = "";
 
+    public CategoryInfo(){}
+
     public CategoryInfo(int _sort,String _category_num, String _name) {
         sort = _sort;
         category_num = _category_num;

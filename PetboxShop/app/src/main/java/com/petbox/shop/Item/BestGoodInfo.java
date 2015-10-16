@@ -15,6 +15,7 @@ public class BestGoodInfo {
     public int rating_person = 0;
     public int icon = 0;
 
+    public BestGoodInfo(){}
 
     public BestGoodInfo(int _sort, String _imgUrl, String _name, String _goodsno, String _rate, String _origin_price, String _price, float _rating, int _rating_person, int _icon) {
         sort = _sort;

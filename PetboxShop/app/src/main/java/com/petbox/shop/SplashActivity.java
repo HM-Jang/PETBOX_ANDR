@@ -109,7 +109,7 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
                 }
                 */
 
-                Toast.makeText(this, "자동 로그인 기능 ON", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "자동 로그인 기능 ON", Toast.LENGTH_SHORT).show();
 
             }
             else {
@@ -121,7 +121,9 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
 
                 finishable = true;
 
-                Toast.makeText(this, "자동 로그인 기능 OFF", Toast.LENGTH_SHORT).show();
+                setResult(Constants.RES_SPLASH_LOGIN_FAILED);
+                LoginManager.setIsLogin(false);
+                //Toast.makeText(this, "자동 로그인 기능 OFF", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -156,23 +158,23 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
         //if(!isRunning){
         // isRunning = true;
 
-            timerThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while(isRunning){
-                        try{
-                            timerThread.sleep(2000);
-                        }catch(InterruptedException e){
-                            e.printStackTrace();
-                        }
-                        isRunning = false;
-
-                        Message msg = handler.obtainMessage();
-                        handler.sendMessage(msg);
+        timerThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(isRunning){
+                    try{
+                        timerThread.sleep(3000);
+                    }catch(InterruptedException e){
+                        e.printStackTrace();
                     }
+                    isRunning = false;
+
+                    Message msg = handler.obtainMessage();
+                    handler.sendMessage(msg);
                 }
-            });
-       // }
+            }
+        });
+        // }
         timerThread.start();
         super.onStart();
         //FlurryAgent.onStartSession(this, Constants.FLURRY_APIKEY);
@@ -182,7 +184,7 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
     public void onStop(){
         //Log.i(TAG, "++ ON STOP ++");
         super.onStop();
-       // FlurryAgent.onEndSession(this);
+        // FlurryAgent.onEndSession(this);
     }
 
     @Override
@@ -196,7 +198,7 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if(keyCode == KeyEvent.KEYCODE_BACK){
-           // Toast.makeText(this, "Back키 누름", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Back키 누름", Toast.LENGTH_SHORT).show();
             setResult(Constants.RES_SPLASH_CANCEL);
             finish();
 
@@ -206,25 +208,31 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
     }
 
     @Override
-    public void prevRunning() {
+    public void prevRunningLogin() {
 
     }
 
     @Override
-    public void running() {
+    public void runningLogin() {
 
     }
 
     @Override
-    public void afterRunning(int responseCode) {
+    public void afterRunningLogin(int responseCode) {
         if(responseCode == Constants.HTTP_RESPONSE_LOGIN_ERROR_NOT_MATCH ){
-            Toast.makeText(this, "아이디나 비밀번호를 확인하세요..", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "아이디나 비밀번호를 확인하세요..", Toast.LENGTH_SHORT).show();
+            setResult(Constants.RES_SPLASH_LOGIN_FAILED);
+            LoginManager.setIsLogin(false);
         }else if(responseCode == Constants.HTTP_RESPONSE_LOGIN_ERROR_INPUT_TYPE){
-            Toast.makeText(this, "아이디나 비밀번호 입력형식이 틀렸습니다..", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "아이디나 비밀번호 입력형식이 틀렸습니다..", Toast.LENGTH_SHORT).show();
+            setResult(Constants.RES_SPLASH_LOGIN_FAILED);
+            LoginManager.setIsLogin(false);
         }else if(responseCode == Constants.HTTP_RESPONSE_LOGIN_ERROR_DENY){
-            Toast.makeText(this, "해당 아이디는 차단되어있습니다..", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "해당 아이디는 차단되어있습니다..", Toast.LENGTH_SHORT).show();
+            setResult(Constants.RES_SPLASH_LOGIN_FAILED);
+            LoginManager.setIsLogin(false);
         }else if (responseCode == Constants.HTTP_RESPONSE_LOGIN_SUCCESS) {
-            Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
 
             LoginManager.setIsLogin(true);
             LoginManager.setDelegate(null);

@@ -13,8 +13,24 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.petbox.shop.CtegoryGoodsActivity;
+import com.petbox.shop.DB.Constants;
+import com.petbox.shop.DataStructure.Tree.Node;
+import com.petbox.shop.DataStructure.Tree.Tree;
 import com.petbox.shop.Delegate.CategoryDelegate;
+import com.petbox.shop.Delegate.HttpGetDelegate;
+import com.petbox.shop.Delegate.HttpPostDelegate;
+import com.petbox.shop.Item.CategoryInfo;
+import com.petbox.shop.Network.HttpGetManager;
+import com.petbox.shop.Network.HttpPostManager;
 import com.petbox.shop.R;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +39,7 @@ import com.petbox.shop.R;
  * Use the {@link CategoryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoryFragment extends Fragment implements View.OnClickListener {
+public class CategoryFragment extends Fragment implements View.OnClickListener, HttpGetDelegate{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -49,6 +65,13 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
             , btn_cat_tower, btn_cat_maddaddabi, btn_cat_accesory, btn_cat_drinkers, btn_cat_beauty, btn_cat_toy;
 
    CategoryDelegate delegate;
+
+    ArrayList<ArrayList<ArrayList<CategoryInfo>>> categoryList;
+    Tree<CategoryInfo> dog_tree;
+    Tree<CategoryInfo> cat_tree;
+
+
+
 
     // TODO: Rename and change types and number of parameters
     public static CategoryFragment newInstance(CategoryDelegate delegate, String param2) {
@@ -78,6 +101,27 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        dog_tree = new Tree<CategoryInfo>();
+        Node<CategoryInfo> dog_root = new Node<CategoryInfo>();
+        CategoryInfo categoryInfo = new CategoryInfo();
+        categoryInfo.name = "애견 카테고리";
+        categoryInfo.category_num = "035";
+        categoryInfo.sort = 0;
+
+        dog_root.setData(categoryInfo);
+        dog_tree.setRoot(dog_root);
+
+        cat_tree = new Tree<CategoryInfo>();
+        Node<CategoryInfo> cat_root = new Node<CategoryInfo>();
+
+        categoryInfo = new CategoryInfo();
+        categoryInfo.name = "애묘 카테고리";
+        categoryInfo.category_num = "036";
+        categoryInfo.sort = 0;
+
+        cat_root.setData(categoryInfo);
+        cat_tree.setRoot(cat_root);
+
         View v = inflater.inflate(R.layout.fragment_category, container, false);
 
         btn_dog_feed = (LinearLayout) v.findViewById(R.id.btn_category_dog_feed);
@@ -195,7 +239,10 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
 
         switch(id){
             case R.id.btn_category_dog_feed:
-                intent.putExtra("cate_num","035008");
+                HttpGetManager httpGetManager = new HttpGetManager(this);
+                httpGetManager.start();
+
+                //intent.putExtra("cate_num","035008");
                 startActivity(intent);
                 break;
 
@@ -340,5 +387,91 @@ public class CategoryFragment extends Fragment implements View.OnClickListener {
                 break;
         }
         */
+    }
+
+    @Override
+    public void prevRunningHttpGet() {
+
+    }
+
+    @Override
+    public String getUrl() {
+        return Constants.HTTP_URL_CATEGORY_LIST;
+    }
+
+    @Override
+    public List<NameValuePair> getNameValuePairs() {
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+        String param = "035";
+
+        nameValuePairs.add(new BasicNameValuePair("category", param));
+
+        return nameValuePairs;
+    }
+
+    @Override
+    public void runningHttpGet() {
+
+    }
+
+    @Override
+    public void afterRunningHttpGet(String jsonData) {
+        try{
+            System.out.println(jsonData);
+
+            JSONArray jsonArray = new JSONArray(jsonData);
+            JSONObject main = jsonArray.getJSONObject(0);
+            JSONArray category_data = main.getJSONArray("category_data");
+            //JSONObject category_data = main.getJSONObject("category_data");
+
+            ArrayList<CategoryInfo> arrCategory1 = new ArrayList<CategoryInfo>();   // 카테고리 글자 6
+            ArrayList<CategoryInfo> arrCategory2 = new ArrayList<CategoryInfo>();   // 카테고리 글자 9
+            ArrayList<CategoryInfo> arrCategory3 = new ArrayList<CategoryInfo>();   // 카테고리 글자 12
+
+
+            for(int i=0; i< category_data.length(); i++){
+                JSONObject obj = category_data.getJSONObject(i);
+
+                CategoryInfo item = new CategoryInfo();
+
+                item.name = obj.getString("category");
+                item.category_num = obj.getString("catnm");
+                item.sort  = obj.getInt("sort");
+
+                switch(item.category_num.length()){
+                    case 6:
+                        arrCategory1.add(item);
+                        break;
+
+                    case 9:
+                        arrCategory2.add(item);
+                        break;
+
+                    case 12:
+                        arrCategory3.add(item);
+                        break;
+                }
+            }
+
+            //Tree의 2차 Depth에 넣음.
+            for(int i=0; i<arrCategory1.size(); i++){
+                Node<CategoryInfo> item = new Node<CategoryInfo>();
+                item.setData(arrCategory1.get(i));
+                dog_tree.add(dog_tree.root, item);
+            }
+
+            for(int i=0; i<arrCategory2.size(); i++){
+                Node<CategoryInfo> item = new Node<CategoryInfo>();
+                item.setData(arrCategory2.get(i));
+                
+                for(int j=0; j<arrCategory2.size(); j++){
+
+                }
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

@@ -431,7 +431,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.ibtn_menu_wish:
                 //setCategoryPagerAdapter();
-                Toast.makeText(getApplicationContext(), "찜하기 페이지 이동", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "찜하기 페이지 이동", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, GoodInfoActivity.class);
+                startActivity(intent);
+
                 break;
 
             case R.id.ibtn_menu_cart:
