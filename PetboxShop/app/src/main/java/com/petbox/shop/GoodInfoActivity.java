@@ -644,11 +644,15 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
         /* 고정값 */
+        String id = STPreferences.getString(Constants.PREF_KEY_ID);
 
         nameValuePairs.add(new BasicNameValuePair("mode", "addItem"));
         nameValuePairs.add(new BasicNameValuePair("goodsno", Integer.toString(goodsno)));
         //nameValuePairs.add(new BasicNameValuePair("goodsno", "2755"));
         nameValuePairs.add(new BasicNameValuePair("goodsCoupon", "0"));
+
+        nameValuePairs.add(new BasicNameValuePair("m_id", id));
+        nameValuePairs.add(new BasicNameValuePair("app", "1"));
 
         /*
         nameValuePairs.add(new BasicNameValuePair("min_ea", "1"));
