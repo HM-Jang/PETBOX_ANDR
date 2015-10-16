@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.petbox.shop.Fragment.Home.PlanningFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/linear_planning_top">
+
+
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="35dp"
+                android:background="@drawable/home_dog_on"
+                android:id="@+id/btn_planning_dog"/>
+
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="35dp"
+                android:background="@drawable/home_cat_off"
+                android:id="@+id/btn_planning_cat"/>
+
+    </LinearLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linear_planning_top"
+        android:id="@+id/list_planning">
+
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
+
+</RelativeLayout>

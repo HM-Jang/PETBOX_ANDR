@@ -1,0 +1,15 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.petbox.shop.Fragment.Home.ChanceDealFragment">
+
+    <com.handmark.pulltorefresh.library.PullToRefreshGridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="5dp"
+        android:id="@+id/grid_chance_deal">
+    </com.handmark.pulltorefresh.library.PullToRefreshGridView>
+
+</RelativeLayout>

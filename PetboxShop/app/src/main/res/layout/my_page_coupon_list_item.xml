@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/border_set_1">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="30dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="[2,000원] 펫박스 앱 전용 캐시 2,000원 지급"
+                android:id="@+id/tv_coupon_name"
+                android:textStyle="bold"
+                android:textSize="10sp"
+                android:padding="5dp"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:id="@+id/iv_coupon_done"
+                android:src="@drawable/coupon_unser"
+                android:scaleType="fitXY"/>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="2015.09.01~2015.09.30 /*3,000원 할인 *2만원 이상 구매시"
+                android:id="@+id/tv_coupon_info"
+                android:textSize="10sp"
+                android:padding="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="*9월30일까지 사용 가능"
+                android:id="@+id/tv_coupon_limit"
+                android:textSize="10sp"
+                android:padding="5dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

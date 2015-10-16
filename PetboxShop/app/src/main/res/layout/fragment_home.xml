@@ -1,0 +1,65 @@
+<com.handmark.pulltorefresh.library.PullToRefreshScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/sc_home"
+    android:background="#f2f2f2"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:elevation="0dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <include
+        layout="@layout/custom_slide_image"
+        android:id="@+id/header_home_slide"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear_home_best"
+        android:layout_below="@id/header_home_slide">
+
+        <ImageView
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/best_deal"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:id="@+id/list_home_best"
+        android:layout_below="@id/linear_home_best"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linear_home_dc"
+        android:layout_below="@id/list_home_best">
+
+        <ImageView
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:src="@drawable/chance_deal"/>
+
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:id="@+id/list_home_dc"
+        android:layout_below="@id/linear_home_dc"/>
+
+    </RelativeLayout>
+
+</com.handmark.pulltorefresh.library.PullToRefreshScrollView>
