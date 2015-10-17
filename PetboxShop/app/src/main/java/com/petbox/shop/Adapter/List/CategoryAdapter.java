@@ -81,7 +81,7 @@ public class CategoryAdapter extends BaseAdapter implements View.OnClickListener
 
     public class ViewHolder{
         TextView  tv_cate_name; // 상품 명
-        LinearLayout ll_cate_list; // 할인율
+        LinearLayout ll_cate_list;
     }
 
 }

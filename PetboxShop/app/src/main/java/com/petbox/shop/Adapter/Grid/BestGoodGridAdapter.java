@@ -1,6 +1,7 @@
 package com.petbox.shop.Adapter.Grid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.petbox.shop.GoodInfoActivity;
 import com.petbox.shop.ImageDownloader;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.R;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
 /**
  * Created by petbox on 2015-09-15.
  */
-public class BestGoodGridAdapter extends BaseAdapter {
+public class BestGoodGridAdapter extends BaseAdapter implements View.OnClickListener{
 
     Context mContext;
     ArrayList<BestGoodInfo> mItemList;
@@ -78,6 +80,9 @@ public class BestGoodGridAdapter extends BaseAdapter {
             holder.ratingBar = (RatingBar) convertView.findViewById(R.id.rb_grid);
             holder.tv_rate_person = (TextView) convertView.findViewById(R.id.tv_grid_rate_person);
             holder.tv_rate_per = (TextView) convertView.findViewById(R.id.tv_grid_rate_per);
+
+            holder.ll_grid_item = (LinearLayout) convertView.findViewById(R.id.ll_grid_item);
+            holder.ll_grid_item.setOnClickListener(this);
 
             LayerDrawable stars = (LayerDrawable) holder.ratingBar.getProgressDrawable();
 
@@ -139,7 +144,22 @@ public class BestGoodGridAdapter extends BaseAdapter {
             holder.tv_rate_person.setText("(" + item.rating_person + ")");
         }
 
+        holder.ll_grid_item.setTag(holder.ll_grid_item.getId() ,item.goodsno);
+
         return convertView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        Intent goodsinfointent = new Intent(mContext, GoodInfoActivity.class);
+        goodsinfointent.setFlags(goodsinfointent.FLAG_ACTIVITY_NEW_TASK);
+        switch(id){
+            case R.id.ll_grid_item:
+                goodsinfointent.putExtra("goodsno",String.valueOf(v.getTag(id)));
+                mContext.startActivity(goodsinfointent);
+                break;
+        }
     }
 
     public class ViewHolder{
@@ -151,5 +171,6 @@ public class BestGoodGridAdapter extends BaseAdapter {
         TextView tv_price; // 할인적용된 실제 판매 가격
         RatingBar ratingBar;    //레이팅바
         TextView tv_rate_person; // 점수준 사람
+        LinearLayout ll_grid_item;
     }
 }

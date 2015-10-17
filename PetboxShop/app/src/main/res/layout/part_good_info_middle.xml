@@ -42,12 +42,70 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/linear_good_info_middle_top">
-
         <WebView
             android:id="@+id/webview_good_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
     </FrameLayout>
+    <LinearLayout
+        android:id="@+id/frame_good_info_middle_content_delivery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_below="@id/linear_good_info_middle_top">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="구매전 꼭 읽어주세요!"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:layout_marginBottom="5dp"
+            android:background="#797979"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:text=" 상품정보 "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- 출고일 : 구매 순 순차 출고(“결제완료” 상태일때까지만 즉시 취소 가능. “상품준비중”상태부터는 “취소요청”만 가능)" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- 제조원 : 상품정보고시 및 컨텐츠 확인\n- A/S기간 및 비용 : 상세정보 별도 표기\n- 제품배송문의 : 펫 케어라이프 매니저 070-8762-1500" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:background="#797979"
+            android:textSize="15sp"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:text=" 배송/환불 정보 "/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- 펫박스 배송 택배사 : 한진택배"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- 배송비 : 상세정보 별도 표기\n- (제주/도서산간의 경우 추가비용 발생)"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- 환불/교환관련 :단순변심에 의한 환불은 제품 수령 후 7일 이내 까지만 가능 단, 상품특성,상태에 따라 단순변심 환불 불가할 수 있음\n- 포장 개봉/훼손 등으로 상품 가치 현저히 상실한 경우\n- 냉장/냉동/신선식품\n 제품 하자의 경우,수령 후 7일이내 반품 가능"/>
+    </LinearLayout>
 
 </RelativeLayout>

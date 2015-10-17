@@ -3,6 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="3dp"
+    android:id="@+id/ll_grid_item"
     android:background="@drawable/border_set_grid_item">
 
     <ImageView
@@ -26,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="상품명"
+            android:text=""
             android:id="@+id/tv_grid_name"
             android:textSize="14sp"
 
@@ -60,7 +61,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text="0"
+                            android:text=""
                             android:id="@+id/tv_grid_rate"
                             android:layout_gravity="center"
                             android:layout_centerInParent="true"
@@ -94,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="99,999,999원"
+                    android:text=""
                     android:textSize="11sp"
                     android:id="@+id/tv_grid_origin_price"/>
 
@@ -102,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="99,999,999원"
+                    android:text=""
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:id="@+id/tv_grid_price"
@@ -126,7 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="(13)"
+                android:text="(0)"
                 android:id="@+id/tv_grid_rate_person"
                 android:layout_gravity="bottom"
                 android:textColor="#A7A7A7"

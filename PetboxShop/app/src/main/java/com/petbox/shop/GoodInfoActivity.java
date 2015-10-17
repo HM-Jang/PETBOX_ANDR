@@ -1,10 +1,12 @@
 package com.petbox.shop;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -98,6 +100,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     FrameLayout frame_middle_content;       // 컨텐츠
     //ImageView iv_intro;
     WebView webView;
+    LinearLayout frame_good_info_middle_content_delivery; //배송정보
 
     /* 컨텐츠(하) */
     ListView listView; // 추천상품리스트
@@ -115,6 +118,8 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     WishImageThread wishThread;
     Handler wishHandler;
 
+    //공유하기
+    Intent share;
 
 
     //바로 구매하기, 장바구니 담기
@@ -152,7 +157,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     ArrayList<GoodOptionInfo> selectedGoodList; //선택된
     SelectedGoodListAdapter selectedGoodListAdapter;
 
-
+    int colorPrimary; //텍스트 컬러
 
     int order_price = 0;    // 주문금액
     TextView tv_all_price;
@@ -213,6 +218,11 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         ibtn_back = (ImageButton) findViewById(R.id.ibtn_good_info_back);
         ibtn_back.setOnClickListener(this);
 
+        Intent intent = getIntent();
+        goodsno =Integer.parseInt(intent.getStringExtra("goodsno"));
+
+        colorPrimary = getResources().getColor(R.color.colorPrimary);
+
         /*
         ibtn_search = (ImageButton) findViewById(R.id.ibtn_good_info_search);
         ibtn_search.setOnClickListener(this);
@@ -220,6 +230,9 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         ibtn_cart = (ImageButton) findViewById(R.id.ibtn_good_info_cart);
         ibtn_cart.setOnClickListener(this);
         */
+
+
+
 
         frame_good_info_top_time = (FrameLayout) findViewById(R.id.frame_good_info_top_time);
         fl_rate = (FrameLayout) findViewById(R.id.fl_rate);
@@ -252,7 +265,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         tv_rating = (TextView)findViewById(R.id.tv_good_info_rating);
         frame_review = (FrameLayout)findViewById(R.id.frame_good_info_top_review);
         tv_review_count = (TextView)findViewById(R.id.tv_good_info_review_count);
-        tv_review_count.setText(review_count+"");
+        tv_review_count.setText(review_count + "");
 
         btn_intro = (Button)findViewById(R.id.btn_good_info_intro);
         btn_intro.setOnClickListener(this);
@@ -270,6 +283,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
          webView = (WebView) findViewById(R.id.webview_good_info);
         //webView.getSettings().setJavaScriptEnabled(true);
 
+        frame_good_info_middle_content_delivery = (LinearLayout) findViewById(R.id.frame_good_info_middle_content_delivery);
         mItemList = new ArrayList<BestGoodInfo>();
 
         for(int i=0; i<5; i++){
@@ -284,6 +298,10 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
             mItemList.add(item);
         }
+
+        share = new Intent(Intent.ACTION_SEND);
+        share.addCategory(Intent.CATEGORY_DEFAULT);
+
 
         listView = (ListView)findViewById(R.id.list_good_info_recommend);
         listAdapter = new RecommendListAdapter(this, mItemList);
@@ -357,7 +375,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         /* JSON Data 불러와서 세팅, option_count, add_optoin_count */
 
-        JsonParseTask task = new JsonParseTask(Constants.HTTP_URL_GOOD_INFO);
+        JsonParseTask task = new JsonParseTask(Constants.HTTP_URL_GOOD_INFO +"?goodsno="+goodsno);
         task.execute();
 
         //타임할인 쓰레드 초기화
@@ -433,23 +451,31 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.ibtn_good_info_share: //공유하기
-                Toast.makeText(this, System.currentTimeMillis()+"", Toast.LENGTH_SHORT).show();
+                startActivity(Intent.createChooser(share, "공유"));
                 break;
 
             case R.id.btn_good_info_intro:  //상품소개
-                Toast.makeText(this, "intro", Toast.LENGTH_SHORT).show();
+                frame_good_info_middle_content_delivery.setVisibility(View.GONE);
+                frame_middle_content.setVisibility(View.VISIBLE);
+                btn_intro.setBackgroundResource(R.drawable.g_on);
+                btn_ship.setBackgroundResource(R.drawable.g_off);
+                btn_intro.setTextColor(colorPrimary);
+                btn_ship.setTextColor(Color.parseColor("#000000"));
                 break;
 
             case R.id.btn_good_info_review: //
                 Intent reviewintent = new Intent(this,GoodsReviewActivity.class);
-                reviewintent.putExtra("goodsno",Integer.toString(goodsno));
+                reviewintent.putExtra("goodsno", Integer.toString(goodsno));
                 startActivity(reviewintent);
-
-                Toast.makeText(this, "review", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.btn_good_info_ship:
-                Toast.makeText(this, "ship", Toast.LENGTH_SHORT).show();
+                frame_good_info_middle_content_delivery.setVisibility(View.VISIBLE);
+                frame_middle_content.setVisibility(View.GONE);
+                btn_intro.setBackgroundResource(R.drawable.g_off);
+                btn_ship.setBackgroundResource(R.drawable.g_on);
+                btn_intro.setTextColor(Color.parseColor("#000000"));
+                btn_ship.setTextColor(colorPrimary);
                 break;
 
             case R.id.ibtn_good_info_wish:
@@ -664,7 +690,6 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         nameValuePairs.add(new BasicNameValuePair("mode", "addItem"));
         nameValuePairs.add(new BasicNameValuePair("goodsno", Integer.toString(goodsno)));
-        //nameValuePairs.add(new BasicNameValuePair("goodsno", "2755"));
         nameValuePairs.add(new BasicNameValuePair("goodsCoupon", "0"));
 
         nameValuePairs.add(new BasicNameValuePair("m_id", id));
@@ -806,6 +831,8 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
                 String longdesc = data.getString("longdesc");
                 webView.loadData(longdesc, "text/html", "UTF-8");
+
+                webView.getSettings().setJavaScriptEnabled(true);
                 webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 
                 System.out.println("longdesc : " + longdesc);
@@ -832,6 +859,13 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 ts_amount = Integer.parseInt(data.getString("ts_amount"));  // 타임할인 할인 금액
 
                 review_cnt = Integer.parseInt(data.getString("review_cnt"));
+
+                /**공유하기 내용**/
+                share.putExtra(Intent.EXTRA_SUBJECT, "펫박스 상품 추천");
+                share.putExtra(Intent.EXTRA_TEXT, "http://petbox.kr/shop/goods/goods_view.php?&goodsno="+goodsno);
+                share.putExtra(Intent.EXTRA_TITLE, goodsnm);
+                share.setType("text/plain");
+                /**END 공유하기 내용 END**/
 
                 String str_discount_time = data.getString("discount_time");
 
@@ -1015,10 +1049,14 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             rating.setRating(point);
             finished_time = discount_time;
 
-            tv_rating.setText((point*20) +"/100");
+            tv_rating.setText((point * 20) + "/100");
 
-            if(review_cnt != 0)
+            if(review_cnt != 0){
                 frame_review.setVisibility(View.VISIBLE);
+            }else{
+                frame_review.setVisibility(View.GONE);
+            }
+
 
             int output_price = 0;
             double rate = ((double)(goods_consumer-goods_price)/goods_consumer) * 100;
@@ -1029,6 +1067,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 frame_time.setVisibility(View.GONE);
 
             }else if(discount_time > 0){
+                frame_time.setVisibility(View.VISIBLE);
                 long isAliveTimeDC = discount_time - (System.currentTimeMillis()/1000); //타임할인 상태 여부
 
                 if(isAliveTimeDC > 0 ) { // 타임할인 상태
@@ -1045,9 +1084,11 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
             if (dc_rate == 0) {
                 tv_rate.setText("펫박스가");
+                tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
                 tv_price.setVisibility(View.INVISIBLE);
             }else
             tv_rate.setText(dc_rate + "%");
+
 
             boolean bool_option = false;
             boolean bool_add_option = false;

@@ -85,13 +85,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="[파인솔] 강아지 애견 다목적 세정제 솔향/레몬/라벤더"
+            android:text=""
             android:textSize="20sp"
             android:id="@+id/tv_good_info_name" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
+            android:gravity="center_horizontal"
             android:layout_height="80dp">
 
             <FrameLayout
@@ -103,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="69%"
+                    android:text=""
                     android:textSize="50sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorPrimary"
@@ -125,7 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="4000원"
+                    android:text=""
                     android:id="@+id/tv_good_info_price"/>
 
                 <TextView
@@ -133,7 +134,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="20sp"
-                    android:text="1,300원"
+                    android:text=""
                     android:textStyle="bold"
                     android:id="@+id/tv_good_info_price_dc"/>
             </LinearLayout>
@@ -160,8 +161,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/linear_good_info_top_info"
-        android:background="@drawable/border_set_3"
-        android:visibility="gone">
+        android:background="@drawable/border_set_3">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -193,8 +193,7 @@
         android:layout_below="@id/frame_good_info_top_time"
         android:id="@+id/fl_rate"
         android:background="@drawable/border_set_3"
-        android:paddingTop="15dp"
-        android:visibility="gone">
+        android:paddingTop="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -21,12 +21,10 @@ public class GoodsReviewActivity extends AppCompatActivity implements WebView.On
         setContentView(R.layout.activity_goods_review);
 
         Intent intent = getIntent();
-        goodsno = "?goodsno=" + intent.getStringExtra("goodsno");
+        goodsno = "goodsno=" + intent.getStringExtra("goodsno");
         webView = (WebView) findViewById(R.id.wv_review);
 
         //webView.loadUrl(Constants.HTTP_URL_CART);
-        webView.getSettings().setJavaScriptEnabled(true);
-
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
