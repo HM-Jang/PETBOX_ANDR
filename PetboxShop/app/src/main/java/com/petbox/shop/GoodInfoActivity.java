@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -125,7 +126,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     //바로 구매하기, 장바구니 담기
     LinearLayout linear_bottom2;
     Button btn_buy_ok, btn_cart_ok;
-    TextView tv_submenu_onoff; // 서브메뉴 on/off
+    //TextView tv_submenu_onoff; // 서브메뉴 on/off
 
     LinearLayout linear_list1;    // 구매, 추가옵션
     LinearLayout linear_list_default, linear_list_add;
@@ -210,6 +211,9 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
     int firstOptionSelected = 0;    // 2단 구매옵션 시, 1차 구매옵션 클릭했던 position
 
+    ImageView tv_submenu_onoff; //옵션 닫기
+    ImageView tv_good_info_opt_off; //옵션 선택 닫기
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -219,7 +223,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         ibtn_back.setOnClickListener(this);
 
         Intent intent = getIntent();
-        goodsno =Integer.parseInt(intent.getStringExtra("goodsno"));
+        goodsno = Integer.parseInt(intent.getStringExtra("goodsno"));
 
         colorPrimary = getResources().getColor(R.color.colorPrimary);
 
@@ -280,6 +284,9 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         frame_middle_content = (FrameLayout)findViewById(R.id.frame_good_info_middle_content);
         //iv_intro = (ImageView)findViewById(R.id.iv_good_info_intro);
 
+        tv_good_info_opt_off = (ImageView)findViewById(R.id.tv_good_info_opt_off);
+        tv_good_info_opt_off.setOnClickListener(this);
+
          webView = (WebView) findViewById(R.id.webview_good_info);
         //webView.getSettings().setJavaScriptEnabled(true);
 
@@ -333,7 +340,10 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         btn_cart_ok = (Button) findViewById(R.id.btn_good_info_cart_ok);
         btn_cart_ok.setOnClickListener(this);
 
-        tv_submenu_onoff = (TextView) findViewById(R.id.tv_good_info_submenu_onoff);
+        //tv_submenu_onoff = (TextView) findViewById(R.id.tv_good_info_submenu_onoff);
+        //tv_submenu_onoff.setOnClickListener(this);
+
+        tv_submenu_onoff = (ImageView) findViewById(R.id.tv_good_info_submenu_on);
         tv_submenu_onoff.setOnClickListener(this);
 
         linear_list1 = (LinearLayout) findViewById(R.id.linear_good_info_list1);
@@ -425,7 +435,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         int id = v.getId();
-
+        Log.e("옵션 1선택","리스트노출?");
         switch(id){
             case R.id.ibtn_good_info_back:  // 뒤로
                 Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
@@ -512,11 +522,18 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 Toast.makeText(this, "cart_ok", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.tv_good_info_submenu_onoff:
+            case R.id.tv_good_info_submenu_on:
                 linear_bottom2.setVisibility(View.GONE);
                 relative_bottom.setVisibility(View.VISIBLE);
                 break;
 
+            case R.id.tv_good_info_opt_off:   // 옵션 선택 닫기기
+                tv_good_info_opt_off.setVisibility(View.GONE);
+                linear_list1.setVisibility(View.VISIBLE);
+                list_select_good.setVisibility(View.VISIBLE);
+                list_select_item.setVisibility(View.GONE);
+                //Toast.makeText(this, "top", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -532,8 +549,9 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 item.count = optionItem.stock;
                 item.price = optionItem.price;
                 item.order_count = 0;
-            }else if(optionNamesSize == 2){
 
+            }else if(optionNamesSize == 2){
+                Log.e("옵션 2선택","리스트노출?");
                 if(selected_num == 0){  //구매옵션 1차
                     optionNames.remove(0);
                     optionNames.add(0, option1List.get(position));
@@ -561,7 +579,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         else if(selected_what == 1) {   //추가옵션
             System.out.println("추가옵션 클릭");
             AddOptionInfo addOptionItem = arrAddOptionList.get(selected_add_num).get(position);
-
+            Log.e("옵션 3선택","리스트노출?");
             item.sno = addOptionItem.sno;
             item.name = addOptionItem.opt;
             item.count = 999;
@@ -607,11 +625,12 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         selectedGoodListAdapter = new SelectedGoodListAdapter(this, selectedGoodList, this);
         selectedGoodListAdapter.setMode(1);
 
+        Log.e("옵션 4선택","리스트노출?");
         list_select_good.setAdapter(selectedGoodListAdapter);
     }
 
     public boolean isContainItem(ArrayList<GoodOptionInfo> itemList, GoodOptionInfo item){
-
+        Log.e("옵션 5선택","리스트노출?");
         for(int i=0; i< itemList.size(); i++){
             GoodOptionInfo optionItem = itemList.get(i);
 
@@ -1107,7 +1126,6 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
                 holdSelectedIGoodList(item);
 
-
             }else{
                 listOptionAdapter = new SelectOptionListAdpater(getApplicationContext(), optionNames);
                 list_default.setAdapter(listOptionAdapter);
@@ -1147,22 +1165,32 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
             selected_num = position;
             selected_what = 0;  // 구매옵션 선택
+            Log.e("옵션 14선택","리스트노출?");
             if(optionNamesSize == 1){
+                Log.e("옵션 10선택","리스트노출?");
+
+                /**옵션 선택 닫기 버튼**/
+                tv_good_info_opt_off.setVisibility(View.VISIBLE);
+                /**END 옵션 선택 닫기 버튼 END **/
+
                 //defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertSimpleOptionInfo(option1List));
                 defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertOptionInfo(arrOption2List.get(0), 1));
                 list_select_item.setAdapter(defaultOptionListAdapter);
             }else if(optionNamesSize == 2){
+                Log.e("옵션 11선택","리스트노출?");
                 if(selected_num == 0){ //1차 옵션
+                    Log.e("옵션 6선택","리스트노출?");
                     defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertSimpleOptionInfo(option1List));
                     defaultOptionListAdapter.setMode(1);    // 심플모드
 
                 }else if(selected_num == 1){ // 2차 구매옵션
-
+                    Log.e("옵션 12선택","리스트노출?");
                     if(optionNames.get(0).equals(optionOriginFirstName)){   // 1차 구매옵션 아무것도 선택하지 않았다면
+                        Log.e("옵션 13선택","리스트노출?");
                         Toast.makeText(getApplicationContext(), "첫번째 구매옵션을 선택해주세요.", Toast.LENGTH_SHORT).show();
                         return;
                     }else if(!optionNames.get(0).equals(optionOriginFirstName)){  // 1차 구매옵션 선택 완료.
-
+                        Log.e("옵션 7선택","리스트노출?");
                         defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertOptionInfo(arrOption2List.get(firstOptionSelected), 2));
                         System.out.println("firstOptionSelected : " + firstOptionSelected);
                         for(int i=0; i<arrOption2List.get(position).size(); i++){
@@ -1255,6 +1283,11 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            /**옵션 선택 닫기 버튼**/
+            tv_good_info_opt_off.setVisibility(View.VISIBLE);
+            /**END 옵션 선택 닫기 버튼 END **/
+
             linear_list1.setVisibility(View.GONE);
             list_select_good.setVisibility(View.GONE);
             list_select_item.setVisibility(View.VISIBLE);
@@ -1285,6 +1318,10 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            /**옵션 선택 닫기 버튼**/
+            tv_good_info_opt_off.setVisibility(View.GONE);
+            /**END 옵션 선택 닫기 버튼 END **/
+
             linear_list1.setVisibility(View.VISIBLE);
             list_select_good.setVisibility(View.VISIBLE);
             list_select_item.setVisibility(View.GONE);

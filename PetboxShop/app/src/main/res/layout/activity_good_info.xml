@@ -87,9 +87,10 @@
             <include
                 layout="@layout/part_good_info_middle"
                 android:id="@+id/layout_good_info_middle"
-                android:layout_below="@id/layout_good_info_top"
                 android:layout_width="match_parent"
+                android:layout_below="@id/layout_good_info_top"
                 android:layout_height="wrap_content"/>
+
 
             <include
                 layout="@layout/part_good_info_bottom"
@@ -172,7 +173,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:padding="5dp"
-                    android:background="@drawable/border_black">
+                    android:background="@drawable/border_set_3">
 
 
                     <Button
@@ -180,10 +181,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_weight="1"
-                        android:text="장바구니담기"
+                        android:text="장바구니 담기"
                         android:layout_margin="3dp"
                         android:textStyle="bold"
-                        android:background="#FFFFFF"
+                        android:background="@drawable/border_button_set1"
                         android:textColor="@color/colorPrimary"/>
 
                     <Button
@@ -204,12 +205,15 @@
                     android:id="@+id/linear_good_info_bottom2_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#E8E8E8">
+                    android:padding="10dp"
+                    android:gravity="right"
+                    android:background="@drawable/border_set_3">
 
                     <TextView
                         android:id="@+id/tv_good_info_all_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
                         android:text="총상품가 : 0원"
                         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -223,16 +227,25 @@
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal">
 
-                        <TextView
-                            android:id="@+id/tv_good_info_submenu_onoff"
-                            android:layout_width="40dp"
+                        <ImageView
+                            android:id="@+id/tv_good_info_submenu_on"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="접기"
-                            android:background="#E8E8E8"
-                            android:layout_gravity="center"
-                            android:gravity="center"/>
+                            android:src="@drawable/opt_on"
+                            android:layout_gravity="left"
+                            android:layout_centerInParent="true" />
+
+                        <ImageView
+                            android:id="@+id/tv_good_info_opt_off"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/btn_cancle"
+                            android:layout_gravity="right"
+                            android:layout_centerInParent="true"
+                            android:visibility="gone"/>
 
                     </FrameLayout>
 
@@ -241,9 +254,8 @@
                         android:id="@+id/linear_good_info_bottom2_lists"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#E8E8E8"
+                        android:background="#EFEFEF"
                         android:orientation="vertical"
-                        android:paddingTop="5dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp">
 
@@ -308,10 +320,6 @@
                             android:visibility="gone"/>
 
                 </LinearLayout>
-
-
-
-
 
                 </LinearLayout>
 
