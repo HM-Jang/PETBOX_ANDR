@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 
 public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnClickListener, CategoryManagerDelegate, ClickDelegate {
 
+    private RelativeLayout relative_main, relative_sub;
     private TextView tv_main, tv_sub;
     private ArrayAdapter<String> adapter;
     Context mContext;
@@ -55,7 +57,7 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
     CategoryAdapter categoryAdapter;
     ArrayList<CategoryInfo> cItemList;
     String cate_num;
-    TextView text_t;
+    TextView tv_title;  // 카테고리 xx
 
     String param = "";
     String category_name = "";
@@ -76,7 +78,7 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         String cate_num = "?category=" + param;
 
         mItemList = goods_list(cate_num);
-        listAdapter = new CategoryListAdapter(mContext, mItemList);
+        listAdapter = new CategoryListAdapter(this, mItemList);
         listView.setAdapter(listAdapter);
 
     }
@@ -97,11 +99,19 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
 
         dialog = new SortDialog(mContext);
 
+        relative_main = (RelativeLayout)findViewById(R.id.relative_category_goods_category1);
+        //relative_main.setOnClickListener(this);
+
+        relative_sub = (RelativeLayout) findViewById(R.id.relative_category_goods_category2);
+        //relative_sub.setOnClickListener(this);
+
         tv_main = (TextView)findViewById(R.id.tv_category_goods_main);
         tv_main.setOnClickListener(this);
         tv_sub = (TextView)findViewById(R.id.tv_category_goods_sub);
         tv_sub.setOnClickListener(this);
         listView = (ListView)findViewById(R.id.lv_category_goods_list);
+
+        tv_title = (TextView) findViewById(R.id.tv_category_goods_title);
 
         //text_t = (TextView)findViewById(R.id.text_t);
         //text_t.setOnClickListener(this);
@@ -116,9 +126,11 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         */
         //c_listView = (ListView) cdialog.findViewById(R.id.lv_cate_dialog_list);
 
+        /*
         cItemList = category_list(cate_num);
         categoryAdapter = new CategoryAdapter(mContext, cItemList);
         listView.setAdapter(categoryAdapter);
+        */
 
         //cdialog.setTitle("List of likers");
         //cdialog.setCanceledOnTouchOutside(true);
@@ -184,6 +196,7 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /*
     public ArrayList<CategoryInfo> category_list(String params){
         String url="http://petbox.kr/petboxjson/category_list.php";
         String params1 = "?category=" + params;
@@ -225,6 +238,7 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
 
         return cItemList;
     }
+    */
 
     public ArrayList<CategoryGoodInfo> addItem(JSONArray display_data_obj,int start,int end){
         mItemList = new ArrayList<CategoryGoodInfo>();
@@ -346,6 +360,8 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         System.out.println("MODE : " + category_mode + "// NAME : " + category_name);
         selected_node = categoryManager.scan(category_name, category_mode);
 
+        tv_title.setText("카테고리["+category_name+"]");
+
         System.out.println("NODE : " + selected_node.getData().name);
 
         category1List = selected_node.getChildList();
@@ -353,7 +369,8 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
 
 
         if(category1List.isEmpty()){
-            tv_sub.setVisibility(View.INVISIBLE);
+            relative_sub.setVisibility(View.INVISIBLE);
+            //tv_sub.setVisibility(View.INVISIBLE);
         }
 
         ArrayList<String> arrList = new ArrayList<String>();
@@ -384,12 +401,16 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
 
             category2List = category1List.get(position).getChildList();
 
+            System.out.println("cate_num : "+ cate_num +"// category2List.size() : " + category2List.size());
+
             if(category2List.size() > 0) {
-                tv_sub.setVisibility(View.VISIBLE);
+                relative_sub.setVisibility(View.VISIBLE);
+                //tv_sub.setVisibility(View.VISIBLE);
                 tv_sub.setText("선택");
             }else {
+                relative_sub.setVisibility(View.INVISIBLE);
                 tv_sub.setText("선택");
-                tv_sub.setVisibility(View.INVISIBLE);
+                //tv_sub.setVisibility(View.INVISIBLE);
             }
         /*
         cItemList = category_list(cate_num);

@@ -23,8 +23,9 @@ public class CategoryManager implements HttpGetDelegate{
 
     private static final String TAG = "CategoryManager";
 
-    public Tree<CategoryInfo> dog_tree;
-    public Tree<CategoryInfo> cat_tree;
+
+    public static Tree<CategoryInfo> dog_tree;
+    public static Tree<CategoryInfo> cat_tree;
 
     int mode = 0; // 0: dog, 1: cat
 
@@ -138,10 +139,7 @@ public class CategoryManager implements HttpGetDelegate{
                 }
 
             }
-
-
         }
-
         return null;
     }
 
@@ -181,7 +179,7 @@ public class CategoryManager implements HttpGetDelegate{
     @Override
     public void afterRunningHttpGet(String jsonData) {
         try{
-            //System.out.println(jsonData);
+            System.out.println("JSON : " + jsonData);
 
             JSONArray jsonArray = new JSONArray(jsonData);
             JSONObject main = jsonArray.getJSONObject(0);
@@ -204,17 +202,17 @@ public class CategoryManager implements HttpGetDelegate{
                 switch(item.category_num.length()){
                     case 6:
                         arrCategory1.add(item);
-                        //System.out.println("1차 : " + item.category_num + "// " + item.name);
+                        System.out.println("1차 : " + item.category_num + "// " + item.name);
                         break;
 
                     case 9:
                         arrCategory2.add(item);
-                        //System.out.println("2차 : " + item.category_num + "// " + item.name);
+                        System.out.println("2차 : " + item.category_num + "// " + item.name);
                         break;
 
                     case 12:
                         arrCategory3.add(item);
-                        //System.out.println("3차 : " + item.category_num + "// " + item.name);
+                        System.out.println("3차 : " + item.category_num + "// " + item.name);
                         break;
                 }
             }
@@ -286,8 +284,8 @@ public class CategoryManager implements HttpGetDelegate{
                         CategoryInfo parentItem = arrList.get(k).getData();
 
                         if (parentItem.category_num.equals(split_num)) {
-                            arrList.get(j).addChild(nodeItem);
-                            //System.out.println("3차 : " + parentItem.category_num + " - " + item.name + "(" + item.category_num + ")");
+                            arrList.get(k).addChild(nodeItem);
+                            System.out.println("3차 : " + parentItem.category_num + " - " + item.name + "(" + item.category_num + ")");
                             break;
                         }
                     }

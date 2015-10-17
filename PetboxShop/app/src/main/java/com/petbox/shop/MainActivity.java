@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -268,6 +269,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         fragmentManager = getSupportFragmentManager();
 
+        edit_search.setMovementMethod(null);
+
 
 
         homePagerAdapter = new HomePagerAdapter(fragmentManager);
@@ -398,14 +401,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(id){
             case R.id.edit_search:
 
+                // 검색창 short -> long
                 if(iv_logo.getVisibility() == View.VISIBLE){
                     iv_logo.setVisibility(View.GONE);
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(edit_search, 0);
+
+
                    // edit_search.setFocusable(true);
                     //edit_search.setClickable(true);
+
+                //검색창 long -> short
                 }else if(iv_logo.getVisibility() == View.GONE){
                     iv_logo.setVisibility(View.VISIBLE);
+
+                    edit_search.setMovementMethod(null);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(edit_search.getWindowToken(), 0);
                     //edit_search.setFocusable(false);
                     //edit_search.setClickable(true);
+                    edit_search.setText("");
                 }
 
                 break;
@@ -422,8 +438,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     new DBConnector(getApplicationContext()).insertToRecentSearch(searchContent, today);
 
                     Intent intent = new Intent(this, SearchGoodActivity.class);
-                    intent.putExtra("keyword",edit_search.getText().toString());
+                    intent.putExtra("keyword", edit_search.getText().toString());
                     startActivity(intent);
+
+                    edit_search.setText("");
+
+                    if(iv_logo.getVisibility() == View.GONE){
+                        iv_logo.setVisibility(View.VISIBLE);
+
+                        edit_search.setMovementMethod(null);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(edit_search.getWindowToken(), 0);
+                    }
 
                 }else{
                     Toast.makeText(getApplicationContext(), "검색란이 비어있습니다.", Toast.LENGTH_SHORT).show();

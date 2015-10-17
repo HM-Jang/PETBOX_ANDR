@@ -223,14 +223,17 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
             //Toast.makeText(this, "아이디나 비밀번호를 확인하세요..", Toast.LENGTH_SHORT).show();
             setResult(Constants.RES_SPLASH_LOGIN_FAILED);
             LoginManager.setIsLogin(false);
+            this.finish();
         }else if(responseCode == Constants.HTTP_RESPONSE_LOGIN_ERROR_INPUT_TYPE){
             //Toast.makeText(this, "아이디나 비밀번호 입력형식이 틀렸습니다..", Toast.LENGTH_SHORT).show();
             setResult(Constants.RES_SPLASH_LOGIN_FAILED);
             LoginManager.setIsLogin(false);
+            this.finish();
         }else if(responseCode == Constants.HTTP_RESPONSE_LOGIN_ERROR_DENY){
             //Toast.makeText(this, "해당 아이디는 차단되어있습니다..", Toast.LENGTH_SHORT).show();
             setResult(Constants.RES_SPLASH_LOGIN_FAILED);
             LoginManager.setIsLogin(false);
+            this.finish();
         }else if (responseCode == Constants.HTTP_RESPONSE_LOGIN_SUCCESS) {
             //Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
 

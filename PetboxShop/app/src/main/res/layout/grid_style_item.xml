@@ -24,7 +24,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="상품명이 두줄이어도 \n 두줄까지는 노출"
             android:id="@+id/tv_grid_name"
@@ -90,23 +90,28 @@
                 android:gravity="bottom"
                 android:layout_weight="1">
 
-                <TextView
+                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="10,000원"
                     android:textSize="11sp"
-                    android:id="@+id/tv_grid_origin_price"/>
+                    android:background="@drawable/text_cancel"
+                    android:id="@+id/tv_grid_origin_price"
+                    android:gravity="center_vertical"
+                     android:layout_weight="1"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="9,000원"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:id="@+id/tv_grid_price"
-                    android:textColor="#ff000000" />
+                    android:textColor="#ff000000"
+                    android:gravity="center"
+                    android:layout_weight="1"/>
             </LinearLayout>
         </LinearLayout>
 

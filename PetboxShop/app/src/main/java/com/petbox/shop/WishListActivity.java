@@ -30,7 +30,6 @@ public class WishListActivity extends AppCompatActivity implements View.OnClickL
 
     Context mContext;
 
-
     @Override
     protected void onStart() {
         super.onStart();

@@ -77,7 +77,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     FrameLayout frame_time; //타임할인 Section
     TextView tv_time;   // 남은 시간
     //String str_finished_time = "1444600000";
-    long finished_time = 1444740000;    //타임할인 종료 시각
+    long finished_time = 0;    //타임할인 종료 시각
     Handler timerHandler;
     TimerThread timerThread;
     Boolean isRunning = true;
@@ -1079,11 +1079,11 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             selected_what = 0;  // 구매옵션 선택
             if(optionNamesSize == 1){
                 //defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertSimpleOptionInfo(option1List));
-                defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertOptionInfo(arrOption2List.get(0), 1));
+                defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertOptionInfo(arrOption2List.get(0), 1), 0);
                 list_select_item.setAdapter(defaultOptionListAdapter);
             }else if(optionNamesSize == 2){
                 if(selected_num == 0){ //1차 옵션
-                    defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertSimpleOptionInfo(option1List));
+                    defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertSimpleOptionInfo(option1List), 0);
                     defaultOptionListAdapter.setMode(1);    // 심플모드
 
                 }else if(selected_num == 1){ // 2차 구매옵션
@@ -1093,7 +1093,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                         return;
                     }else if(!optionNames.get(0).equals(optionOriginFirstName)){  // 1차 구매옵션 선택 완료.
 
-                        defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertOptionInfo(arrOption2List.get(firstOptionSelected), 2));
+                        defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertOptionInfo(arrOption2List.get(firstOptionSelected), 2), 0);
                         System.out.println("firstOptionSelected : " + firstOptionSelected);
                         for(int i=0; i<arrOption2List.get(position).size(); i++){
                             System.out.println(arrOption2List.get(position).get(i).opt2);
@@ -1152,7 +1152,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             item.sno = optionItem.sno;
             item.count = optionItem.stock;
             item.price = optionItem.price;
-            item.dc_price = goods_price - optionItem.price; // 할인 금액
+            item.dc_price = optionItem.price - goods_price; // 할인 금액
             item.order_count = 0;
 
             itemList.add(item);
@@ -1192,7 +1192,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             selected_add_num = position;
             selected_what = 1;  // 구매옵션 선택
 
-            addOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertAddOptionInfo(arrAddOptionList.get(position)));
+            addOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertAddOptionInfo(arrAddOptionList.get(position)), 1);
             list_select_item.setAdapter(addOptionListAdapter);
         }
     }

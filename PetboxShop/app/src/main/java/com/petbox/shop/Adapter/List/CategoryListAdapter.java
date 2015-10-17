@@ -92,16 +92,18 @@ public class CategoryListAdapter extends BaseAdapter {
         int rete_per = (int)(100- Math.ceil((Float.parseFloat(item.price) / Float.parseFloat(item.origin_price) * 100)));
         Log.e("rete_per", String.valueOf(rete_per));
 
-        if(rete_per == 0){
+        if(rete_per <= 0){
             rete = "펫박스가";
             holder.tv_rate.setText(rete);
             holder.tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             holder.tv_rate_per.setVisibility(convertView.INVISIBLE);
-        }else{
+            holder.tv_origin_price.setVisibility(View.INVISIBLE);
+        }else if(rete_per > 0){
             rete = String.valueOf(rete_per);
             holder.tv_rate.setText(rete);
             holder.tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35);
             holder.tv_rate_per.setVisibility(convertView.VISIBLE);
+            holder.tv_origin_price.setVisibility(View.VISIBLE);
         }
 
         String urlcon = "";
@@ -112,7 +114,8 @@ public class CategoryListAdapter extends BaseAdapter {
 
         Log.e("chancedeal_adapter", "----------------imagedownload" + urlcon);
 
-        if(rete_per == 0){
+
+        if(rete_per <= 0){
             holder.tv_origin_price.setVisibility(View.INVISIBLE);
             holder.tv_price.setText(item.origin_price + "원");
         }else{

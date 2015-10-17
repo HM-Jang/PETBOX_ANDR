@@ -100,16 +100,18 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
 
         Log.e("rete_per",String.valueOf(rete_per));
 
-        if(rete_per == 0){
+        if(rete_per <= 0){
             rete = "펫박스가";
             holder.tv_rate.setText(rete);
             holder.tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             holder.tv_rate_per.setVisibility(convertView.INVISIBLE);
+            holder.tv_origin_price.setVisibility(View.INVISIBLE);
         }else{
             rete = String.valueOf(rete_per);
             holder.tv_rate.setText(rete);
             holder.tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35);
             holder.tv_rate_per.setVisibility(convertView.VISIBLE);
+            holder.tv_origin_price.setVisibility(View.VISIBLE);
         }
 
 
@@ -130,7 +132,7 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
 
         //holder.iv_image.setImageBitmap(bm);
 
-        if(rete_per == 0){
+        if(rete_per <= 0 ){
             holder.tv_origin_price.setVisibility(View.INVISIBLE);
             holder.tv_price.setText(item.origin_price + "원");
         }else{
@@ -138,6 +140,7 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
             holder.tv_origin_price.setText(item.origin_price + "원");
             holder.tv_price.setText(item.price + "원");
         }
+
 
         int rating_person = item.rating_person;
 

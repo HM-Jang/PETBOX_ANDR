@@ -22,6 +22,7 @@ public class OptionListAdapter extends BaseAdapter {
     LayoutInflater inflater;
 
     int mode = 0;   // 0: 기본(이름, 가격, 잔여) 1: 이름
+    int type = 0; // 0: 구매옵션, 1: 추가옵션
 
     public OptionListAdapter(){}
 
@@ -29,10 +30,11 @@ public class OptionListAdapter extends BaseAdapter {
         mContext = context;
     }
 
-    public OptionListAdapter(Context context, ArrayList<GoodOptionInfo> itemList){
+    public OptionListAdapter(Context context, ArrayList<GoodOptionInfo> itemList, int type ){
         mContext = context;
         mItemList = itemList;
         inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.type = type;
     }
 
     public void setMode(int mode){
@@ -81,9 +83,15 @@ public class OptionListAdapter extends BaseAdapter {
             if(item.dc_price > 0){
                 holder.tv_price.setText("(+"+item.dc_price + "원)");
             }else if(item.dc_price < 0){
-                holder.tv_price.setText("(-"+item.dc_price + "원)");
-            }else{
-                holder.tv_price.setText("(가격 동일)");
+                holder.tv_price.setText("("+item.dc_price + "원)");
+            }else{// 할인금액 0원
+                if (type == 0) {
+                    holder.tv_price.setText("(가격 동일)");
+                }else if(type == 1){
+                    holder.tv_price.setText("("+ item.price+"원 추가)");
+                }
+
+
             }
 
             return convertView;

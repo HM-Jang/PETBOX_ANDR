@@ -217,7 +217,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
         Intent intent = new Intent(getActivity(),CtegoryGoodsActivity.class);
         int id = v.getId();
 
-        Node<CategoryInfo> node = null;
+        Node<CategoryInfo> node = new Node<CategoryInfo>();
 
         switch(id){
             case R.id.btn_category_dog_feed:
