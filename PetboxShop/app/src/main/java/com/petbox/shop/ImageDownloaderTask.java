@@ -108,7 +108,7 @@ public class ImageDownloaderTask extends AsyncTask<String, Void, Bitmap>
                     Log.e("downloadBitmap"," start download");
                     inputStream = entity.getContent();
                     //final Bitmap bitmap = BitmapFactory.decodeStream(new FlushedInputStream(inputStream));
-                    final Bitmap bitmap = BitmapFactory.decodeStream(new FlushedInputStream(inputStream), null, options);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 final Bitmap bitmap = BitmapFactory.decodeStream(new FlushedInputStream(inputStream), null, options);
 
                     Log.e("downloadBitmap"," return bitmap");
                     return bitmap;

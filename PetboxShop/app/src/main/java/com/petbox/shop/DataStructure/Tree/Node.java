@@ -1,5 +1,7 @@
 package com.petbox.shop.DataStructure.Tree;
 
+import com.petbox.shop.Fragment.Category.CategoryFragment;
+
 import java.util.ArrayList;
 
 /**
@@ -55,6 +57,9 @@ public class Node <T> {
     }
     */
     public ArrayList<Node<T>> getChildList(){
+        if(childList == null)
+            childList = new ArrayList<Node<T>>();
+
         return childList;
     }
 

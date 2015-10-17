@@ -53,7 +53,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="강아지 사료"
+                            android:text="애견 사료"
                             android:layout_gravity="center_vertical" />
 
                    </LinearLayout>
@@ -280,7 +280,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="패션/악세서리/팬시"
+                            android:text="패션/액세서리/팬시"
                             android:layout_gravity="center_vertical" />
 
                     </LinearLayout>
@@ -447,7 +447,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="간식"
+                            android:text="간식/캔"
                             android:layout_gravity="center_vertical" />
 
                     </LinearLayout>
@@ -582,7 +582,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="하우스/가구"
+                            android:text="이동장/하우스"
                             android:layout_gravity="center_vertical" />
 
                     </LinearLayout>
@@ -633,7 +633,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="캣닢/마따따비"
+                            android:text="캣닙/마따따비"
                             android:layout_gravity="center_vertical" />
 
                     </LinearLayout>
@@ -706,7 +706,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="장난감/훈련용품"
+                            android:text="장난감"
                             android:layout_gravity="center_vertical" />
 
                     </LinearLayout>

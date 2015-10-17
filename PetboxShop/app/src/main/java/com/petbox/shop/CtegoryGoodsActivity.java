@@ -19,9 +19,14 @@ import android.widget.Toast;
 
 import com.petbox.shop.Adapter.List.CategoryAdapter;
 import com.petbox.shop.Adapter.List.CategoryListAdapter;
+import com.petbox.shop.CustomView.ListDialog;
 import com.petbox.shop.CustomView.SortDialog;
+import com.petbox.shop.DataStructure.Tree.Node;
+import com.petbox.shop.Delegate.CategoryManagerDelegate;
+import com.petbox.shop.Delegate.ClickDelegate;
 import com.petbox.shop.Item.CategoryGoodInfo;
 import com.petbox.shop.Item.CategoryInfo;
+import com.petbox.shop.Network.CategoryManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,8 +35,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnClickListener {
-    private Spinner spin_main, spin_sub;
+public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnClickListener, CategoryManagerDelegate, ClickDelegate {
+
+    private TextView tv_main, tv_sub;
     private ArrayAdapter<String> adapter;
     Context mContext;
 
@@ -42,20 +48,32 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
     CategoryListAdapter listAdapter;
     ArrayList<CategoryGoodInfo> mItemList;
 
+    ListDialog listDialog;
     SortDialog dialog;
-    Dialog cdialog;
+
+    //Dialog cdialog;
     CategoryAdapter categoryAdapter;
     ArrayList<CategoryInfo> cItemList;
     String cate_num;
     TextView text_t;
 
+    String param = "";
+    String category_name = "";
+    int category_mode = 0; // 0: 강아지, 1: 고양이
+    Node<CategoryInfo> selected_node;
+
+    CategoryManager categoryManager;
+
+    ArrayList<Node<CategoryInfo>> category1List;
+    ArrayList<Node<CategoryInfo>> category2List;
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        Intent intent = getIntent();
-        String cate_num = "?category=" + intent.getStringExtra("cate_num");
+        //Intent intent = getIntent();
+        //String cate_num = "?category=" + intent.getStringExtra("cate_num");
+        String cate_num = "?category=" + param;
 
         mItemList = goods_list(cate_num);
         listAdapter = new CategoryListAdapter(mContext, mItemList);
@@ -68,35 +86,55 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ctegory_goods);
 
+        categoryManager = new CategoryManager(this);
+
+        param = getIntent().getStringExtra("cate_num");
+        category_name = getIntent().getStringExtra("cate_name");
+        category_mode = getIntent().getIntExtra("cate_mode", 0);
+
+
         mContext =  getApplicationContext();
 
         dialog = new SortDialog(mContext);
 
-        spin_main = (Spinner)findViewById(R.id.spin_category_goods_main);
+        tv_main = (TextView)findViewById(R.id.tv_category_goods_main);
+        tv_main.setOnClickListener(this);
+        tv_sub = (TextView)findViewById(R.id.tv_category_goods_sub);
+        tv_sub.setOnClickListener(this);
         listView = (ListView)findViewById(R.id.lv_category_goods_list);
 
-        String[] first_category = getResources().getStringArray(R.array.first_category);
-        adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, first_category);
-        spin_main.setAdapter(adapter);
-
-        text_t = (TextView)findViewById(R.id.text_t);
-        text_t.setOnClickListener(this);
-
-        spin_sub = (Spinner)findViewById(R.id.spin_category_goods_sub);
+        //text_t = (TextView)findViewById(R.id.text_t);
+        //text_t.setOnClickListener(this);
+        
         btn_sort = (ImageButton)findViewById(R.id.btn_category_goods_sort);
         btn_sort.setOnClickListener(this);
 
+
+       /*
         cdialog = new Dialog(getApplicationContext());
         cdialog.setContentView(R.layout.dialog_category_list);
-        c_listView = (ListView) cdialog.findViewById(R.id.lv_cate_dialog_list);
+        */
+        //c_listView = (ListView) cdialog.findViewById(R.id.lv_cate_dialog_list);
 
         cItemList = category_list(cate_num);
         categoryAdapter = new CategoryAdapter(mContext, cItemList);
         listView.setAdapter(categoryAdapter);
 
-        cdialog.setTitle("List of likers");
-        cdialog.setCanceledOnTouchOutside(true);
+        //cdialog.setTitle("List of likers");
+        //cdialog.setCanceledOnTouchOutside(true);
 
+    }
+
+    public ArrayList<String> convertArrayList(ArrayList<Node<CategoryInfo>> itemList){
+        ArrayList<String> arr = new ArrayList<String>();
+
+        for(int i=0; i<itemList.size(); i++){
+            String name = itemList.get(i).getData().name;
+
+            arr.add(name);
+        }
+
+        return arr;
     }
 
     @Override
@@ -104,13 +142,16 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         int id = v.getId();
 
         switch(id){
-            case R.id.text_t:
-                if(!cdialog.isShowing())
-                    cdialog.show();
-                else
-                    cdialog.dismiss();
-
+            case R.id.tv_category_goods_main:
+                listDialog = new ListDialog(this, category_name, convertArrayList(category1List), this, 2);
+                listDialog.show();
                 break;
+
+            case R.id.tv_category_goods_sub:
+                listDialog = new ListDialog(this, category_name, convertArrayList(category2List), this, 3);
+                listDialog.show();
+                break;
+
             case R.id.btn_category_goods_sort:
 
                 if(!dialog.isShowing())
@@ -288,5 +329,85 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         }
 
         return mItemList;
+    }
+
+    @Override
+    public void prevRunningCategoryManager() {
+
+    }
+
+    @Override
+    public void runningHttpCategoryManager() {
+
+    }
+
+    @Override
+    public void afterRunningCategoryManger() {
+        System.out.println("MODE : " + category_mode + "// NAME : " + category_name);
+        selected_node = categoryManager.scan(category_name, category_mode);
+
+        System.out.println("NODE : " + selected_node.getData().name);
+
+        category1List = selected_node.getChildList();
+        category2List = new ArrayList<Node<CategoryInfo>>();
+
+
+        if(category1List.isEmpty()){
+            tv_sub.setVisibility(View.INVISIBLE);
+        }
+
+        ArrayList<String> arrList = new ArrayList<String>();
+
+        for(int i=0; i< category1List.size(); i++){
+            arrList.add(category1List.get(i).getData().name);
+        }
+
+        //String[] first_category = getResources().getStringArray(R.array.first_category);
+        //adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, arrList);
+        //tv_main.setAdapter(adapter);
+    }
+
+    @Override
+    public void click(int position) {
+
+    }
+
+    @Override
+    public void click(int position, int depth) {
+
+        // 2차카테고리(첫번째 스피너)일경우
+        if(depth == 2){
+            String name = category1List.get(position).getData().name;
+            tv_main.setText(name);
+
+            cate_num = "?category=" + category1List.get(position).getData().category_num;
+
+            category2List = category1List.get(position).getChildList();
+
+            if(category2List.size() > 0) {
+                tv_sub.setVisibility(View.VISIBLE);
+                tv_sub.setText("선택");
+            }else {
+                tv_sub.setText("선택");
+                tv_sub.setVisibility(View.INVISIBLE);
+            }
+        /*
+        cItemList = category_list(cate_num);
+        categoryAdapter = new CategoryAdapter(mContext, cItemList);
+        listView.setAdapter(categoryAdapter);
+        */
+
+        }else if(depth == 3){
+            String name = category2List.get(position).getData().name;
+            tv_sub.setText(name);
+
+            cate_num = "?category=" + category2List.get(position).getData().category_num;
+        }
+
+        mItemList = goods_list(cate_num);
+        listAdapter = new CategoryListAdapter(mContext, mItemList);
+        listView.setAdapter(listAdapter);
+
+        listDialog.dismiss();
     }
 }

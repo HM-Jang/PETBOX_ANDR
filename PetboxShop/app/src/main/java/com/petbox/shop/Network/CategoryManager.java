@@ -3,6 +3,7 @@ package com.petbox.shop.Network;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.DataStructure.Tree.Node;
 import com.petbox.shop.DataStructure.Tree.Tree;
+import com.petbox.shop.Delegate.CategoryManagerDelegate;
 import com.petbox.shop.Delegate.HttpGetDelegate;
 import com.petbox.shop.Item.CategoryInfo;
 
@@ -27,7 +28,14 @@ public class CategoryManager implements HttpGetDelegate{
 
     int mode = 0; // 0: dog, 1: cat
 
+    CategoryManagerDelegate delegate;
+
     public CategoryManager(){
+        init();
+    }
+
+    public CategoryManager(CategoryManagerDelegate delegate){
+        this.delegate = delegate;
         init();
     }
 
@@ -87,9 +95,60 @@ public class CategoryManager implements HttpGetDelegate{
         httpGetManager.start();
     }
 
+    public Node<CategoryInfo> scan(String name, int mode){
+
+        ArrayList<Node<CategoryInfo>> rootChildList = null;
+
+        if(mode == 0){
+            rootChildList = dog_tree.root.getChildList();
+        }else{
+            rootChildList = cat_tree.root.getChildList();
+        }
+
+        CategoryInfo item = new CategoryInfo();
+
+        for(int i=0; i<rootChildList.size(); i++){
+            ArrayList<Node<CategoryInfo>> child2List = rootChildList.get(i).getChildList();
+
+            Node<CategoryInfo> node2 = rootChildList.get(i);
+            item = node2.getData();
+
+            if(item.name.equals(name)){
+                return node2;
+            }
+
+            for(int j=0; j < child2List.size(); j++ ){
+                ArrayList<Node<CategoryInfo>> child3List = child2List.get(j).getChildList();
+
+                Node<CategoryInfo> node3 = child2List.get(j);
+                item = node3.getData();
+
+                if(item.name.equals(name)){
+                    return node3;
+                }
+
+                for(int k=0; k<child3List.size(); k++){
+                    Node<CategoryInfo> node4 = child3List.get(k);
+                    item = node4.getData();
+
+                    if(item.name.equals(name)){
+                        return node4;
+                    }
+
+                }
+
+            }
+
+
+        }
+
+        return null;
+    }
+
     @Override
     public void prevRunningHttpGet() {
-
+        if(delegate != null)
+            delegate.prevRunningCategoryManager();
     }
 
     @Override
@@ -115,7 +174,8 @@ public class CategoryManager implements HttpGetDelegate{
 
     @Override
     public void runningHttpGet() {
-
+        if(delegate != null)
+            delegate.runningHttpCategoryManager();
     }
 
     @Override
@@ -169,7 +229,7 @@ public class CategoryManager implements HttpGetDelegate{
                 if(mode == 1)
                     cat_tree.add(cat_tree.root, item);
 
-                //System.out.println("1차 : " + item.getData().category_num);
+                System.out.println("1차 : " + item.getData().name);
                 //ArrayList<ArrayList<CategoryInfo>> itemList = new ArrayList<ArrayList<CategoryInfo>>();
             }
 
@@ -227,7 +287,7 @@ public class CategoryManager implements HttpGetDelegate{
 
                         if (parentItem.category_num.equals(split_num)) {
                             arrList.get(j).addChild(nodeItem);
-                            System.out.println("3차 : " + parentItem.category_num + " - " + item.name + "(" + item.category_num + ")");
+                            //System.out.println("3차 : " + parentItem.category_num + " - " + item.name + "(" + item.category_num + ")");
                             break;
                         }
                     }
@@ -239,5 +299,9 @@ public class CategoryManager implements HttpGetDelegate{
 
         if(mode == 0)
             setCatTree();
+        else if(mode == 1){
+            if(delegate != null)
+                delegate.afterRunningCategoryManger();
+        }
     }
 }

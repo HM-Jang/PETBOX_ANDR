@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -216,156 +217,238 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
         Intent intent = new Intent(getActivity(),CtegoryGoodsActivity.class);
         int id = v.getId();
 
+        Node<CategoryInfo> node = null;
+
         switch(id){
             case R.id.btn_category_dog_feed:
-                param = "035";
-                //HttpGetManager httpGetManager = new HttpGetManager(this);
+                 //HttpGetManager httpGetManager = new HttpGetManager(this);
                 //httpGetManager.start();
 
-                //intent.putExtra("cate_num","035008");
-                //startActivity(intent);
+                node = categoryManager.scan("애견 사료", 0);
+                param = node.getData().category_num;
+
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_snack:
-                param = "035";
-                //intent.putExtra("cate_num","035009");
-                //startActivity(intent);
+                //param = "035";
+                node = categoryManager.scan("간식", 0);
+                param = node.getData().category_num;
+
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_nutrients:
-                param = "035";
-                //intent.putExtra("cate_num","035010");
-                //startActivity(intent);
+                //param = "035";
+                node = categoryManager.scan("영양제", 0);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_medicine:
                 param = "035";
-                //intent.putExtra("cate_num","035011");
-                //startActivity(intent);
+                node = categoryManager.scan("의약부외품", 0);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_hygienic:
-                param = "035";
-                //intent.putExtra("cate_num","035012");
-                //startActivity(intent);
+                node = categoryManager.scan("위생/배변", 0);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_bath:
-                param = "035";
-                //intent.putExtra("cate_num","035007");
-                //startActivity(intent);
+                node = categoryManager.scan("목욕용품", 0);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_house:
-                param = "035";
-                //intent.putExtra("cate_num","035014");
-                //startActivity(intent);
+                node = categoryManager.scan("하우스/가구", 0);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_fence:
-                param = "035";
-                //intent.putExtra("cate_num","035015");
-                //startActivity(intent);
+                node = categoryManager.scan("이동장/철장", 0);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_line:
-                param = "035";
-                //intent.putExtra("cate_num","035029");
-                //startActivity(intent);
+                node = categoryManager.scan("줄/이름표", 0);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_accessory:
-                param = "035";
-                //intent.putExtra("cate_num","035018");
-                //startActivity(intent);
+                node = categoryManager.scan("패션/액세서리/팬시", 0);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
 
             case R.id.btn_category_dog_drinkers:
-                param = "035";
-                //intent.putExtra("cate_num", "035032");
-                //startActivity(intent);
+                node = categoryManager.scan("급식기/급수기", 0);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_beauty:
-                param = "035";
-                //intent.putExtra("cate_num","035033");
-                //startActivity(intent);
+                node = categoryManager.scan("미용용품", 0);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
 
             case R.id.btn_category_dog_toy:
-                param = "035";
-                //intent.putExtra("cate_num", "035034");
-                //startActivity(intent);
+                node = categoryManager.scan("장난감/훈련용품", 0);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 0);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_feed:
-                param = "036";
-                //intent.putExtra("cate_num", "036005");
-                //startActivity(intent);
+                node = categoryManager.scan("고양이 사료", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_snack:
-                param = "036";
-                //intent.putExtra("cate_num", "036004");
-                //startActivity(intent);
+                node = categoryManager.scan("간식/캔", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_nutrients:
-                param = "036";
-                //intent.putExtra("cate_num", "036003");
-                //startActivity(intent);
+                node = categoryManager.scan("영양제", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_medicine:
-                param = "036";
-                //intent.putExtra("cate_num", "036006");
-                //startActivity(intent);
+                node = categoryManager.scan("의약부외품", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_hygienic:
-                param = "036";
-                //intent.putExtra("cate_num", "036007");
-                //startActivity(intent);
+                node = categoryManager.scan("위생/배변", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_bath:
-                param = "036";
-                //intent.putExtra("cate_num", "036002");
-                //startActivity(intent);
+                node = categoryManager.scan("목욕용품", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_house:
-                param = "036";
-                //intent.putExtra("cate_num", "036014");
-                //startActivity(intent);
+                node = categoryManager.scan("이동장/하우스", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_tower:
-                param = "036";
-                //intent.putExtra("cate_num", "036008");
-                //startActivity(intent);
+                node = categoryManager.scan("캣타워/스크래쳐", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_maddaddabi:
-                param = "036";
-                //intent.putExtra("cate_num", "036010");
-                //startActivity(intent);
+                node = categoryManager.scan("캣닙/마따따비", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);;
                 break;
 
             case R.id.btn_category_cat_drinkers:
-                param = "036";
-                //intent.putExtra("cate_num", "036013");
-                //startActivity(intent);
+                node = categoryManager.scan("급식기/급수기", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_beauty:
-                param = "036";
-                //intent.putExtra("cate_num", "036017");
-                //startActivity(intent);
+                node = categoryManager.scan("미용용품", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_toy:
-                param = "036";
-                //intent.putExtra("cate_num", "036012");
-                //startActivity(intent);
+                node = categoryManager.scan("장난감", 1);
+                param = node.getData().category_num;
+                intent.putExtra("cate_num",param);
+                intent.putExtra("cate_name", node.getData().name);
+                intent.putExtra("cate_mode", 1);
+                startActivity(intent);
                 break;
         }
 

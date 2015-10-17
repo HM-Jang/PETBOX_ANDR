@@ -38,32 +38,32 @@
             android:layout_height="wrap_content"
             android:background="#ffffff">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="테스트"
-                android:id="@+id/text_t"
-                android:textSize="20sp"/>
 
-            <Spinner
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/spin_category_goods_main"
-                android:spinnerMode="dropdown"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/tv_category_goods_main"
+                android:text="선택"
+                android:background="@drawable/border_black"
+                android:textColor="#f000"
                 android:layout_weight="1" />
 
-            <Spinner
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/spin_category_goods_sub"
-                android:spinnerMode="dropdown"
+                android:layout_height="match_parent"
+                android:id="@+id/tv_category_goods_sub"
+                android:text="선택"
+                android:background="@drawable/border_black"
+                android:gravity="center"
+                android:textColor="#f000"
+                android:visibility="invisible"
                 android:layout_weight="1" />
 
             <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="New Button"
                 android:id="@+id/btn_category_goods_sort"
                 android:src="@drawable/category_sort_low_price"
                 android:scaleType="fitXY"
