@@ -118,10 +118,11 @@ public class CustomNumberPicker extends LinearLayout implements View.OnClickList
 
         switch(id){
             case R.id.btn_minus:
-                if(num <= min)
+                if(num <= min){
                     num = min;
-                else
+                } else if(0 < num){
                     num -= 1;
+                }
 
                 edit_num.setText("" + num);
 

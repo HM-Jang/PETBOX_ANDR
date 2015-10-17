@@ -11,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -77,6 +79,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
@@ -84,6 +87,17 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, CategoryDelegate, MyPageDelegate {
 
     public static final String TAG = "MainAct";
+
+
+    // define variables for back key : 2 pressed end!
+    private boolean isBackKeyPressed = false;             // flag
+    private long currentTimeByMillis = 0;                     // calculate time interval
+
+    private static final int MSG_TIMER_EXPIRED = 1;    // switch - key
+    private static final int BACKKEY_TIMEOUT = 2;      // define interval
+    private static final int MILLIS_IN_SEC = 1000;        // define millisecond
+    // end of back key variable.
+
 
     private TabLayout tabLayout;
     private NonSwipeableViewPager mViewPager;
@@ -776,4 +790,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         categoryPagerAdapter.setMode(1);
     }
     */
+
+    /*
+		 * onBackPressed function override
+		 *  - back 1 click : 2번 누르면 종료되게 메세지 출력
+		 *  - back 2 click : 2번 누르면 종료
+		 */
+    @Override
+    public void onBackPressed(){
+        if ( isBackKeyPressed == false ){
+            // first click
+            isBackKeyPressed = true;
+
+            currentTimeByMillis = Calendar.getInstance().getTimeInMillis();
+            Toast.makeText(this, "\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+
+            startTimer();
+        }else{
+            // second click : 2초 이내면 종료! 아니면 아무것도 안한다.
+            isBackKeyPressed = false;
+            if ( Calendar.getInstance().getTimeInMillis() <= (currentTimeByMillis + (BACKKEY_TIMEOUT * MILLIS_IN_SEC)) ) {
+                finish();
+            }
+        }
+    }
+
+    // startTimer : 2초의 시간적 여유를 가지게 delay 시킨다.
+    private void startTimer(){
+        backTimerHandler.sendEmptyMessageDelayed(MSG_TIMER_EXPIRED, BACKKEY_TIMEOUT * MILLIS_IN_SEC);
+    }
+
+    private Handler backTimerHandler = new Handler(){
+        public void handleMessage(Message msg){
+            switch( msg.what ){
+                case MSG_TIMER_EXPIRED:{
+                    isBackKeyPressed = false;
+                }
+                break;
+            }
+        }
+    };
+    // End of Back method
 }

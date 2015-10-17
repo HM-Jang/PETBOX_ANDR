@@ -113,6 +113,13 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
             holder = (ViewHolder) convertView.getTag();
         }
 
+        /** 구매수량 최소 1로 수정**/
+        if(item.order_count < 1)
+        {
+            item.order_count = 1;
+        }
+        /** 구매수량 최소 1로 수정**/
+
         holder.tv_name.setText(item.name);
         //holder.tv_count.setText("잔여 : " + (item.count - item.order_count) + "개");
         holder.tv_price.setText((item.order_count * item.price) + "원");
@@ -161,10 +168,13 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
         int position = params.get("position");
         int order_count = params.get("order_count");
 
-        mItemList.get(position).order_count = order_count;
-
+        /**seo 수량 1개이하 수량조절 막음**/
         this.notifyDataSetChanged();
         delegate.clickDecrease(params);
+
+        mItemList.get(position).order_count = order_count;
+        /**seo 수량 1개이하 수량조절 막음**/
+
        // delegate.refreshAllPrice();
     }
 
@@ -188,7 +198,7 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
 
     class ViewHolder{
         TextView tv_name;
-        //TextView tv_count;
+       //TextView tv_count;
         CustomNumberPicker picker_count;
         TextView tv_price;
         ImageButton ibtn_delete;

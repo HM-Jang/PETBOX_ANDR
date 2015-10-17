@@ -91,14 +91,6 @@
                 android:layout_below="@id/layout_good_info_top"
                 android:layout_height="wrap_content"/>
 
-
-            <include
-                layout="@layout/part_good_info_bottom"
-                android:id="@+id/layout_good_info_bottom"
-                android:layout_below="@id/layout_good_info_middle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
         </RelativeLayout>
 
     </ScrollView>
