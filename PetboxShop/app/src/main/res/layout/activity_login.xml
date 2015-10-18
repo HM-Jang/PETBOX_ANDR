@@ -9,9 +9,8 @@
         android:id="@+id/frame_login_top"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/frame_login_mid">
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -24,9 +23,9 @@
     <LinearLayout
         android:id="@+id/frame_login_mid"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="210dp"
         android:orientation="vertical"
-        android:layout_above="@+id/frame_login_bot">
+        android:layout_below="@+id/frame_login_top">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -42,7 +41,8 @@
                 android:ems="10"
                 android:text="petbox1"
                 android:id="@+id/edit_login_id"
-                android:background="@drawable/border_black"
+                android:padding="10dp"
+                android:background="@drawable/border_set_1"
                 android:hint=" 이메일" />
         </LinearLayout>
 
@@ -58,11 +58,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:padding="10dp"
                 android:ems="10"
                 android:id="@+id/edit_login_pw"
                 android:layout_weight="1"
                 android:text="petbox8787"
-                android:background="@drawable/border_black"
+                android:background="@drawable/border_set_1"
                 android:hint="  비밀번호" />
         </LinearLayout>
 
@@ -78,34 +79,55 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:id="@+id/ibtn_login_start"
-                android:src="@drawable/btn_login"
-                android:background="#00000000" />
+                android:background="@drawable/btn_login" />
         </LinearLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="20dp"
+            android:id="@+id/search_id_pass"
+            android:layout_height="60dp"
+            android:paddingRight="20dp"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:gravity="center_vertical">
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="자동로그인"
-                android:id="@+id/chk_login_auto"
-                android:button="@drawable/chk_auto_login"
-                android:layout_gravity="center_vertical" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="150dp"
+                android:layout_gravity="left|center_vertical"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="아이디/비밀번호 찾기 >"
-                android:id="@+id/textView2"
-                android:layout_gravity="center_vertical|right"
-                android:textColor="#f000" />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="자동로그인"
+                    android:id="@+id/chk_login_auto"
+                    android:button="@drawable/chk_auto_login" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="170dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="아이디 >"
+                    android:id="@+id/tv_id_search"
+                    android:layout_gravity="center_vertical|right"
+                    android:textColor="#f000" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="/비밀번호 찾기 >"
+                    android:id="@+id/tv_pass_search"
+                    android:layout_gravity="center_vertical|right"
+                    android:textColor="#f000" />
+            </LinearLayout>
         </FrameLayout>
     </LinearLayout>
 
@@ -114,12 +136,12 @@
         android:layout_width="match_parent"
         android:layout_height="130dp"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true">
+        android:layout_below="@id/frame_login_mid">
 
         <FrameLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="40dp"
             android:background="@drawable/border_top_black"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp">
@@ -144,7 +166,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:id="@+id/ibtn_login_regist"
-                android:src="@drawable/btn_registration_id"
+                android:background="@drawable/btn_registration_id"
                 android:layout_gravity="center" />
         </FrameLayout>
     </LinearLayout>

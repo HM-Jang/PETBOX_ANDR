@@ -149,7 +149,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
        // ll_mypage_setting.setOnClickListener(this);
 
         url = "http://petbox.kr/petboxjson/member_info.php";
-        params3 = "?m_no=" + 1;
+        params3 = "?m_id="+ Constants.PREF_KEY_ID;
         params3 += "&mypage_info=" + 809;
         InsertDB = "mypage_coupon_list";
 

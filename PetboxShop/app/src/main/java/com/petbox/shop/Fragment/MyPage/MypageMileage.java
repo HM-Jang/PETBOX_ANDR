@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.support.v4.app.Fragment;
 import com.petbox.shop.Adapter.List.EmoneyListAdapter;
 import com.petbox.shop.Adapter.List.OrderListAdapter;
+import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Delegate.MyPageDelegate;
 import com.petbox.shop.Fragment.Home.IntegrationPlanningFragment;
 import com.petbox.shop.Item.EmoneyInfo;
@@ -122,8 +123,8 @@ public class MypageMileage extends Fragment implements View.OnClickListener {
             String idx = "";
 
             url = "http://petbox.kr/petboxjson/member_info.php";
-            params3 = "?m_no="+1;
-            params3 += "&mypage_info="+803;
+            params3 = "?m_id="+ Constants.PREF_KEY_ID;
+            params3 += "?mypage_info="+803;
             InsertDB = "mypage_emoney_list";
 
             //order_list = new JsonParse.JsonLoadingTask().execute(url,params3).get();

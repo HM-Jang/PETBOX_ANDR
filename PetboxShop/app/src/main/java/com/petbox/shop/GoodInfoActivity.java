@@ -104,7 +104,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     LinearLayout frame_good_info_middle_content_delivery; //배송정보
 
     /* 컨텐츠(하) */
-    ListView listView; // 추천상품리스트
+   // ListView listView; // 추천상품리스트
     RecommendListAdapter listAdapter;
     ArrayList<BestGoodInfo> mItemList;
 
@@ -310,11 +310,11 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         share.addCategory(Intent.CATEGORY_DEFAULT);
 
 
-        listView = (ListView)findViewById(R.id.list_good_info_recommend);
+        /*listView = (ListView)findViewById(R.id.list_good_info_recommend);
         listAdapter = new RecommendListAdapter(this, mItemList);
         listView.setAdapter(listAdapter);
 
-        Utility.setListViewHeightBasedOnChildren(listView);
+        Utility.setListViewHeightBasedOnChildren(listView);*/
 
         relative_bottom = (RelativeLayout) findViewById(R.id.relative_good_info_bottom);
         linear_bottom2 = (LinearLayout) findViewById(R.id.linear_good_info_bottom2);
@@ -394,10 +394,10 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         timerThread.start();
 
         //추천상품 리스트 초기화
-        listAdapter = new RecommendListAdapter(this, mItemList);
-        listView.setAdapter(listAdapter);
+       // listAdapter = new RecommendListAdapter(this, mItemList);
+       // listView.setAdapter(listAdapter);
 
-        Utility.setListViewHeightBasedOnChildren(listView);
+        //Utility.setListViewHeightBasedOnChildren(listView);
 
 
     }
