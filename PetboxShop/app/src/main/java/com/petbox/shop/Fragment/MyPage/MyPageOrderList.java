@@ -220,10 +220,12 @@ public class MyPageOrderList extends Fragment implements View.OnClickListener {
     }
     Log.e("mItemList = ",  "// size : " + mItemList.size());
 
-    lv_mypage_order_list = (ListView) v.findViewById(R.id.lv_mypage_order_list);
-    listAdapter = new OrderListAdapter(getContext(), mItemList);
-    lv_mypage_order_list.setAdapter( listAdapter);
+        lv_mypage_order_list = (ListView) v.findViewById(R.id.lv_mypage_order_list);
 
+        if(mItemList.size() > 0){
+            listAdapter = new OrderListAdapter(getContext(), mItemList);
+            lv_mypage_order_list.setAdapter( listAdapter);
+        }
 
     return v;
     }

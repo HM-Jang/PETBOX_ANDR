@@ -100,7 +100,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        categoryManager = new CategoryManager();
+        categoryManager = CategoryManager.getManager();
 
         View v = inflater.inflate(R.layout.fragment_category, container, false);
 
@@ -228,8 +228,14 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 param = node.getData().category_num;
 
                 intent.putExtra("cate_num",param);
-                intent.putExtra("cate_name", node.getData().name);
+                String cate_name = node.getData().name;
+
+                intent.putExtra("cate_name", cate_name);
                 intent.putExtra("cate_mode", 0);
+
+                System.out.println("cate_name  : " + cate_name + "// cate_num : " + param);
+
+
                 startActivity(intent);
                 break;
 

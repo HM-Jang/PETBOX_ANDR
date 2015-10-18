@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:background="#ffffff">
 
-            <RelativeLayout
+            <LinearLayout
                 android:background="@drawable/border_bottom_black"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -54,7 +54,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/border_black"
                     android:paddingLeft="5dp"
-                    android:paddingRight="5dp">
+                    android:paddingRight="5dp"
+                    android:layout_weight="1">
 
                     <TextView
                         android:id="@+id/tv_category_goods_token1"
@@ -79,6 +80,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:layout_weight="1"
                     android:visibility="invisible"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/relative_category_goods_category1"
@@ -122,10 +124,7 @@
                     android:background="#0000"
                     android:visibility="gone"/>
 
-            </RelativeLayout>
-
-
-
+            </LinearLayout>
         </LinearLayout>
     </android.support.design.widget.AppBarLayout>
     <include layout="@layout/content_category_goods_list"/>

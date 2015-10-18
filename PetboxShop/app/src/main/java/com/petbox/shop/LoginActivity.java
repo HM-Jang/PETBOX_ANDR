@@ -128,6 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (requestCode) {
             case Constants.REQ_REGIST:
                 if (resultCode == Constants.RES_REGIST_LOGIN_SUCCESS) {
+                    Toast.makeText(this, "회원 가입 완료", Toast.LENGTH_LONG).show();
                     setResult(Constants.RES_LOGIN_SUCCESS);
                     finish();
                 }

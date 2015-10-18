@@ -60,6 +60,10 @@
             android:label="@string/title_activity_registration" >
         </activity>
 
+        <activity
+            android:name=".CtegoryGoodsActivity">
+        </activity>
+
         <receiver
             android:name=".GcmBroadCastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -82,8 +86,7 @@
             android:label="@string/title_activity_search_good"
             android:theme="@style/AppTheme" >
         </activity>
-        <activity android:name=".CtegoryGoodsActivity" >
-        </activity>
+
         <activity
             android:name=".WishListActivity"
             android:label="@string/title_activity_wish_list"

@@ -36,7 +36,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnClickListener, CategoryManagerDelegate, ClickDelegate {
+public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnClickListener, ClickDelegate {
 
     private RelativeLayout relative_main, relative_sub;
     private TextView tv_main, tv_sub;
@@ -64,10 +64,10 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
     int category_mode = 0; // 0: 강아지, 1: 고양이
     Node<CategoryInfo> selected_node;
 
-    CategoryManager categoryManager;
-
     ArrayList<Node<CategoryInfo>> category1List;
     ArrayList<Node<CategoryInfo>> category2List;
+
+    //CategoryManager categoryManager;
 
     @Override
     protected void onStart() {
@@ -88,12 +88,33 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ctegory_goods);
 
-        categoryManager = new CategoryManager(this);
-
         param = getIntent().getStringExtra("cate_num");
         category_name = getIntent().getStringExtra("cate_name");
         category_mode = getIntent().getIntExtra("cate_mode", 0);
 
+        //CategoryManager.setDelegate(this);  // 싱글톤 카테고리 매니저 세팅
+
+        System.out.println("MODE : " + category_mode + "// NAME : " + category_name);
+        selected_node = CategoryManager.scan(category_name, category_mode);
+
+        //
+
+        System.out.println("NODE : " + selected_node.getData().name);
+
+        category1List = selected_node.getChildList();
+        category2List = new ArrayList<Node<CategoryInfo>>();
+
+
+        if(category1List.isEmpty()){
+            relative_sub.setVisibility(View.INVISIBLE);
+            //tv_sub.setVisibility(View.INVISIBLE);
+        }
+
+        ArrayList<String> arrList = new ArrayList<String>();
+
+        for(int i=0; i< category1List.size(); i++){
+            arrList.add(category1List.get(i).getData().name);
+        }
 
         mContext =  getApplicationContext();
 
@@ -112,6 +133,7 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         listView = (ListView)findViewById(R.id.lv_category_goods_list);
 
         tv_title = (TextView) findViewById(R.id.tv_category_goods_title);
+        tv_title.setText(category_name);
 
         //text_t = (TextView)findViewById(R.id.text_t);
         //text_t.setOnClickListener(this);
@@ -345,44 +367,7 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         return mItemList;
     }
 
-    @Override
-    public void prevRunningCategoryManager() {
 
-    }
-
-    @Override
-    public void runningHttpCategoryManager() {
-
-    }
-
-    @Override
-    public void afterRunningCategoryManger() {
-        System.out.println("MODE : " + category_mode + "// NAME : " + category_name);
-        selected_node = categoryManager.scan(category_name, category_mode);
-
-        tv_title.setText("카테고리["+category_name+"]");
-
-        System.out.println("NODE : " + selected_node.getData().name);
-
-        category1List = selected_node.getChildList();
-        category2List = new ArrayList<Node<CategoryInfo>>();
-
-
-        if(category1List.isEmpty()){
-            relative_sub.setVisibility(View.INVISIBLE);
-            //tv_sub.setVisibility(View.INVISIBLE);
-        }
-
-        ArrayList<String> arrList = new ArrayList<String>();
-
-        for(int i=0; i< category1List.size(); i++){
-            arrList.add(category1List.get(i).getData().name);
-        }
-
-        //String[] first_category = getResources().getStringArray(R.array.first_category);
-        //adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, arrList);
-        //tv_main.setAdapter(adapter);
-    }
 
     @Override
     public void click(int position) {

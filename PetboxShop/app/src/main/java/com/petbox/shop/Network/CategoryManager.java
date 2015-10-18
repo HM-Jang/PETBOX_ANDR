@@ -30,6 +30,17 @@ public class CategoryManager{
 
     static CategoryManagerDelegate delegate;
 
+    public static CategoryManager categoryManager;
+
+    public static CategoryManager getManager(){
+
+        if(categoryManager == null){
+            categoryManager = new CategoryManager();
+        }
+
+        return categoryManager;
+    }
+
     public static Tree<CategoryInfo> getDogTree(){
         if(dog_tree == null) {
             init();
@@ -53,8 +64,8 @@ public class CategoryManager{
         init();
     }
 
-    public void setDelegate(CategoryManagerDelegate delegate){
-        this.delegate = delegate;
+    public static void  setDelegate(CategoryManagerDelegate delegate){
+        categoryManager.delegate = delegate;
     }
 
     // Async로 애견 카테고리 목록 받은 후 애묘로로
@@ -96,7 +107,9 @@ public class CategoryManager{
         httpGetManager.start();
     }
 
-    public Node<CategoryInfo> scan(String name, int mode){
+    public static Node<CategoryInfo> scan(String name, int mode){
+
+        System.out.println("스캔 중.. ");
 
         ArrayList<Node<CategoryInfo>> rootChildList = null;
 
@@ -261,7 +274,6 @@ public class CategoryManager{
                         }
                     }
                 }
-
 
                 for(int i=0; i<arrCategory3.size(); i++){
                     Node<CategoryInfo> nodeItem = new Node<CategoryInfo>();
