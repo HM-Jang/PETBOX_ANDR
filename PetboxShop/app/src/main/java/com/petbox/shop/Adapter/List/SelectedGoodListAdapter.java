@@ -80,12 +80,17 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
             holder.tv_count = (TextView)convertView.findViewById(R.id.tv_list_select_good_count);
             holder.picker_count = (CustomNumberPicker)convertView.findViewById(R.id.picker_list_select_good);
             holder.picker_count.setDelegate(this);
+            holder.picker_count.setNum(1);
 
             holder.tv_price = (TextView) convertView.findViewById(R.id.tv_list_select_good_price);
             holder.ibtn_delete = (ImageButton) convertView.findViewById(R.id.ibtn_list_select_good_delete);
 
+            //구매옵션 1단
             if(mode == 0){
                 holder.ibtn_delete.setOnClickListener(this);
+
+
+            //구매옵션 x
             }else if(mode == 1){
                 if(position == 0 ){
                     /*
@@ -97,7 +102,9 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
                     holder.picker_count.setMin(1);
                     holder.picker_count.setOne();
                     */
+
                     holder.picker_count.setMin(1);
+
                     holder.ibtn_delete.setVisibility(View.GONE);
 
                 }else{
@@ -105,9 +112,6 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
                 }
 
             }
-            holder.ibtn_delete.setTag(position);
-
-
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
@@ -119,12 +123,12 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
         holder.picker_count.setMax(item.count - item.order_count);
         holder.picker_count.setNum(item.order_count);
 
+        holder.ibtn_delete.setTag(position);
+
         HashMap<String, Integer> hash = new HashMap<String, Integer>();
         hash.put("price", item.price);
         hash.put("position", position);
         holder.picker_count.setParam(hash);
-
-
 
         return convertView;
     }
@@ -134,10 +138,11 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
        int position = (Integer)v.getTag();
 
         GoodOptionInfo item = mItemList.get(position);
-
-        delegate.deleteItem(item.price * item.order_count);
+        //delegate.deleteItem(item.price * item.order_count);
         mItemList.get(position).order_count = 0;
         mItemList.remove(position);
+
+        delegate.deleteItem(returnAllPrice());
 
         this.notifyDataSetChanged();
     }
@@ -150,10 +155,22 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
 
         mItemList.get(position).order_count = order_count;
 
+        params.put("all_price", returnAllPrice());
         this.notifyDataSetChanged();
 
         delegate.clickIncrease(params);
         //delegate.refreshAllPrice();
+    }
+
+    public int returnAllPrice(){
+        int all_price = 0;
+
+        for(int i=0; i<mItemList.size(); i++){
+            GoodOptionInfo item = mItemList.get(i);
+            all_price += item.order_count * item.price;
+        }
+
+        return all_price;
     }
 
     @Override
@@ -163,6 +180,7 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
 
         mItemList.get(position).order_count = order_count;
 
+        params.put("all_price", returnAllPrice());
         this.notifyDataSetChanged();
         delegate.clickDecrease(params);
        // delegate.refreshAllPrice();
@@ -184,7 +202,6 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
 
         delegate.setNum(params);
     }
-
 
     class ViewHolder{
         TextView tv_name;

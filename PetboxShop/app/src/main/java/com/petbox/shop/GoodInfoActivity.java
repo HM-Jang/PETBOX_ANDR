@@ -488,7 +488,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 item.name = optionItem.opt1;
                 item.count = optionItem.stock;
                 item.price = optionItem.price;
-                item.order_count = 0;
+                item.order_count = 1;
             }else if(optionNamesSize == 2){
 
                 if(selected_num == 0){  //구매옵션 1차
@@ -508,13 +508,9 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                     item.name = optionItem.opt1 + "/" + optionItem.opt2;
                     item.count = optionItem.stock;
                     item.price = optionItem.price;
-                    item.order_count = 0;
-
+                    item.order_count = 1;
                 }
-
             }
-
-
         }
         else if(selected_what == 1) {   //추가옵션
             System.out.println("추가옵션 클릭");
@@ -524,7 +520,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             item.name = addOptionItem.opt;
             item.count = 999;
             item.price = addOptionItem.addprice;
-            item.order_count = 0;
+            item.order_count = 1;
             item.isAddOption = true;
             item.optionName = addOptionItem.optionName;
         }
@@ -557,6 +553,22 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 list_select_good.setAdapter(selectedGoodListAdapter);
             }
         }
+
+        order_price = returnAllPrice();
+        tv_all_price.setText("총상품가 : " + order_price + "원");
+
+    }
+
+    public int returnAllPrice(){
+        int all_price = 0;
+
+        for(int i=0; i<selectedGoodList.size(); i++){
+            GoodOptionInfo item = selectedGoodList.get(i);
+
+            all_price += item.price * item.order_count;
+        }
+
+        return all_price;
     }
 
     public void holdSelectedIGoodList(GoodOptionInfo item){
@@ -587,8 +599,10 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void clickIncrease(HashMap<String, Integer> params) {
         //Toast.makeText(getApplicationContext(), "+버튼", Toast.LENGTH_SHORT).show();
-        int price = params.get("price");
-        order_price += price;
+        //int price = params.get("price");
+        //order_price += price;
+
+        order_price = params.get("all_price");
 
         tv_all_price.setText("총상품가 : " + order_price + "원");
     }
@@ -596,15 +610,20 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void clickDecrease(HashMap<String, Integer> params) {
         //Toast.makeText(getApplicationContext(), "-버튼", Toast.LENGTH_SHORT).show();
-        int price = params.get("price");
-        order_price -= price;
+        //int price = params.get("price");
+        //order_price -= price;
+
+        order_price = params.get("all_price");
 
         tv_all_price.setText("총상품가 : " + order_price + "원");
     }
 
     @Override
     public void deleteItem(int price) {
-        order_price -= price;
+        //order_price -= price;
+
+        order_price = price;
+
         tv_all_price.setText("총상품가 : " + order_price + "원");
     }
 

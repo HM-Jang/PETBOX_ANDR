@@ -28,7 +28,7 @@ public class Constants implements BaseColumns {
     public static final String HTTP_URL_REVIEW = "http://www.petbox.kr/m2/myp/review.php?app=3";
     public final static String HTTP_URL_LOGIN = "http://www.petbox.kr/m2/mem/login_ok.php";
     public final static String HTTP_URL_REGIST = "http://www.petbox.kr/m2/mem/app_indb.php";
-    public final static String HTTP_URL_GOOD_INFO = "http://petbox.kr/petboxjson/goods_view.php?goodsno=2755";
+    public final static String HTTP_URL_GOOD_INFO = "http://petbox.kr/petboxjson/goods_view.php?goodsno=3358";
     public final static String HTTP_URL_GO_CART = "http://www.petbox.kr/shop/goods/app_cart.php";
     public static final String HTTP_URL_QNA = "http://www.petbox.kr/m2/goods/goods_qna_list.php?app=3";
     public static final String HTTP_URL_CUSTOMER = "http://www.petbox.kr/m2/service/customer.php?app=3";
