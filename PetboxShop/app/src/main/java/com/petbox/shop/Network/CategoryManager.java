@@ -6,6 +6,7 @@ import com.petbox.shop.DataStructure.Tree.Tree;
 import com.petbox.shop.Delegate.CategoryManagerDelegate;
 import com.petbox.shop.Delegate.HttpGetDelegate;
 import com.petbox.shop.Item.CategoryInfo;
+import com.petbox.shop.Item.PlanningItemInfo;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
@@ -27,6 +28,7 @@ public class CategoryManager{
     public static Tree<CategoryInfo> cat_tree;
 
     static int mode = 0; // 0: dog, 1: cat
+    //static int return_url_type = 0; // 0:category, 1: Planning
 
     static CategoryManagerDelegate delegate;
 
@@ -54,6 +56,7 @@ public class CategoryManager{
         }
         return cat_tree;
     }
+
 
     public CategoryManager(){
         init();
@@ -95,6 +98,9 @@ public class CategoryManager{
         //setCatTree();
     }
 
+
+
+
     public static void setDogTree(){
         mode = 0;
         HttpGetManager httpGetManager = new HttpGetManager(new CategoryHttpGetDelegate());
@@ -107,17 +113,16 @@ public class CategoryManager{
         httpGetManager.start();
     }
 
-    public static Node<CategoryInfo> scan(String name, int mode){
+    // name 찾을것, mode : 강아지(0),고양이(1), type : category_num(0), category_name(1)
+    public static Node<CategoryInfo> scan(String param, int mode, int type){
 
         System.out.println("스캔 중.. ");
-
         ArrayList<Node<CategoryInfo>> rootChildList = null;
 
-        if(mode == 0){
+        if(mode == 0)
             rootChildList = dog_tree.root.getChildList();
-        }else{
+        else
             rootChildList = cat_tree.root.getChildList();
-        }
 
         CategoryInfo item = new CategoryInfo();
 
@@ -127,8 +132,12 @@ public class CategoryManager{
             Node<CategoryInfo> node2 = rootChildList.get(i);
             item = node2.getData();
 
-            if(item.name.equals(name)){
-                return node2;
+            if(type == 0){
+                if(item.name.equals(param))
+                    return node2;
+            }else if(type == 1){
+                if(item.category_num.equals(param))
+                    return node2;
             }
 
             for(int j=0; j < child2List.size(); j++ ){
@@ -137,16 +146,40 @@ public class CategoryManager{
                 Node<CategoryInfo> node3 = child2List.get(j);
                 item = node3.getData();
 
-                if(item.name.equals(name)){
-                    return node3;
+                if(type == 0){
+                    if(item.name.equals(param))
+                        return node3;
+                }else if(type == 1){
+                    if(item.category_num.equals(param))
+                        return node3;
                 }
 
                 for(int k=0; k<child3List.size(); k++){
+                    ArrayList<Node<CategoryInfo>> child4List = child3List.get(j).getChildList();
+
                     Node<CategoryInfo> node4 = child3List.get(k);
                     item = node4.getData();
 
-                    if(item.name.equals(name)){
-                        return node4;
+                    if(type == 0){
+                        if(item.name.equals(param))
+                            return node4;
+                    }else if(type == 1){
+                        if(item.category_num.equals(param))
+                            return node4;
+                    }
+
+                    for(int h=0; h<child4List.size(); h++){
+                        Node<CategoryInfo> node5 = child4List.get(k);
+                        item = node5.getData();
+
+                        if(type == 0){
+                            if(item.name.equals(param))
+                                return node5;
+                        }else if(type == 1){
+                            if(item.category_num.equals(param))
+                                return node5;
+                        }
+
                     }
                 }
             }
@@ -164,7 +197,9 @@ public class CategoryManager{
 
         @Override
         public String getUrl() {
+
             return Constants.HTTP_URL_CATEGORY_LIST;
+
         }
 
         @Override

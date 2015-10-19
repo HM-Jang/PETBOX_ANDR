@@ -3,6 +3,7 @@ package com.petbox.shop;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.webkit.CookieSyncManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.petbox.shop.DB.Constants;
@@ -43,6 +45,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     ImageButton ibtn_login, ibtn_regist;    // 로그인, 회원가입
     CheckBox chk_auto_login;    // 자동로그인 체크박스
 
+    TextView tv_id_search,tv_pass_search;
+
     ProgressDialog pDialog;
     SharedPreferences pref;
 
@@ -56,6 +60,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         pDialog = new ProgressDialog(this);
         pDialog.setTitle("로그인 중");
         pDialog.setMessage("로그인 중..");
+
+        tv_id_search = (TextView)findViewById(R.id.tv_id_search);
+        tv_id_search.setOnClickListener(this);
+        tv_pass_search = (TextView)findViewById(R.id.tv_pass_search);
+        tv_pass_search.setOnClickListener(this);
 
         edit_id = (EditText)findViewById(R.id.edit_login_id);
         edit_pw = (EditText)findViewById(R.id.edit_login_pw);
@@ -140,7 +149,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         int id = v.getId();
 
+        Intent intent;
+
         switch(id){
+
+            case R.id.tv_id_search:
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://petbox.kr/shop/member/find_id.php?pc"));
+                startActivity(intent);
+                break;
+
+            case R.id.tv_pass_search:
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://petbox.kr/shop/member/find_pwd.php?pc"));
+                startActivity(intent);
+                break;
+
+
             case R.id.ibtn_login_start: // 로그인
                 LoginManager.setDelegate(this);
                 LoginManager.getHttpClient();
@@ -152,7 +175,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.ibtn_login_regist:    //등록
                 //Toast.makeText(getApplicationContext(), "등록버튼 누름", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+                intent = new Intent(LoginActivity.this, RegistrationActivity.class);
                 startActivityForResult(intent, Constants.REQ_REGIST);
                 break;
 

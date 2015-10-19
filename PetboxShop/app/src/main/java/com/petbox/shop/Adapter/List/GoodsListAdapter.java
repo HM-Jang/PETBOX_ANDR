@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.petbox.shop.CtegoryGoodsActivity;
 import com.petbox.shop.DescTest;
+import com.petbox.shop.GoodInfoActivity;
 import com.petbox.shop.ImageDownloader;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.R;
@@ -100,18 +101,16 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
 
         Log.e("rete_per",String.valueOf(rete_per));
 
-        if(rete_per <= 0){
+        if(rete_per == 0){
             rete = "펫박스가";
             holder.tv_rate.setText(rete);
             holder.tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             holder.tv_rate_per.setVisibility(convertView.INVISIBLE);
-            holder.tv_origin_price.setVisibility(View.INVISIBLE);
         }else{
             rete = String.valueOf(rete_per);
             holder.tv_rate.setText(rete);
             holder.tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 35);
             holder.tv_rate_per.setVisibility(convertView.VISIBLE);
-            holder.tv_origin_price.setVisibility(View.VISIBLE);
         }
 
 
@@ -155,19 +154,22 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
             holder.tv_rate_person.setText("(" + item.rating_person + ")");
         }
 
+
+        holder.ll_list_item.setTag(holder.ll_list_item.getId(),item.goodsno);
+
         return convertView;
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        Intent test_intent = new Intent(mContext,DescTest.class);
-        test_intent.setFlags(test_intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent goodsinfointent = new Intent(mContext, GoodInfoActivity.class);
+        goodsinfointent.setFlags(goodsinfointent.FLAG_ACTIVITY_NEW_TASK);
 
         switch(id){
             case R.id.ll_list_item :
-                mContext.startActivity(test_intent);
-
+                goodsinfointent.putExtra("goodsno",String.valueOf(v.getTag(id)));
+                mContext.startActivity(goodsinfointent);
                 break;
         }
     }

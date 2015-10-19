@@ -27,7 +27,9 @@ import com.petbox.shop.Delegate.CategoryManagerDelegate;
 import com.petbox.shop.Delegate.ClickDelegate;
 import com.petbox.shop.Item.CategoryGoodInfo;
 import com.petbox.shop.Item.CategoryInfo;
+import com.petbox.shop.Item.PlanningItemInfo;
 import com.petbox.shop.Network.CategoryManager;
+import com.petbox.shop.Network.PlanningManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,10 +64,14 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
     String param = "";
     String category_name = "";
     int category_mode = 0; // 0: 강아지, 1: 고양이
+    int where = 0; // 0 : 카테고리메뉴 -> 카테고리 상세상품, 1: 기획전 -> 카테고리 상세상품
     Node<CategoryInfo> selected_node;
+    Node<PlanningItemInfo> selected_node_planning;
 
     ArrayList<Node<CategoryInfo>> category1List;
     ArrayList<Node<CategoryInfo>> category2List;
+
+    ArrayList<Node<PlanningItemInfo>> planningList;
 
     //CategoryManager categoryManager;
 
@@ -75,11 +81,14 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
 
         //Intent intent = getIntent();
         //String cate_num = "?category=" + intent.getStringExtra("cate_num");
+
+        /*
         String cate_num = "?category=" + param;
 
         mItemList = goods_list(cate_num);
         listAdapter = new CategoryListAdapter(this, mItemList);
         listView.setAdapter(listAdapter);
+        */
 
     }
 
@@ -88,33 +97,22 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ctegory_goods);
 
+        where = getIntent().getIntExtra("where", 0);
         param = getIntent().getStringExtra("cate_num");
-        category_name = getIntent().getStringExtra("cate_name");
         category_mode = getIntent().getIntExtra("cate_mode", 0);
-
-        //CategoryManager.setDelegate(this);  // 싱글톤 카테고리 매니저 세팅
-
-        System.out.println("MODE : " + category_mode + "// NAME : " + category_name);
-        selected_node = CategoryManager.scan(category_name, category_mode);
-
-        //
-
-        System.out.println("NODE : " + selected_node.getData().name);
-
-        category1List = selected_node.getChildList();
-        category2List = new ArrayList<Node<CategoryInfo>>();
-
-
-        if(category1List.isEmpty()){
-            relative_sub.setVisibility(View.INVISIBLE);
-            //tv_sub.setVisibility(View.INVISIBLE);
-        }
 
         ArrayList<String> arrList = new ArrayList<String>();
 
-        for(int i=0; i< category1List.size(); i++){
-            arrList.add(category1List.get(i).getData().name);
-        }
+        System.out.println("WHERE : "+where);
+
+        //카테고리
+
+        //if(where == 0)
+          //  category_name = getIntent().getStringExtra("cate_name");
+
+        //CategoryManager.setDelegate(this);  // 싱글톤 카테고리 매니저 세팅
+
+
 
         mContext =  getApplicationContext();
 
@@ -131,17 +129,56 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         tv_sub = (TextView)findViewById(R.id.tv_category_goods_sub);
         tv_sub.setOnClickListener(this);
         listView = (ListView)findViewById(R.id.lv_category_goods_list);
-
         tv_title = (TextView) findViewById(R.id.tv_category_goods_title);
-        tv_title.setText(category_name);
-
-        //text_t = (TextView)findViewById(R.id.text_t);
+         //text_t = (TextView)findViewById(R.id.text_t);
         //text_t.setOnClickListener(this);
         
         btn_sort = (ImageButton)findViewById(R.id.btn_category_goods_sort);
         btn_sort.setOnClickListener(this);
 
+        if(where == 0){
+            System.out.println("CTegoryGoodsActivity > PARAM : " + param);
 
+            selected_node = CategoryManager.scan(param, category_mode, 1);   // category_num으로 노드 검색
+            category_name = selected_node.getData().name;
+
+            System.out.println("MODE : " + category_mode + "// NAME : " + category_name);
+
+            category1List = selected_node.getChildList();
+            category2List = new ArrayList<Node<CategoryInfo>>();
+
+            if(category1List.isEmpty()){
+                relative_sub.setVisibility(View.INVISIBLE);
+                //tv_sub.setVisibility(View.INVISIBLE);
+            }
+            for(int i=0; i< category1List.size(); i++){
+                arrList.add(category1List.get(i).getData().name);
+            }
+        }else{  //기획전
+            System.out.println("CTegoryGoodsActivity > PARAM : " + param);
+
+            selected_node_planning = PlanningManager.scan(param, category_mode);   // category_num으로 노드 검색
+            category_name = selected_node_planning.getData().name;
+
+            relative_sub.setVisibility(View.INVISIBLE); // 2차가 없으므로
+
+            planningList = selected_node_planning.parent.getChildList();
+
+            /*
+            for(int i=0; i< planningList.size(); i++) {
+                arrList.add(planningList.get(i).getData().linkaddr);
+            }
+            */
+        }
+
+        tv_title.setText(category_name);
+
+
+        String cate_num = "?category=" + param;
+
+        mItemList = goods_list(cate_num);
+        listAdapter = new CategoryListAdapter(this, mItemList);
+        listView.setAdapter(listAdapter);
        /*
         cdialog = new Dialog(getApplicationContext());
         cdialog.setContentView(R.layout.dialog_category_list);
@@ -171,14 +208,32 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         return arr;
     }
 
+    public ArrayList<String> convertArrayList2(ArrayList<Node<PlanningItemInfo>> itemList){
+        ArrayList<String> arr = new ArrayList<String>();
+
+        for(int i=0; i<itemList.size(); i++){
+            String name = itemList.get(i).getData().name;
+
+            arr.add(name);
+        }
+
+        return arr;
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
 
         switch(id){
             case R.id.tv_category_goods_main:
-                listDialog = new ListDialog(this, category_name, convertArrayList(category1List), this, 2);
-                listDialog.show();
+                if(where == 0){ //카테고리
+                    listDialog = new ListDialog(this, category_name, convertArrayList(category1List), this, 2);
+                    listDialog.show();
+                }else{  // 기획전
+                    listDialog = new ListDialog(this, category_name, convertArrayList2(planningList), this, 0);
+                    listDialog.show();
+                }
+
                 break;
 
             case R.id.tv_category_goods_sub:
@@ -371,7 +426,18 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void click(int position) {
+        if(where == 1){ //기획전 리스트 클릭
+            String name = planningList.get(position).getData().name;
+            tv_main.setText(name);
 
+            cate_num = "?category=" + planningList.get(position).getData().linkaddr;    // linkaddr = category_num
+
+            mItemList = goods_list(cate_num);
+            listAdapter = new CategoryListAdapter(mContext, mItemList);
+            listView.setAdapter(listAdapter);
+
+            listDialog.dismiss();
+        }
     }
 
     @Override

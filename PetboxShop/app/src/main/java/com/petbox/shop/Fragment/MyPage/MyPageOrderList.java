@@ -18,12 +18,14 @@ import android.widget.TextView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.petbox.shop.Adapter.List.CategoryListAdapter;
 import com.petbox.shop.Adapter.List.OrderListAdapter;
+import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Delegate.MyPageDelegate;
 import com.petbox.shop.Item.CategoryGoodInfo;
 import com.petbox.shop.Item.OrderItemInfo;
 import com.petbox.shop.JsonParse;
 import com.petbox.shop.MainActivity;
 import com.petbox.shop.R;
+import com.petbox.shop.STPreferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,7 +64,7 @@ public class MyPageOrderList extends Fragment implements View.OnClickListener {
     OrderListAdapter listAdapter;
     ArrayList<OrderItemInfo> mItemList;
 
-    String order_list;
+    String order_list="";
     String url,params3,InsertDB;
 
     MyPageDelegate delegate;
@@ -153,81 +155,84 @@ public class MyPageOrderList extends Fragment implements View.OnClickListener {
             String goodsnm = "";
 
             url = "http://petbox.kr/petboxjson/member_info.php";
-            params3 = "?m_no="+1;
+            params3 = "?m_id="+  STPreferences.getString(Constants.PREF_KEY_ID);
             params3 += "&mypage_info="+805;
-
             InsertDB = "mypage_order_list";
 
+            Log.e("Constants.PREF_KEY_ID", STPreferences.getString(Constants.PREF_KEY_ID));
+
             //order_list = new JsonParse.JsonLoadingTask().execute(url,params3).get();
+
             order_list = new JsonParse.JsonLoadingTask(getActivity().getApplicationContext()).execute(url, params3,InsertDB).get();
+
             Log.e("order_list",order_list);
-            JSONArray OrderListArray = new JSONArray(order_list);
-            mItemList = new ArrayList<OrderItemInfo>();
-            OrderItemInfo info[] = new OrderItemInfo[OrderListArray.length()];
+            if(order_list.equals("null")) {
+            }else{
 
-            for (int k = 0; k < OrderListArray.length(); k++) {
-                JSONObject Order_object = OrderListArray.getJSONObject(k);
+                JSONArray OrderListArray = new JSONArray(order_list);
+                mItemList = new ArrayList<OrderItemInfo>();
+                OrderItemInfo info[] = new OrderItemInfo[OrderListArray.length()];
 
-                info[k] = new OrderItemInfo(ordno,nameOrder,email,phoneOrder,mobileOrder,nameReceiver,phoneReceiver,mobileReceiver,zipcode,address,road_address,settleprice,prn_settleprice,goodsprice,deli_title,deli_type,deli_msg,delivery,coupon,emoney,reserve,bankAccount,bankSender,deliveryno,deliverycode,m_no,orddt,uptdt_,str_step,str_settlekind,idx,goodsnm);
+                for (int k = 0; k < OrderListArray.length(); k++) {
+                    JSONObject Order_object = OrderListArray.getJSONObject(k);
 
-                Log.e("orddt",Order_object.getString("orddt"));
+                    info[k] = new OrderItemInfo(ordno, nameOrder, email, phoneOrder, mobileOrder, nameReceiver, phoneReceiver, mobileReceiver, zipcode, address, road_address, settleprice, prn_settleprice, goodsprice, deli_title, deli_type, deli_msg, delivery, coupon, emoney, reserve, bankAccount, bankSender, deliveryno, deliverycode, m_no, orddt, uptdt_, str_step, str_settlekind, idx, goodsnm);
 
-                info[k].orddt = Order_object.getString("orddt");
-                info[k].ordno = Order_object.getString("ordno");
-                info[k].goodsnm = Order_object.getString("goodsnm");
-                info[k].prn_settleprice = Order_object.getString("prn_settleprice");
-                info[k].str_settlekind = Order_object.getString("str_settlekind");
-                info[k].str_step = Order_object.getString("str_step");
+                    Log.e("orddt", Order_object.getString("orddt"));
 
-                info[k].nameOrder = "";
-                info[k].email = "";
-                info[k].phoneOrder = "";
-                info[k].mobileOrder = "";
-                info[k].nameReceiver = "";
-                info[k].phoneReceiver = "";
-                info[k].mobileReceiver = "";
-                info[k].zipcode = "";
-                info[k].address = "";
-                info[k].road_address = "";
-                info[k].settleprice = "";
-                info[k].goodsprice = "";
-                info[k].deli_title = "";
-                info[k].deli_type = "";
-                info[k].deli_msg = "";
-                info[k].delivery = "";
-                info[k].coupon = "";
-                info[k].emoney = "";
-                info[k].reserve = "";
-                info[k].bankAccount = "";
-                info[k].bankSender = "";
-                info[k].deliveryno = "";
-                info[k].deliverycode = "";
-                info[k].m_no = "";
-                info[k].uptdt_ = "";
-                info[k].idx = "";
+                    info[k].orddt = Order_object.getString("orddt");
+                    info[k].ordno = Order_object.getString("ordno");
+                    info[k].goodsnm = Order_object.getString("goodsnm");
+                    info[k].prn_settleprice = Order_object.getString("prn_settleprice");
+                    info[k].str_settlekind = Order_object.getString("str_settlekind");
+                    info[k].str_step = Order_object.getString("str_step");
 
-                mItemList.add(info[k]);
+                    info[k].nameOrder = "";
+                    info[k].email = "";
+                    info[k].phoneOrder = "";
+                    info[k].mobileOrder = "";
+                    info[k].nameReceiver = "";
+                    info[k].phoneReceiver = "";
+                    info[k].mobileReceiver = "";
+                    info[k].zipcode = "";
+                    info[k].address = "";
+                    info[k].road_address = "";
+                    info[k].settleprice = "";
+                    info[k].goodsprice = "";
+                    info[k].deli_title = "";
+                    info[k].deli_type = "";
+                    info[k].deli_msg = "";
+                    info[k].delivery = "";
+                    info[k].coupon = "";
+                    info[k].emoney = "";
+                    info[k].reserve = "";
+                    info[k].bankAccount = "";
+                    info[k].bankSender = "";
+                    info[k].deliveryno = "";
+                    info[k].deliverycode = "";
+                    info[k].m_no = "";
+                    info[k].uptdt_ = "";
+                    info[k].idx = "";
 
+                    mItemList.add(info[k]);
+
+                }
             }
 
-
         } catch (InterruptedException e) {
-        e.printStackTrace();
-    } catch (ExecutionException e) {
-        e.printStackTrace();
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
-    Log.e("mItemList = ",  "// size : " + mItemList.size());
-
-        lv_mypage_order_list = (ListView) v.findViewById(R.id.lv_mypage_order_list);
-
-        if(mItemList.size() > 0){
-            listAdapter = new OrderListAdapter(getContext(), mItemList);
-            lv_mypage_order_list.setAdapter( listAdapter);
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-    return v;
+        lv_mypage_order_list = (ListView) v.findViewById(R.id.lv_mypage_order_list);
+        listAdapter = new OrderListAdapter(getContext(), mItemList);
+        lv_mypage_order_list.setAdapter( listAdapter);
+
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

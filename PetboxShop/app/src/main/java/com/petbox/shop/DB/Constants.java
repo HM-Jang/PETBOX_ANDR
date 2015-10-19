@@ -26,14 +26,16 @@ public class Constants implements BaseColumns {
     public static final String HTTP_URL_DOMAIN = "www.petbox.kr";
     public static final String HTTP_URL_CART = "http://www.petbox.kr/m2/goods/cart.php?app=3";
     public static final String HTTP_URL_REVIEW = "http://www.petbox.kr/m2/myp/review.php?app=3";
+    public static final String HTTP_URL_GOODS_REVIEW = "http://petbox.kr/m2/myp/review.php?app=3&";
     public final static String HTTP_URL_LOGIN = "http://www.petbox.kr/m2/mem/login_ok.php";
     public final static String HTTP_URL_REGIST = "http://www.petbox.kr/m2/mem/app_indb.php";
-    public final static String HTTP_URL_GOOD_INFO = "http://petbox.kr/petboxjson/goods_view.php?goodsno=3358";
+    public final static String HTTP_URL_GOOD_INFO = "http://petbox.kr/petboxjson/goods_view.php";
     public final static String HTTP_URL_GO_CART = "http://www.petbox.kr/shop/goods/app_cart.php";
     public static final String HTTP_URL_QNA = "http://www.petbox.kr/m2/goods/goods_qna_list.php?app=3";
     public static final String HTTP_URL_CUSTOMER = "http://www.petbox.kr/m2/service/customer.php?app=3";
     public static final String HTTP_URL_MYPAGE = "http://www.petbox.kr/m2/myp/menu_list.php?app=3";
     public static final String HTTP_URL_CATEGORY_LIST = "http://petbox.kr/petboxjson/category_list.php";
+    public static final String HTTP_URL_PLANNING_LIST ="http://petbox.kr/petboxjson/special_offer_list.php";
 
     public static final int HTTP_RESPONSE_LOGIN_ERROR_NOT_MATCH = 901;
     public static final int HTTP_RESPONSE_LOGIN_ERROR_INPUT_TYPE = 902;

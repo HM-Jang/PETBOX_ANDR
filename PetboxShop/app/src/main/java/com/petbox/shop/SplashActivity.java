@@ -22,6 +22,7 @@ import com.petbox.shop.DB.DBConnector;
 import com.petbox.shop.Delegate.LoginManagerDelegate;
 import com.petbox.shop.Network.CategoryManager;
 import com.petbox.shop.Network.LoginManager;
+import com.petbox.shop.Network.PlanningManager;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -140,6 +141,7 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
         };
 
         CategoryManager.getManager();
+        PlanningManager.getManager();
 
     }
 

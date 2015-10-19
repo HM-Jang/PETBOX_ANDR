@@ -1,6 +1,7 @@
 package com.petbox.shop.Adapter.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.util.Log;
@@ -10,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.petbox.shop.GoodInfoActivity;
 import com.petbox.shop.ImageDownloader;
 import com.petbox.shop.Item.CategoryGoodInfo;
 import com.petbox.shop.R;
@@ -22,7 +25,7 @@ import java.util.ArrayList;
 /**
  * Created by 펫박스 on 2015-10-10.
  */
-public class CategoryListAdapter extends BaseAdapter {
+public class CategoryListAdapter extends BaseAdapter implements View.OnClickListener {
     Context mContext;
     ArrayList<CategoryGoodInfo> mItemList;
     LayoutInflater inflater;
@@ -74,8 +77,11 @@ public class CategoryListAdapter extends BaseAdapter {
             holder.tv_rate_person = (TextView) convertView.findViewById(R.id.tv_list_rate_person);
             holder.tv_rate_per = (TextView) convertView.findViewById(R.id.tv_list_rate_per);
             LayerDrawable stars = (LayerDrawable) holder.ratingBar.getProgressDrawable();
-
             stars.getDrawable(2).setColorFilter(mainColor, PorterDuff.Mode.SRC_ATOP);
+
+            holder.ll_list_item = (LinearLayout) convertView.findViewById(R.id.ll_list_item);
+            holder.ll_list_item.setOnClickListener(this);
+
             convertView.setTag(holder);
 
             //convertView.setTag(holder);
@@ -137,7 +143,22 @@ public class CategoryListAdapter extends BaseAdapter {
             holder.tv_rate_person.setText("(" + item.rating_person + ")");
         }
 
+        holder.ll_list_item.setTag(holder.ll_list_item.getId(), item.goodsno);
+
         return convertView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        Intent goodsinfointent = new Intent(mContext, GoodInfoActivity.class);
+        goodsinfointent.setFlags(goodsinfointent.FLAG_ACTIVITY_NEW_TASK);
+        switch(id){
+            case R.id.ll_list_item:
+                goodsinfointent.putExtra("goodsno",String.valueOf(v.getTag(id)));
+                mContext.startActivity(goodsinfointent);
+                break;
+        }
     }
 
     public class ViewHolder{
@@ -149,6 +170,7 @@ public class CategoryListAdapter extends BaseAdapter {
         TextView tv_price; // 할인적용된 실제 판매 가격
         RatingBar ratingBar;    //레이팅바
         TextView tv_rate_person; // 점수준 사람
+        LinearLayout ll_list_item;
     }
 
 }

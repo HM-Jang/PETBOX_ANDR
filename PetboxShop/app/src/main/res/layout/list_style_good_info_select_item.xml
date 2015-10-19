@@ -14,14 +14,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="상품명"/>
+            android:text="상품명"
+            android:textColor="#f000" />
 
         <TextView
             android:id="@+id/tv_list_good_option_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="잔여 : 486개"/>
+            android:text="잔여 : 486개"
+            android:textColor="#adadad" />
 
    </LinearLayout>
 
@@ -36,7 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="6500원"/>
+            android:text="6500원"
+            android:textColor="#f000" />
 
     </FrameLayout>
 

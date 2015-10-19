@@ -3,13 +3,14 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="3dp"
+    android:id="@+id/ll_grid_item"
     android:background="@drawable/border_set_grid_item">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/iv_grid_image"
-        android:src="@drawable/no_image"
+        android:src="@drawable/loading_m"
         android:scaleType="fitXY"
         android:layout_weight="1"
         android:padding="2dp" />
@@ -24,9 +25,9 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="상품명이 두줄이어도 \n 두줄까지는 노출"
+            android:text=""
             android:id="@+id/tv_grid_name"
             android:textSize="14sp"
 
@@ -60,7 +61,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text="12"
+                            android:text=""
                             android:id="@+id/tv_grid_rate"
                             android:layout_gravity="center"
                             android:layout_centerInParent="true"
@@ -90,28 +91,23 @@
                 android:gravity="bottom"
                 android:layout_weight="1">
 
-                 <TextView
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="10,000원"
+                    android:text=""
                     android:textSize="11sp"
-                    android:background="@drawable/text_cancel"
-                    android:id="@+id/tv_grid_origin_price"
-                    android:gravity="center_vertical"
-                     android:layout_weight="1"/>
+                    android:id="@+id/tv_grid_origin_price"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="9,000원"
+                    android:text=""
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:id="@+id/tv_grid_price"
-                    android:textColor="#ff000000"
-                    android:gravity="center"
-                    android:layout_weight="1"/>
+                    android:textColor="#ff000000" />
             </LinearLayout>
         </LinearLayout>
 
@@ -131,7 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="(13)"
+                android:text="(0)"
                 android:id="@+id/tv_grid_rate_person"
                 android:layout_gravity="bottom"
                 android:textColor="#A7A7A7"

@@ -21,6 +21,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.petbox.shop.Adapter.List.CouponListAdapter;
 import com.petbox.shop.Adapter.List.EmoneyListAdapter;
 import com.petbox.shop.Adapter.List.OrderListAdapter;
+import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Delegate.MyPageDelegate;
 import com.petbox.shop.Item.CouponInfo;
 import com.petbox.shop.Item.EmoneyInfo;
@@ -142,8 +143,8 @@ public class MyPageCouponList extends Fragment implements View.OnClickListener {
             String edate = "";
 
             url = "http://petbox.kr/petboxjson/member_info.php";
-            params3 = "?m_no=" + 1;
-            params3 += "&mypage_info=" + 804;
+            params3 = "?m_id="+ Constants.PREF_KEY_ID;
+            params3 += "@mypage_info=" + 804;
             InsertDB = "mypage_coupon_list";
             cancoupon = 0;
 

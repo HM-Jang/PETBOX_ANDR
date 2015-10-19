@@ -19,6 +19,7 @@ import com.petbox.shop.Adapter.Pager.BestGoodPagerAdapter;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.Item.PlanningItemInfo;
 import com.petbox.shop.JsonParse;
+import com.petbox.shop.Network.PlanningManager;
 import com.petbox.shop.R;
 
 import org.json.JSONArray;
@@ -60,6 +61,8 @@ public class PlanningFragment extends Fragment implements View.OnClickListener{
     ArrayList<PlanningItemInfo> mItemList_cat;
 
     int selected = SELECT_DOG;
+
+    int mode = 0; // 0: 강아지, 1:고양이
 
     /**
      * Use this factory method to create a new instance of
@@ -111,61 +114,25 @@ public class PlanningFragment extends Fragment implements View.OnClickListener{
         String InsertDB = "planning_list";
         String display_goods_list;
         mitemList = new ArrayList<PlanningItemInfo>();
-        mItemList_dog = new ArrayList<PlanningItemInfo>();
-        mItemList_cat = new ArrayList<PlanningItemInfo>();
+        mItemList_dog = PlanningManager.convertArrayList(PlanningManager.dog_tree.root.getChildList());
+        mItemList_cat = PlanningManager.convertArrayList(PlanningManager.cat_tree.root.getChildList());
 
-        try {
-            String linkaddr = "";
-            String loccd = "";
-            String img = "";
+        mitemList = mItemList_dog;
+        listAdapter_dog = new PlanningListAdapter(getContext() ,mItemList_dog, 0);
+        listAdapter_cat = new PlanningListAdapter(getContext() ,mItemList_cat, 1);
 
-            display_goods_list = new JsonParse.JsonLoadingTask(getActivity().getApplicationContext()).execute(url,params,InsertDB).get();
-            JSONArray display_goods_Array = new JSONArray(display_goods_list);
-            PlanningItemInfo info[] = new PlanningItemInfo[display_goods_Array.length()];
-            PlanningItemInfo info_c[] = new PlanningItemInfo[display_goods_Array.length()];
+        System.out.println("PlanningFragment // 강아지 : " + mItemList_dog.size() + "// 고양이 : "+mItemList_cat.size());
 
-            int dog_count = 0;
-            int cat_count = 0;
 
-            for (int k = 0; k < display_goods_Array.length(); k++) {
-                JSONObject ca_object = display_goods_Array.getJSONObject(k);
-
-                if(Integer.parseInt(ca_object.getString("loccd")) == 3){
-                    info[dog_count] = new PlanningItemInfo(linkaddr,loccd,img);
-                    info[dog_count].linkaddr = ca_object.getString("linkaddr");
-                    info[dog_count].loccd = ca_object.getString("loccd");
-                    info[dog_count].img = ca_object.getString("img");
-                    Log.e("loccd",ca_object.getString("loccd"));
-                    mItemList_dog.add(info[dog_count]);
-                    dog_count++;
-                }else{
-                    info_c[cat_count] = new PlanningItemInfo(linkaddr,loccd,img);
-                    info_c[cat_count].linkaddr = ca_object.getString("linkaddr");
-                    info_c[cat_count].loccd = ca_object.getString("loccd");
-                    info_c[cat_count].img = ca_object.getString("img");
-                    mItemList_cat.add(info_c[cat_count]);
-                    cat_count++;
-                }
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        for(int i=0; i< mItemList_dog.size(); i++){
+            System.out.println("PlanningListAdapter - mItemList_dog : " + mItemList_dog.get(i).name);
         }
 
-        mitemList = goods_list();
-        listAdapter_dog = new PlanningListAdapter(getContext() ,mItemList_dog);
-        listAdapter_cat = new PlanningListAdapter(getContext() ,mItemList_cat);
-
         listView = (PullToRefreshListView) v.findViewById(R.id.list_planning);
-
         listView.setAdapter(listAdapter_dog);
 
         return v;
     }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -186,9 +153,11 @@ public class PlanningFragment extends Fragment implements View.OnClickListener{
 
     public void setAdapter(int selected){
         if(selected == SELECT_DOG){
+            mode = 0;   //강아지
             listView.setAdapter(listAdapter_dog);
 
         }else if(selected == SELECT_CAT){
+            mode = 1;   //고양이
             listView.setAdapter(listAdapter_cat);
         }
     }
@@ -223,6 +192,7 @@ public class PlanningFragment extends Fragment implements View.OnClickListener{
         mitemList = new ArrayList<PlanningItemInfo>();
 
         try {
+            String nmae ="";
             String linkaddr = "";
             String loccd = "";
             String img = "";
@@ -234,7 +204,8 @@ public class PlanningFragment extends Fragment implements View.OnClickListener{
             for (int k = 0; k < display_goods_Array.length(); k++) {
                 JSONObject ca_object = display_goods_Array.getJSONObject(k);
 
-                info[k] = new PlanningItemInfo(linkaddr,loccd,img);
+                info[k] = new PlanningItemInfo();
+                info[k].name = ca_object.getString("catnm");
                 info[k].linkaddr = ca_object.getString("linkaddr");
                 info[k].loccd = ca_object.getString("loccd");
                 info[k].img = ca_object.getString("img");

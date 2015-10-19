@@ -42,7 +42,6 @@ public class OrderListAdapter extends BaseAdapter {
         mainColor = mContext.getResources().getColor(R.color.colorPrimary);
     }
 
-
     @Override
     public int getCount() {
         return mItemList.size();

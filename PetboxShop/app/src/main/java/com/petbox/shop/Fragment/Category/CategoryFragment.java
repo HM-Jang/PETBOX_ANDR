@@ -224,7 +224,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                  //HttpGetManager httpGetManager = new HttpGetManager(this);
                 //httpGetManager.start();
 
-                node = categoryManager.scan("애견 사료", 0);
+                node = categoryManager.scan("애견 사료", 0, 0);
                 param = node.getData().category_num;
 
                 intent.putExtra("cate_num",param);
@@ -241,7 +241,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
 
             case R.id.btn_category_dog_snack:
                 //param = "035";
-                node = categoryManager.scan("간식", 0);
+                node = categoryManager.scan("간식", 0, 0);
                 param = node.getData().category_num;
 
                 intent.putExtra("cate_num",param);
@@ -252,7 +252,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
 
             case R.id.btn_category_dog_nutrients:
                 //param = "035";
-                node = categoryManager.scan("영양제", 0);
+                node = categoryManager.scan("영양제", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -262,7 +262,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
 
             case R.id.btn_category_dog_medicine:
                 param = "035";
-                node = categoryManager.scan("의약부외품", 0);
+                node = categoryManager.scan("의약부외품", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -271,7 +271,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_dog_hygienic:
-                node = categoryManager.scan("위생/배변", 0);
+                node = categoryManager.scan("위생/배변", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -280,7 +280,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_dog_bath:
-                node = categoryManager.scan("목욕용품", 0);
+                node = categoryManager.scan("목욕용품", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -289,7 +289,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_dog_house:
-                node = categoryManager.scan("하우스/가구", 0);
+                node = categoryManager.scan("하우스/가구", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -298,7 +298,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_dog_fence:
-                node = categoryManager.scan("이동장/철장", 0);
+                node = categoryManager.scan("이동장/철장", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -307,7 +307,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_dog_line:
-                node = categoryManager.scan("줄/이름표", 0);
+                node = categoryManager.scan("줄/이름표", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -316,7 +316,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_dog_accessory:
-                node = categoryManager.scan("패션/액세서리/팬시", 0);
+                node = categoryManager.scan("패션/액세서리/팬시", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -324,7 +324,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent);
 
             case R.id.btn_category_dog_drinkers:
-                node = categoryManager.scan("급식기/급수기", 0);
+                node = categoryManager.scan("급식기/급수기", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -333,7 +333,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_dog_beauty:
-                node = categoryManager.scan("미용용품", 0);
+                node = categoryManager.scan("미용용품", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -341,7 +341,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent);
 
             case R.id.btn_category_dog_toy:
-                node = categoryManager.scan("장난감/훈련용품", 0);
+                node = categoryManager.scan("장난감/훈련용품", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -350,7 +350,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_feed:
-                node = categoryManager.scan("고양이 사료", 1);
+                node = categoryManager.scan("고양이 사료", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -359,7 +359,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_snack:
-                node = categoryManager.scan("간식/캔", 1);
+                node = categoryManager.scan("간식/캔", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -368,7 +368,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_nutrients:
-                node = categoryManager.scan("영양제", 1);
+                node = categoryManager.scan("영양제", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -377,7 +377,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_medicine:
-                node = categoryManager.scan("의약부외품", 1);
+                node = categoryManager.scan("의약부외품", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -386,7 +386,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_hygienic:
-                node = categoryManager.scan("위생/배변", 1);
+                node = categoryManager.scan("위생/배변", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -395,7 +395,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_bath:
-                node = categoryManager.scan("목욕용품", 1);
+                node = categoryManager.scan("목욕용품", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -404,7 +404,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_house:
-                node = categoryManager.scan("이동장/하우스", 1);
+                node = categoryManager.scan("이동장/하우스", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -413,7 +413,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_tower:
-                node = categoryManager.scan("캣타워/스크래쳐", 1);
+                node = categoryManager.scan("캣타워/스크래쳐", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -422,7 +422,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_maddaddabi:
-                node = categoryManager.scan("캣닙/마따따비", 1);
+                node = categoryManager.scan("캣닙/마따따비", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -431,7 +431,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_drinkers:
-                node = categoryManager.scan("급식기/급수기", 1);
+                node = categoryManager.scan("급식기/급수기", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -440,7 +440,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_beauty:
-                node = categoryManager.scan("미용용품", 1);
+                node = categoryManager.scan("미용용품", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -449,7 +449,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_toy:
-                node = categoryManager.scan("장난감", 1);
+                node = categoryManager.scan("장난감", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);

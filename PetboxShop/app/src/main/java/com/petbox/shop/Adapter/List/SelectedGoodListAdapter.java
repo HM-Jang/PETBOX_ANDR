@@ -50,7 +50,6 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
         this.mode = mode;
     }
 
-
     @Override
     public int getCount() {
         return mItemList.size();
@@ -77,7 +76,7 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
             holder = new ViewHolder();
 
             holder.tv_name = (TextView)convertView.findViewById(R.id.tv_list_select_good_name);
-            holder.tv_count = (TextView)convertView.findViewById(R.id.tv_list_select_good_count);
+           // holder.tv_count = (TextView)convertView.findViewById(R.id.tv_list_select_good_count);
             holder.picker_count = (CustomNumberPicker)convertView.findViewById(R.id.picker_list_select_good);
             holder.picker_count.setDelegate(this);
             holder.picker_count.setNum(1);
@@ -102,23 +101,25 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
                     holder.picker_count.setMin(1);
                     holder.picker_count.setOne();
                     */
-
-                    holder.picker_count.setMin(1);
-
                     holder.ibtn_delete.setVisibility(View.GONE);
 
                 }else{
                     holder.ibtn_delete.setOnClickListener(this);
                 }
-
             }
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
 
+        holder.picker_count.setMin(1);
+
+        if(item.order_count < 1){
+            item.order_count = 1;
+        }
+
         holder.tv_name.setText(item.name);
-        holder.tv_count.setText("잔여 : " + (item.count - item.order_count) + "개");
+        //holder.tv_count.setText("잔여 : " + (item.count - item.order_count) + "개");
         holder.tv_price.setText((item.order_count * item.price) + "원");
         holder.picker_count.setMax(item.count - item.order_count);
         holder.picker_count.setNum(item.order_count);
@@ -205,7 +206,7 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
 
     class ViewHolder{
         TextView tv_name;
-        TextView tv_count;
+        //TextView tv_count;
         CustomNumberPicker picker_count;
         TextView tv_price;
         ImageButton ibtn_delete;

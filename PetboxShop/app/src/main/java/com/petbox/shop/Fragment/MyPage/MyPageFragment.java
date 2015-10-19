@@ -146,10 +146,10 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         ll_mypage_review.setOnClickListener(this);
         ll_mypage_inquiry.setOnClickListener(this);
         ll_mypage_center.setOnClickListener(this);
-       // ll_mypage_setting.setOnClickListener(this);
+        // ll_mypage_setting.setOnClickListener(this);
 
         url = "http://petbox.kr/petboxjson/member_info.php";
-        params3 = "?m_no=" + 1;
+        params3 = "?m_id="+ Constants.PREF_KEY_ID;
         params3 += "&mypage_info=" + 809;
         InsertDB = "mypage_coupon_list";
 
@@ -158,29 +158,29 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         String mypage_list;
 
         try{
-                mypage_list = new JsonParse.JsonLoadingTask(getActivity().getApplicationContext()).execute(url, params3, InsertDB).get();
+            mypage_list = new JsonParse.JsonLoadingTask(getActivity().getApplicationContext()).execute(url, params3, InsertDB).get();
 
-                Log.e("order_list", mypage_list);
-                JSONArray MypageArray = new JSONArray(mypage_list);
-                JSONObject  Mypage_object = MypageArray.getJSONObject(0);
+            Log.e("order_list", mypage_list);
+            JSONArray MypageArray = new JSONArray(mypage_list);
+            JSONObject  Mypage_object = MypageArray.getJSONObject(0);
 
-                Log.e("tv_mypage_near_count", Mypage_object.getString("order_count"));
-                Log.e("tv_mypage_point_count",Mypage_object.getString("data_emoney"));
-                Log.e("tv_mypage_coupon_count",Mypage_object.getString("coupon_ck"));
+            Log.e("tv_mypage_near_count", Mypage_object.getString("order_count"));
+            Log.e("tv_mypage_point_count",Mypage_object.getString("data_emoney"));
+            Log.e("tv_mypage_coupon_count",Mypage_object.getString("coupon_ck"));
 
-                tv_mypage_near_count.setText(Mypage_object.getString("order_count"));
-                tv_mypage_point_count.setText(Mypage_object.getString("data_emoney"));
-                tv_mypage_coupon_count.setText(Mypage_object.getString("coupon_ck"));
-                tv_email_address.setText(Mypage_object.getString("data_email"));
+            tv_mypage_near_count.setText(Mypage_object.getString("order_count"));
+            tv_mypage_point_count.setText(Mypage_object.getString("data_emoney"));
+            tv_mypage_coupon_count.setText(Mypage_object.getString("coupon_ck"));
+            tv_email_address.setText(Mypage_object.getString("data_email"));
 
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return v;
     }
@@ -200,7 +200,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
             case R.id.ll_mypage_near:
                 Log.e("Onclick", "----------------------ll_mypage_near");
                 delegate.setFragmentItem(1);
-               // ((MainActivity) getActivity()).setMyPageOrderList();
+                // ((MainActivity) getActivity()).setMyPageOrderList();
                 break;
             case R.id.ll_mypage_point:
                 Log.e("Onclick", "----------------------ll_mypage_near");
