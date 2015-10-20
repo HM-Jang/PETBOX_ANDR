@@ -11,8 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.petbox.shop.Adapter.List.RecentSearchListAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.DBConnector;
 import com.petbox.shop.Delegate.RecentSearchDelegate;
 import com.petbox.shop.Item.PopularSearchInfo;
@@ -42,6 +46,8 @@ public class RecentSearchFragment extends Fragment implements RecentSearchDelega
     RecentSearchListAdapter listAdapter;
     ArrayList<RecentSearchInfo> mItemList;
 
+    Tracker mTracker;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -64,6 +70,13 @@ public class RecentSearchFragment extends Fragment implements RecentSearchDelega
         // Required empty public constructor
     }
 
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +90,10 @@ public class RecentSearchFragment extends Fragment implements RecentSearchDelega
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
+        mTracker.setScreenName("최근검색어");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
         View v = inflater.inflate(R.layout.fragment_recent_search, container, false);
         listView = (PullToRefreshListView) v.findViewById(R.id.list_recent_search);
 
@@ -86,6 +103,7 @@ public class RecentSearchFragment extends Fragment implements RecentSearchDelega
     @Override
     public void onStart(){
         super.onStart();
+        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
         refreshAdapater();
     }
 

@@ -14,9 +14,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.petbox.shop.Adapter.Grid.BestGoodGridAdapter;
 import com.petbox.shop.Adapter.Pager.BestGoodPagerAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.DBConnector;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.Item.SlideInfo;
@@ -75,6 +79,8 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
 
     int mainColor = 0;
 
+    Tracker mTracker;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -109,6 +115,10 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onStart() {
         super.onStart();
+        System.out.println("SEO - PRIMIUM ++ ON START ++");
+
+        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+
         params_1 = "?mdesign_no=18";
         params_3 = "?mdesign_no=20";
 
@@ -136,9 +146,21 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
+        mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
+        mTracker.setScreenName("프리미엄몰");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
         View v = inflater.inflate(R.layout.fragment_best_good, container, false);
 
         mainColor = getResources().getColor(R.color.colorPrimary);

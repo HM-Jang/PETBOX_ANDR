@@ -20,6 +20,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Delegate.LoginManagerDelegate;
 import com.petbox.shop.Network.LoginManager;
@@ -50,10 +54,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     ProgressDialog pDialog;
     SharedPreferences pref;
 
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("로그인");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -107,6 +117,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     */
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

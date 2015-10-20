@@ -16,9 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.petbox.shop.Adapter.List.GoodsListAdapter;
 import com.petbox.shop.Adapter.Pager.BestGoodPagerAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.DB.DBConnector;
 import com.petbox.shop.Item.BestGoodInfo;
@@ -82,7 +86,7 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
 
     String params_1,params_2,params_3;
 
-
+    Tracker mTracker;
 
     /**
      * Use this factory method to create a new instance of
@@ -109,6 +113,11 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
+
+        System.out.println("SEO - HOME2 ++ ON START ++");
+
+        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+
         params_1 = "?mdesign_no=1";
         params_2 = "?mdesign_no=14";
         params_3 = "?mdesign_no=5";
@@ -141,16 +150,29 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e("Home2Fragment", "-------------------------onCreate");
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.e("Home2Fragment", "-------------------------Home2Fragment");
+
+        mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
+        mTracker.setScreenName("펫박스홈");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
@@ -345,6 +367,10 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
         switch(id){
             case R.id.btn_slide_dog:
                 Log.e("Home2Fragment", "-------------------------onClick");
+
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("펫박스 홈").setAction("강아지 버튼 클릭").build());
+
+                Toast.makeText(getContext(), "GA TEST - 강아지 버튼", Toast.LENGTH_SHORT).show();
 
                 params_1 = "?mdesign_no=1";
                 params_2 = "?mdesign_no=14";

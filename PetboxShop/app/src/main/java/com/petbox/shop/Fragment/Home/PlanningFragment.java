@@ -12,10 +12,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.petbox.shop.Adapter.Grid.BestGoodGridAdapter;
 import com.petbox.shop.Adapter.List.PlanningListAdapter;
 import com.petbox.shop.Adapter.Pager.BestGoodPagerAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.Item.PlanningItemInfo;
 import com.petbox.shop.JsonParse;
@@ -64,6 +68,8 @@ public class PlanningFragment extends Fragment implements View.OnClickListener{
 
     int mode = 0; // 0: 강아지, 1:고양이
 
+    Tracker mTracker;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -86,6 +92,19 @@ public class PlanningFragment extends Fragment implements View.OnClickListener{
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        System.out.println("SEO - PLANNING ++ ON START ++");
+        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +120,11 @@ public class PlanningFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         Log.e("PlanningFragment", "-------------------------PlanningFragment");
         // Inflate the layout for this fragment
+
+        mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
+        mTracker.setScreenName("기획전");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
         View v = inflater.inflate(R.layout.fragment_planning, container, false);
 
         btn_dog = (Button) v.findViewById(R.id.btn_planning_dog);

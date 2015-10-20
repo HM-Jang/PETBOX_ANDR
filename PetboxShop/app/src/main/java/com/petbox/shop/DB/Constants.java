@@ -15,6 +15,8 @@ public class Constants implements BaseColumns {
     /* ### Static Values ### End #######################################################*/
 
 
+    public static final String GOOGLE_TRACKING_CODE = "UA-69008860-2";
+
     /* ### Static Values ### Start #######################################################*/
     public static final String FLURRY_APIKEY = "FJ4GZG2YXGGDT98V7NVQ";
 

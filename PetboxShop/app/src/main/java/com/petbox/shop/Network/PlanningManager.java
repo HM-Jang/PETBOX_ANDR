@@ -212,9 +212,11 @@ public class PlanningManager {
 
                     // 4: 고양이
                     } else {
-                        if(ca_object.isNull("linkaddr"))
+                        if(ca_object.isNull("linkaddr")) {
+                            System.out.println("기획전 리스트(고양이 NULL) : "+ name + "// url : " + img);
                             continue;
 
+                        }
                         Node<PlanningItemInfo> node = new Node<PlanningItemInfo>();
 
                         PlanningItemInfo item = new PlanningItemInfo();
@@ -223,7 +225,7 @@ public class PlanningManager {
                         item.loccd = loccd;
                         item.img = img;
 
-                        System.out.println("기획전 리스트(고양이) : "+ name);
+                        System.out.println("기획전 리스트(고양이) : "+ name + "// url : " + img);
 
                         node.setData(item);
                         cat_tree.add(cat_tree.root, node);

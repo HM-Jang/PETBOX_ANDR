@@ -23,6 +23,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.CustomView.RegistFailedDialog;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Delegate.HttpPostDelegate;
@@ -76,10 +80,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     RegistFailedDialog dialog;
 
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("회원가입");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         edit_email = (EditText) findViewById(R.id.edit_regist_email);
         edit_name = (EditText) findViewById(R.id.edit_regist_name);
@@ -221,6 +231,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
         */
     }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

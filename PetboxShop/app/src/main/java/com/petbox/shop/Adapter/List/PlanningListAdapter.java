@@ -86,7 +86,7 @@ public class PlanningListAdapter extends BaseAdapter implements View.OnClickList
 
         PlanningItemInfo item = mItemList.get(position);
         String urlcon = "";
-        urlcon = "http://petbox.kr/shop/data/skin/mera_ws/d_img/" + item.img;
+        urlcon = "http://petbox.kr/shop/data/skin/mera_ws/img/banner/" + item.img;
         System.out.println("PlanningListAdapter - mItemList("+position+") : " + mItemList.get(position).img);
         Log.e("urlcon", urlcon);
         ImageDownloader.download(urlcon, holder.iv_image);

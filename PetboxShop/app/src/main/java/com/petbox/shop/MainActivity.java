@@ -35,6 +35,9 @@ import android.widget.Toast;
 
 
 import com.google.android.gcm.GCMRegistrar;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -47,6 +50,7 @@ import com.petbox.shop.Adapter.Pager.CategoryPagerAdapter;
 import com.petbox.shop.Adapter.Pager.HomePagerAdapter;
 import com.petbox.shop.Adapter.Pager.MyPagePagerAdapter;
 import com.petbox.shop.Adapter.Pager.SearchPagerAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.CustomView.NonSwipeableViewPager;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.DB.DBConnector;
@@ -137,11 +141,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String SENDER_ID = "1097126896520";
     private String myResult;
 
-
     private GoogleCloudMessaging _gcm;
     private String _regId;
 
 
+    //private Tracker t; // 구글 트래커
 
     /* FLURRY
     FlurryAdInterstitialListener interstitialListener = new FlurryAdInterstitialListener() {
@@ -196,6 +200,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(i, Constants.REQ_SPLASH);
 
         super.onCreate(savedInstanceState);
+
+        //Tracker t = ((PetboxApplication)getApplication()).getTracker(PetboxApplication.TrackerName.APP_TRACKER);
+        //t = ((PetboxApplication)getApplication()).getTracker(PetboxApplication.TrackerName.APP_TRACKER);
+        /*
+        t = ((PetboxApplication) getApplication()).getDefaultTracker();
+        t.setScreenName("메인 화면");
+        t.send(new HitBuilders.AppViewBuilder().build());
+        */
+
         setContentView(R.layout.activity_main);
 
         sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -235,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(date1.after(date2)) {
             InsertDB = "display_item_list";
-            new JsonParse.JsonLoadingTask(getApplicationContext()).execute(params1, params2,InsertDB);
+            new JsonParse.JsonLoadingTask(getApplicationContext()).execute(params1, params2, InsertDB);
             Log.e("strDate_rere------", strDate);
             editor.putString("PREF_UPDATE_DATE", strDate);
             editor.commit();
@@ -295,6 +308,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout = (TabLayout)findViewById(R.id.slide_tabs);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
+        mViewPager.getCurrentItem();
+
         //tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
         tabLayout.setSelectedTabIndicatorColor(mainColor);
@@ -310,6 +325,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onStart(){
         Log.i(TAG, "++ ON START ++");
+        super.onStart();
+
+        try{
+           //GoogleAnalytics.getInstance(this).reportActivityStart(this);
+
+           // GoogleAnalytics an = GoogleAnalytics.getInstance(this);
+            //an.reportActivityStart(this);
+        }catch(Exception e){
+            System.out.println("ERROR : GA");
+            e.printStackTrace();
+        }
+
+        //FlurryAgent.onStartSession(MainActivity.this, Constants.FLURRY_APIKEY);
 
         LoginManager.getHttpClient();
 
@@ -317,9 +345,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ibtn_login.setVisibility(View.GONE);
             ibtn_mypage.setVisibility(View.VISIBLE);
         }
-        super.onStart();
+
         //FlurryAgent.onStartSession(this, Constants.FLURRY_APIKEY);
         //mFlurryAdInterstitial.fetchAd(); FLURRY
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -327,6 +360,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.i(TAG, "++ ON STOP ++");
         //FlurryAgent.onEndSession(this);
         super.onStop();
+        //FlurryAgent.onEndSession(MainActivity.this);
+        //GoogleAnalytics.getInstance(this).reportActivityStop(this);
+        //GoogleAnalytics an = GoogleAnalytics.getInstance(this);
+        //an.reportActivityStop(this);
     }
 
     @Override
@@ -471,6 +508,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.ibtn_menu_wish:
+                //FlurryAgent.logEvent("FLURRY TEST - 찜버튼");
+
+                //t.send(new HitBuilders.EventBuilder().setCategory("MainActivity").setAction("Press Button Test").setLabel("Button Test Category").build());
+                //Toast.makeText(getApplicationContext(), "FLURRY TEST", Toast.LENGTH_SHORT).show();
+
                 //setCategoryPagerAdapter();
                 //Toast.makeText(getApplicationContext(), "찜하기 페이지 이동", Toast.LENGTH_SHORT).show();
                 /*

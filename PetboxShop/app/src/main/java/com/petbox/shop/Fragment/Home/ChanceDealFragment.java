@@ -16,11 +16,15 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.petbox.shop.Adapter.Grid.BestGoodGridAdapter;
 import com.petbox.shop.Adapter.List.ChanceDealListAdapter;
 import com.petbox.shop.Adapter.Pager.BestGoodPagerAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.DBConnector;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.Item.SlideInfo;
@@ -79,6 +83,7 @@ public class ChanceDealFragment extends Fragment implements View.OnClickListener
     Handler handler;
 
     Boolean isRunning = true;
+    Tracker mTracker;
 
     //private OnFragmentInteractionListener mListener;
 
@@ -107,6 +112,11 @@ public class ChanceDealFragment extends Fragment implements View.OnClickListener
     @Override
     public void onStart() {
         super.onStart();
+
+        System.out.println("SEO - CHANCEDEAL ++ ON START ++");
+
+        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+
         params_1 = "?mdesign_no=4";
         params_3 = "?mdesign_no=21";
 
@@ -134,6 +144,13 @@ public class ChanceDealFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
+    public void onStop(){
+        super.onStop();
+
+        GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -147,6 +164,13 @@ public class ChanceDealFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         Log.e("ChanceDealFragment", "-------------------------ChanceDealFragment");
         // Inflate the layout for this fragment
+
+
+        mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
+        mTracker.setScreenName("찬스딜");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+
         View v = inflater.inflate(R.layout.fragment_chance_deal, container, false);
 
         mainColor = getResources().getColor(R.color.colorPrimary);

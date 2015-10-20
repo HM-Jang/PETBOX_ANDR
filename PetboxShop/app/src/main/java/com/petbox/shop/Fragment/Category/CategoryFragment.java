@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.CtegoryGoodsActivity;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.DataStructure.Tree.Node;
@@ -51,6 +55,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
     private String mParam1;
     private String mParam2;
 
+
+    Tracker mTracker;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -88,6 +94,18 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -100,6 +118,11 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
+        mTracker.setScreenName("카테고리 메뉴");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
         categoryManager = CategoryManager.getManager();
 
         View v = inflater.inflate(R.layout.fragment_category, container, false);
