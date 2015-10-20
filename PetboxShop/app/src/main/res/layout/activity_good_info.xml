@@ -22,6 +22,9 @@
             android:layout_centerVertical="true"/>
 
         <TextView
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:id="@+id/tv_good_info_title"
             android:layout_toRightOf="@id/ibtn_good_info_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -139,8 +142,8 @@
 
         <ImageView
             android:id="@+id/iv_good_info_wish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:src="@drawable/info_wish_image"
             android:visibility="gone"
             android:layout_centerInParent="true" />
@@ -158,21 +161,23 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="400dp">
 
             <LinearLayout
                 android:id="@+id/linear_good_info_bottom2_bottom"
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:padding="5dp"
+                android:layout_height="45dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
                 android:background="@drawable/border_set_3">
 
 
                 <Button
                     android:id="@+id/btn_good_info_cart_ok"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="35dp"
                     android:layout_weight="1"
                     android:text="장바구니 담기"
                     android:layout_margin="3dp"
@@ -183,7 +188,7 @@
                 <Button
                     android:id="@+id/btn_good_info_buy_ok"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="35dp"
                     android:layout_weight="1"
                     android:text="즉시 구매"
                     android:layout_margin="3dp"
@@ -193,26 +198,25 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_above="@id/linear_good_info_bottom2_bottom"
                 android:id="@+id/linear_good_info_bottom2_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="right"
                 android:background="@drawable/border_set_3"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="10dp">
+                android:padding="5dp">
 
                 <TextView
                     android:id="@+id/tv_good_info_all_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
+                    android:textSize="20sp"
                     android:text="총상품가 : 0원"
+                    android:layout_gravity="center|right"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-            </LinearLayout>
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_above="@id/linear_good_info_bottom2_price"
@@ -253,8 +257,6 @@
                     android:orientation="vertical"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp">
-
-
 
                     <LinearLayout
                         android:id="@+id/linear_good_info_list1"

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.petbox.shop.MypageAppSettingActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:id="@+id/frame_good_info_top"
+        android:background="@color/colorPrimary"
+        android:paddingRight="15dp">
+
+        <ImageButton
+            android:id="@+id/ibtn_good_info_back"
+            android:background="#0000"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="15dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/nav_back"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_toRightOf="@id/ibtn_good_info_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffff"
+            android:text="앱 셋팅"
+            android:textSize="20sp"
+            android:layout_centerVertical="true" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:background="@drawable/border_background_set_1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:text="로그인 정보"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/tv_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:text="hello@petbox.kr"
+            android:textSize="18sp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그아웃"
+            android:id="@+id/btn_logout"
+            android:textSize="18sp"
+            android:background="@drawable/border_background_set_1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:background="@drawable/border_background_set_1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:text="알림 설정"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/border_set_2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:text="푸시 알림 받기"
+            android:textSize="18sp"
+            android:layout_weight="1"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ch_push"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:background="@drawable/border_background_set_1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:text="펫박스 앱 버전 정보"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="현재 버전"
+            android:textSize="18sp"/>
+        <TextView
+            android:id="@+id/tv_nowver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="1.1a(최신 버전 입니다.)"
+            android:textSize="18sp"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
+</LinearLayout>

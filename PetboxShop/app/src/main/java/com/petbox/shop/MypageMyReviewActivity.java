@@ -9,24 +9,26 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 
 import com.petbox.shop.DB.Constants;
 
 public class MypageMyReviewActivity extends AppCompatActivity implements WebView.OnKeyListener {
 
     WebView webView;
+    ImageView review_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage_my_review);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+
+        review_back = (ImageView) findViewById(R.id.ibtn_good_info_back);
 
         webView = (WebView) findViewById(R.id.wv_review);
         //webView.loadUrl(Constants.HTTP_URL_CART);
         webView.getSettings().setJavaScriptEnabled(true);
-
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -36,17 +38,22 @@ public class MypageMyReviewActivity extends AppCompatActivity implements WebView
         });
 
         webView.loadUrl(Constants.HTTP_URL_REVIEW);
-        webView.getSettings().setJavaScriptEnabled(true);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                //이벤트 처리
+                switch(v.getId()) {
+                    case R.id.ibtn_good_info_back:
+                        finish();
+                        break;
+                }
             }
-        });
+        };
+
+        review_back.setOnClickListener(buttonListener);
     }
+
 
 
     @Override

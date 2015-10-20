@@ -47,6 +47,8 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        iv_splash = (ImageView) findViewById(R.id.iv_splash);
+
         STPreferences.getPref(getApplicationContext());    // 싱글톤 Preferences 초기 세팅
 
         if(!STPreferences.isExist(Constants.PREF_KEY_APP_FIRST)) {// 앱 처음 실행 시
@@ -129,8 +131,6 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
                 //Toast.makeText(this, "자동 로그인 기능 OFF", Toast.LENGTH_SHORT).show();
             }
         }
-
-        iv_splash = (ImageView) findViewById(R.id.iv_splash);
 
         handler = new Handler(){
             public void handleMessage(Message msg){

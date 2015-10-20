@@ -88,10 +88,12 @@ public class Constants implements BaseColumns {
     public static final int REQ_LOGIN = 2;
     public static final int RES_LOGIN_FAILED = 0;   //
     public static final int RES_LOGIN_SUCCESS = 1;  // 로그인 성공 시, setResult
+    public static final int RES_LOGIN_LOGOUT = 3; // 로그 아웃 시
 
     public static final int REQ_REGIST = 30;
     public static final int RES_REGIST_LOGIN_FAILED = 31;
     public static final int RES_REGIST_LOGIN_SUCCESS = 32;
+
 
 
     /* ### DB ### End ################################################################*/

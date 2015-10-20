@@ -30,7 +30,8 @@
             android:text=""
             android:id="@+id/tv_grid_name"
             android:textSize="14sp"
-
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="#ff000000" />
 
         <LinearLayout
@@ -97,6 +98,7 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text=""
                     android:textSize="11sp"
+                    android:background="@drawable/text_cancel"
                     android:id="@+id/tv_grid_origin_price"/>
 
                 <TextView

@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/petbox/shop/CategoryActivity.java" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/petbox/shop/MypageActivity.java" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/petbox/shop/MypageAppSettingActivity.java" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/petbox/shop/MypageCouponList.java" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/petbox/shop/MypageCusomerActivity.java" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/petbox/shop/MypageEmoneyActivity.java" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/petbox/shop/MypageMyReviewActivity.java" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/petbox/shop/MypageOrderListActivity.java" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/petbox/shop/MypageQnaListActivity.java" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/petbox/shop/SearchActivity.java" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/border_background_set_1.xml" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/border_set_1.xml" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_mypage_app_setting.xml" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_mypage_coupon_list.xml" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_mypage_cusomer.xml" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_mypage_emoney.xml" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_mypage_my_review.xml" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_mypage_order_list.xml" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_mypage_qna_list.xml" charset="x-windows-949" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

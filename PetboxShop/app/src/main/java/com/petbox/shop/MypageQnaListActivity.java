@@ -9,23 +9,27 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 
 import com.petbox.shop.DB.Constants;
 
 public class MypageQnaListActivity extends AppCompatActivity implements WebView.OnKeyListener {
 
     WebView webView;
+    ImageView qna_back;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage_qna_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         webView = (WebView) findViewById(R.id.wv_qna);
         webView.loadUrl(Constants.HTTP_URL_QNA);
         webView.getSettings().setJavaScriptEnabled(true);
+
+        qna_back = (ImageView) findViewById(R.id.ibtn_good_info_back);
+
 
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -35,14 +39,19 @@ public class MypageQnaListActivity extends AppCompatActivity implements WebView.
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                //이벤트 처리
+                switch(v.getId()) {
+                    case R.id.ibtn_good_info_back:
+                        finish();
+                        break;
+                }
             }
-        });
+        };
+
+        qna_back.setOnClickListener(buttonListener);
     }
 
     @Override

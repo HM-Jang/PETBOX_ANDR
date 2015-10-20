@@ -37,22 +37,15 @@
         android:elevation="5dp">
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/ibtn_home"
-            android:layout_gravity="center"
             android:scaleType="fitXY"
             android:background="#0000"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
             android:src="@drawable/bot_home_on" />
-
-    </FrameLayout>
-
 
 
         <ImageButton

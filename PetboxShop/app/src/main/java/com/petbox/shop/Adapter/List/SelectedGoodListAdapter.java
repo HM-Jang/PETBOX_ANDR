@@ -15,6 +15,7 @@ import com.petbox.shop.Delegate.GoodInfoDelegate;
 import com.petbox.shop.Delegate.NumberPickerDelegate;
 import com.petbox.shop.Item.GoodOptionInfo;
 import com.petbox.shop.R;
+import com.petbox.shop.Utility.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,7 +121,7 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
 
         holder.tv_name.setText(item.name);
         //holder.tv_count.setText("잔여 : " + (item.count - item.order_count) + "개");
-        holder.tv_price.setText((item.order_count * item.price) + "원");
+        holder.tv_price.setText(Utility.replaceComma(""+item.order_count * item.price) + "원");
         holder.picker_count.setMax(item.count - item.order_count);
         holder.picker_count.setNum(item.order_count);
 

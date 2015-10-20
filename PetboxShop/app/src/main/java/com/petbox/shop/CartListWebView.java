@@ -9,43 +9,54 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 
 import com.petbox.shop.DB.Constants;
 
 public class CartListWebView extends AppCompatActivity implements WebView.OnKeyListener {
 
-        WebView webView;
+    WebView webView;
 
-        @Override
-        protected void onCreate (Bundle savedInstanceState){
+    /*151019_seo_start*/
+    ImageView ibtn_good_info_back;
+        /*151019_seo_end*/
+
+    @Override
+    protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart_list_web_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-            webView = (WebView) findViewById(R.id.wv_cart);
-            //webView.loadUrl(Constants.HTTP_URL_CART);
-            webView.getSettings().setJavaScriptEnabled(true);
-
-            webView.setWebViewClient(new WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    view.loadUrl(url);
-                    return true;
-                }
-            });
-
-            webView.loadUrl(Constants.HTTP_URL_CART);
-            webView.getSettings().setJavaScriptEnabled(true);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+            /*151019_seo_start*/
+        ibtn_good_info_back = (ImageView)findViewById(R.id.ibtn_good_info_back);
+        View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                //이벤트 처리
+                switch(v.getId()) {
+                    case R.id.ibtn_good_info_back:
+                        finish();
+                        break;
+                }
+            }
+        };
+        ibtn_good_info_back.setOnClickListener(buttonListener);
+            /*151019_seo_end*/
+
+        webView = (WebView) findViewById(R.id.wv_cart);
+        //webView.loadUrl(Constants.HTTP_URL_CART);
+        webView.getSettings().setJavaScriptEnabled(true);
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
             }
         });
+
+        webView.loadUrl(Constants.HTTP_URL_CART);
+        webView.getSettings().setJavaScriptEnabled(true);
+
     }
 
     @Override

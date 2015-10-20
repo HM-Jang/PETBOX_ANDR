@@ -28,6 +28,7 @@ import com.petbox.shop.Item.EmoneyInfo;
 import com.petbox.shop.Item.OrderItemInfo;
 import com.petbox.shop.JsonParse;
 import com.petbox.shop.R;
+import com.petbox.shop.STPreferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,6 +77,7 @@ public class MyPageCouponList extends Fragment implements View.OnClickListener {
 
     MyPageDelegate delegate;
     private PullToRefreshListView listView;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -84,6 +86,7 @@ public class MyPageCouponList extends Fragment implements View.OnClickListener {
      * @param param2 Parameter 2.
      * @return A new instance of fragment MyPageCouponList.
      */
+
     // TODO: Rename and change types and number of parameters
     public static MyPageCouponList newInstance(MyPageDelegate delegate, String param2) {
         MyPageCouponList fragment = new MyPageCouponList();
@@ -119,13 +122,13 @@ public class MyPageCouponList extends Fragment implements View.OnClickListener {
         tv_mypage_coupon_extinc = (TextView) v.findViewById(R.id.tv_mypage_coupon_extinc);
         tv_mypage_coupon = (TextView) v.findViewById(R.id.tv_mypage_coupon);
 
-        et_coupon_insert1 = (EditText) v.findViewById(R.id.et_coupon_insert1);
-        et_coupon_insert2 = (EditText) v.findViewById(R.id.et_coupon_insert2);
-        et_coupon_insert3 = (EditText) v.findViewById(R.id.et_coupon_insert3);
-        et_coupon_insert4 = (EditText) v.findViewById(R.id.et_coupon_insert4);
+        //et_coupon_insert1 = (EditText) v.findViewById(R.id.et_coupon_insert1);
+        //et_coupon_insert2 = (EditText) v.findViewById(R.id.et_coupon_insert2);
+        //et_coupon_insert3 = (EditText) v.findViewById(R.id.et_coupon_insert3);
+        //et_coupon_insert4 = (EditText) v.findViewById(R.id.et_coupon_insert4);
 
-        bt_coupon_reg = (Button) v.findViewById(R.id.bt_coupon_reg);
-        bt_go_home = (Button) v.findViewById(R.id.bt_go_home);
+        //bt_coupon_reg = (Button) v.findViewById(R.id.bt_coupon_reg);
+        //bt_go_home = (Button) v.findViewById(R.id.bt_go_home);
 
         lv_coupon_list = (ListView) v.findViewById(R.id.lv_coupon_list);
 
@@ -143,38 +146,50 @@ public class MyPageCouponList extends Fragment implements View.OnClickListener {
             String edate = "";
 
             url = "http://petbox.kr/petboxjson/member_info.php";
-            params3 = "?m_id="+ Constants.PREF_KEY_ID;
-            params3 += "@mypage_info=" + 804;
+            params3 = "?m_id="+ STPreferences.getString(Constants.PREF_KEY_ID);
+            params3 += "&mypage_info=" + 804;
             InsertDB = "mypage_coupon_list";
             cancoupon = 0;
 
             coupon_list = new JsonParse.JsonLoadingTask(getActivity().getApplicationContext()).execute(url, params3, InsertDB).get();
             Log.e("order_list", coupon_list);
-            JSONArray CouponListArray = new JSONArray(coupon_list);
-            mItemList = new ArrayList<CouponInfo>();
-            CouponInfo info[] = new CouponInfo[CouponListArray.length()];
 
-            for (int k = 0; k < CouponListArray.length(); k++) {
-                JSONObject Coupon_object = CouponListArray.getJSONObject(k);
+            if(coupon_list.equals("null")){
 
-                info[k] = new CouponInfo(sno, coupon_name, coupon_type, coupon_price, status, sdate, edate);
+            }else {
+                JSONArray CouponListArray = new JSONArray(coupon_list);
+                mItemList = new ArrayList<CouponInfo>();
+                CouponInfo info[] = new CouponInfo[CouponListArray.length()];
 
-                info[k].sno = Coupon_object.getString("sno");
-                info[k].coupon_name = Coupon_object.getString("coupon");
-                info[k].coupon_type = Coupon_object.getString("coupon_type");
-                info[k].coupon_price = Coupon_object.getString("coupon_price");
-                info[k].status = Coupon_object.getString("cnt");
-                info[k].sdate = Coupon_object.getString("sdate");
-                info[k].edate = Coupon_object.getString("edate");
+                for (int k = 0; k < CouponListArray.length(); k++) {
+                    JSONObject Coupon_object = CouponListArray.getJSONObject(k);
 
-                if (Coupon_object.getInt("cnt") == 2) {
-                    cancoupon++;
-                    if(Coupon_object.getInt("remain_date") < 30){
-                        edt_coupon++;
+                    info[k] = new CouponInfo(sno, coupon_name, coupon_type, coupon_price, status, sdate, edate);
+
+                    info[k].sno = Coupon_object.getString("sno");
+                    info[k].coupon_name = Coupon_object.getString("coupon");
+                    info[k].coupon_type = Coupon_object.getString("coupon_type");
+                    info[k].coupon_price = Coupon_object.getString("coupon_price");
+                    info[k].status = Coupon_object.getString("cnt");
+                    info[k].sdate = Coupon_object.getString("sdate");
+                    info[k].edate = Coupon_object.getString("edate");
+
+                    if (Coupon_object.getInt("cnt") == 2) {
+                        cancoupon++;
+                        if (Coupon_object.getInt("remain_date") < 30) {
+                            edt_coupon++;
+                        }
                     }
+
+                    mItemList.add(info[k]);
                 }
 
-                mItemList.add(info[k]);
+                Log.e("Cancoiupon", String.valueOf(cancoupon));
+                tv_mypage_coupon.setText(String.valueOf(cancoupon));
+                tv_mypage_coupon_extinc.setText(String.valueOf(edt_coupon));
+
+                listAdapter = new CouponListAdapter(getContext(), mItemList);
+                lv_coupon_list.setAdapter(listAdapter);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -183,13 +198,6 @@ public class MyPageCouponList extends Fragment implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        Log.e("Cancoiupon", String.valueOf(cancoupon));
-        tv_mypage_coupon.setText(String.valueOf(cancoupon));
-        tv_mypage_coupon_extinc.setText(String.valueOf(edt_coupon));
-
-        listAdapter = new CouponListAdapter(getContext(), mItemList);
-        lv_coupon_list.setAdapter(listAdapter);
 
         // Inflate the layout for this fragment
         return v;

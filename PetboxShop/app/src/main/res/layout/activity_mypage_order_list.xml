@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.petbox.shop.MypageOrderListActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -25,11 +26,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#ffff"
-            android:text="찜 상품"
+            android:text="주문내역"
             android:textSize="20sp"
             android:layout_centerVertical="true" />
 
 
     </RelativeLayout>
-    <include layout="@layout/content_wish_list" />
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/frame_good_info_top">
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lv_mypage_order_list" />
+    </LinearLayout>
+
+</RelativeLayout>

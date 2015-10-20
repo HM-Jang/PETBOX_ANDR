@@ -20,6 +20,7 @@ import com.petbox.shop.GoodInfoActivity;
 import com.petbox.shop.ImageDownloader;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.R;
+import com.petbox.shop.Utility.Utility;
 
 import java.util.ArrayList;
 
@@ -127,9 +128,9 @@ public class BestGoodGridAdapter extends BaseAdapter implements View.OnClickList
         Log.e("chancedeal_adapter", "----------------imagedownload" + urlcon);
 
         //holder.iv_image.setImageBitmap(bm);
-        holder.tv_origin_price.setText(item.origin_price + "원");
+        holder.tv_origin_price.setText(Utility.replaceComma(""+item.origin_price) + "원");
         Log.e("origin_price----", item.origin_price);
-        holder.tv_price.setText(item.price + "원");
+        holder.tv_price.setText(Utility.replaceComma(""+item.price) + "원");
 
         int rating_person = item.rating_person;
 

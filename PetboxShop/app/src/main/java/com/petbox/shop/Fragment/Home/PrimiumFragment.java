@@ -120,7 +120,7 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
         GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
 
         params_1 = "?mdesign_no=18";
-        params_3 = "?mdesign_no=20";
+        params_3 = "?mdesign_no=22";
 
         slideList = home_slider(params_3);
         bestGoodPagerAdapter = new BestGoodPagerAdapter(getContext() ,slideList);
@@ -156,10 +156,11 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
+        /*
         mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
         mTracker.setScreenName("프리미엄몰");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        */
 
         View v = inflater.inflate(R.layout.fragment_best_good, container, false);
 

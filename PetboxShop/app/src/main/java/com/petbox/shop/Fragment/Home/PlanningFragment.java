@@ -121,9 +121,11 @@ public class PlanningFragment extends Fragment implements View.OnClickListener{
         Log.e("PlanningFragment", "-------------------------PlanningFragment");
         // Inflate the layout for this fragment
 
+        /*
         mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
         mTracker.setScreenName("기획전");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        */
 
         View v = inflater.inflate(R.layout.fragment_planning, container, false);
 

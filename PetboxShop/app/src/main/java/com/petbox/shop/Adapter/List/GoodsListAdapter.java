@@ -21,6 +21,7 @@ import com.petbox.shop.GoodInfoActivity;
 import com.petbox.shop.ImageDownloader;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.R;
+import com.petbox.shop.Utility.Utility;
 
 import java.util.ArrayList;
 
@@ -84,7 +85,6 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
             holder.ll_list_item.setOnClickListener(this);
 
             LayerDrawable stars = (LayerDrawable) holder.ratingBar.getProgressDrawable();
-
             stars.getDrawable(2).setColorFilter(mainColor, PorterDuff.Mode.SRC_ATOP);
             convertView.setTag(holder);
 
@@ -127,18 +127,18 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
         holder.iv_image.setScaleType(ImageView.ScaleType.FIT_XY); //이미지 사이즈에 크기 맞춤
 
 
-        Log.e("goodslist_adapter", "----------------imagedownload" + urlcon);
+        Log.e("goodslist_adapter", "펫박스 홈(position : " + position +") // URL : " + urlcon);
 
         //holder.iv_image.setImageBitmap(bm);
 
         if(rete_per <= 0 ){
             holder.tv_origin_price.setVisibility(View.INVISIBLE);
-            holder.tv_price.setText(item.origin_price + "원");
         }else{
             holder.tv_origin_price.setVisibility(View.VISIBLE);
-            holder.tv_origin_price.setText(item.origin_price + "원");
-            holder.tv_price.setText(item.price + "원");
+            holder.tv_origin_price.setText(Utility.replaceComma(""+item.origin_price) + "원");
         }
+
+        holder.tv_price.setText(Utility.replaceComma(""+item.origin_price) + "원");
 
 
         int rating_person = item.rating_person;

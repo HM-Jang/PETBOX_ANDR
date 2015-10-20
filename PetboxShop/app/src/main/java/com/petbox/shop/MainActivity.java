@@ -54,27 +54,10 @@ import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.CustomView.NonSwipeableViewPager;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.DB.DBConnector;
-import com.petbox.shop.DataStructure.Tree.Tree;
 import com.petbox.shop.Delegate.CategoryDelegate;
 import com.petbox.shop.Delegate.MyPageDelegate;
-import com.petbox.shop.Fragment.Category.CategoryFragment;
-import com.petbox.shop.Fragment.Home.BestGoodFragment;
-import com.petbox.shop.Fragment.Home.ChanceDealFragment;
-import com.petbox.shop.Fragment.Home.EventFragment;
-import com.petbox.shop.Fragment.Home.PlanningFragment;
-import com.petbox.shop.Fragment.Home.PrimiumFragment;
-import com.petbox.shop.Fragment.Home.RegularShippingFragment;
-import com.petbox.shop.Fragment.MyPage.MyPageFragment;
-import com.petbox.shop.Fragment.MyPage.MyPageOrderList;
-import com.petbox.shop.Fragment.MyPage.MypageMileage;
-import com.petbox.shop.Fragment.Search.PopularSearchFragment;
-import com.petbox.shop.Fragment.Search.RecentSearchFragment;
-import com.petbox.shop.Item.CategoryInfo;
-import com.petbox.shop.Network.LoginManager;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.petbox.shop.Network.LoginManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -88,14 +71,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.ExecutionException;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, CategoryDelegate, MyPageDelegate {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, CategoryDelegate, MyPageDelegate, ViewPager.OnPageChangeListener {
 
     public static final String TAG = "MainAct";
 
     // define variables for back key : 2 pressed end!
+    public static int page_num = 0;
+
     private boolean isBackKeyPressed = false;             // flag
     private long currentTimeByMillis = 0;                     // calculate time interval
 
@@ -104,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int MILLIS_IN_SEC = 1000;        // define millisecond
     // end of back key variable.
 
+    public static Boolean main;
 
     private TabLayout tabLayout;
     private NonSwipeableViewPager mViewPager;
@@ -144,8 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private GoogleCloudMessaging _gcm;
     private String _regId;
 
-
-    //private Tracker t; // 구글 트래커
+    private Tracker mTracker; // 구글 트래커
 
     /* FLURRY
     FlurryAdInterstitialListener interstitialListener = new FlurryAdInterstitialListener() {
@@ -211,6 +195,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_main);
 
+        main = false;
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("펫박스홈");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
         sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sp.edit();
 
@@ -228,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String strDate = dateFormat.format(date1);
 
+        /*
         mode = "display_list";
         params1 = "http://petbox.kr/petboxjson/app_goods_list.php";
         params2 = sp.getString("PREF_UPDATE_DATE", "2014-01-01 01:01:01");
@@ -238,10 +229,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         //new DBConnector(this).deleteToCategoryList();
-        /* FLURRY
-        mFlurryAdInterstitial = new FlurryAdInterstitial(this, mAdSpaceName);
-        mFlurryAdInterstitial.setListener(interstitialListener);
-        */
 
         InsertDB = "category";
         //new JsonParse.JsonLoadingTask(getApplicationContext()).execute(params3, params4, InsertDB);
@@ -253,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editor.putString("PREF_UPDATE_DATE", strDate);
             editor.commit();
         }
-
+        */
         mainColor = getResources().getColor(R.color.colorPrimary);
 
         //toolbar = (Toolbar)findViewById(R.id.main_toolbar);
@@ -269,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         iv_search.setOnClickListener(this);
 
         iv_logo = (ImageView)findViewById(R.id.iv_logo);
+        iv_logo.setOnClickListener(this);
 
         ibtn_menu_wish = (ImageButton)findViewById(R.id.ibtn_menu_wish);
         ibtn_menu_wish.setOnClickListener(this);
@@ -294,10 +282,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mViewPager = (NonSwipeableViewPager) findViewById(R.id.pager);
 
         fragmentManager = getSupportFragmentManager();
+        mViewPager.setOffscreenPageLimit(5);
 
         edit_search.setMovementMethod(null);
-
-
 
         homePagerAdapter = new HomePagerAdapter(fragmentManager);
         categoryPagerAdapter = new CategoryPagerAdapter(fragmentManager, this);
@@ -308,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout = (TabLayout)findViewById(R.id.slide_tabs);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
-        mViewPager.getCurrentItem();
+        mViewPager.setOnPageChangeListener(this);
 
         //tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
@@ -316,6 +303,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //tabLayout.setTabTextColors(0xff4e91ff, 0xff000000);
         tabLayout.setTabTextColors(0xff7c7c7c, 0xff000000);
         tabLayout.setupWithViewPager(mViewPager);
+        page_num = 1;
     }
 
     public void setVisibleForTab(int viewMode){
@@ -375,6 +363,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setHomePagerAdapter(){
         //clearBackStack();
         //Log.i("TAG", "MNGR[COUNT] : "+fragmentManager.getFragments().size());
+        main = true;
         mViewPager = (NonSwipeableViewPager) findViewById(R.id.pager);
         mViewPager.setSwipeEnabled(true);
         mViewPager.setAdapter(homePagerAdapter);
@@ -392,6 +381,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout.setupWithViewPager(mViewPager);
     }
 
+    /*
     public void setSearchPagerAdapter(){
         //clearBackStack();
         //Log.i("TAG", "MNGR[COUNT] : "+fragmentManager.getFragments().size());
@@ -421,6 +411,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentTransaction.remove(fragmentManager.getFragments().get(i));
         }
     }
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -449,6 +440,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int id = v.getId();
 
         switch(id){
+
             case R.id.edit_search:
 
                 // 검색창 short -> long
@@ -545,8 +537,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.ibtn_home:
+            case R.id.iv_logo:
                 //Toast.makeText(getApplicationContext(), "home", Toast.LENGTH_SHORT).show();
-                menu_selected = 0;
+
 
                 if(menu_selected == 0 ){    // 홈
                     setHomePagerAdapter();
@@ -559,15 +552,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     if(ibtn_mypage.getVisibility() == View.VISIBLE)
                         ibtn_mypage.setImageResource(R.drawable.bot_mypage_off);
+
+                    mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+                    mTracker.setScreenName("펫박스홈");
+                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
                 }
+
+                menu_selected = 0;
 
                 break;
 
             case R.id.ibtn_category:
                 //Toast.makeText(getApplicationContext(), "category", Toast.LENGTH_SHORT).show();
-                menu_selected = 1;
 
-                if(menu_selected == 1 ) {    // 카테고리
+
+                if(menu_selected != 1 ) {    // 카테고리
                     setCategoryPagerAdapter();
                     setVisibleForTab(View.GONE);
 
@@ -578,13 +577,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (ibtn_mypage.getVisibility() == View.VISIBLE)
                         ibtn_mypage.setImageResource(R.drawable.bot_mypage_off);
                 }
+
+                menu_selected = 1;
                 break;
 
             case R.id.ibtn_search:
                 //Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
-                menu_selected = 2;
 
-                if(menu_selected == 2 ) {    // 검색
+
+                if(menu_selected != 2 ) {    // 검색
                     setSearchPagerAdapter();
                     setVisibleForTab(View.VISIBLE);
                     tabLayout.setTabMode(TabLayout.MODE_FIXED);
@@ -596,6 +597,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (ibtn_mypage.getVisibility() == View.VISIBLE)
                         ibtn_mypage.setImageResource(R.drawable.bot_mypage_off);
                 }
+                menu_selected = 2;
 
                 break;
 
@@ -607,9 +609,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.ibtn_mypage:
-                menu_selected = 3;
 
-                if(menu_selected == 3) {    // 마이페이지
+
+                if(menu_selected != 3) {    // 마이페이지
                     //Toast.makeText(getApplicationContext(), "mypage", Toast.LENGTH_SHORT).show();
                     setMyPagePagerAdapter();
                     setVisibleForTab(View.GONE);
@@ -622,6 +624,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (ibtn_mypage.getVisibility() == View.VISIBLE)
                         ibtn_mypage.setImageResource(R.drawable.bot_mypage_on);
                 }
+                menu_selected = 3;
+
                 break;
         }
     }
@@ -645,6 +649,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
 
+                break;
+
+            case 131074:
+                Log.e("131074", "requestCode 를 default 값으로 가져오는군.");
+                if(resultCode == Constants.RES_LOGIN_LOGOUT){
+
+                    setHomePagerAdapter();
+                    setVisibleForTab(View.VISIBLE);
+                    tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+
+                    ibtn_home.setImageResource(R.drawable.bot_home_on);
+                    ibtn_category.setImageResource(R.drawable.bot_category_off);
+                    ibtn_search.setImageResource(R.drawable.bot_search_off);
+
+                    if(ibtn_mypage.getVisibility() == View.VISIBLE)
+                        ibtn_mypage.setImageResource(R.drawable.bot_mypage_off);
+
+                    ibtn_login.setVisibility(View.VISIBLE);
+                    ibtn_mypage.setVisibility(View.GONE);
+                }
                 break;
         }
     }
@@ -909,5 +933,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     };
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+
+        switch(position){
+            case 0:
+                mTracker.setScreenName("펫박스홈");
+                System.out.println("VIEWPAGER - 펫박스홈");
+                break;
+
+            case 1:
+                mTracker.setScreenName("베스트상품");
+                System.out.println("VIEWPAGER - 베스트상품");
+                break;
+
+            case 2:
+                mTracker.setScreenName("찬스딜");
+                System.out.println("VIEWPAGER - 찬스딜");
+                break;
+
+            case 3:
+                mTracker.setScreenName("기획전");
+                System.out.println("VIEWPAGER - 기획전");
+                break;
+
+            case 4:
+                mTracker.setScreenName("프리미엄몰");
+                System.out.println("VIEWPAGER - 프리미엄몰 ");
+                break;
+        }
+
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
     // End of Back method
 }

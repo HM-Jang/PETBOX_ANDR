@@ -168,10 +168,11 @@ public class BestGoodFragment extends Fragment implements View.OnClickListener {
 
         Log.e("BestGoodFragment", "-------------------------onCreateView");
 
+        /*
         mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
         mTracker.setScreenName("베스트상품");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        */
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_best_good, container, false);

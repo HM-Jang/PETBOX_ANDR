@@ -27,10 +27,15 @@ import com.petbox.shop.Delegate.MyPageDelegate;
 import com.petbox.shop.Item.CouponInfo;
 import com.petbox.shop.JsonParse;
 import com.petbox.shop.MainActivity;
+import com.petbox.shop.MypageAppSettingActivity;
+import com.petbox.shop.MypageCouponList;
 import com.petbox.shop.MypageCusomerActivity;
+import com.petbox.shop.MypageEmoneyActivity;
 import com.petbox.shop.MypageMyReviewActivity;
+import com.petbox.shop.MypageOrderListActivity;
 import com.petbox.shop.MypageQnaListActivity;
 import com.petbox.shop.R;
+import com.petbox.shop.STPreferences;
 import com.petbox.shop.WishListActivity;
 
 import org.json.JSONArray;
@@ -67,7 +72,7 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
     private String mParam2;
 
     TextView tv_email_address,tv_mypage_near_count,tv_mypage_point_count,tv_mypage_coupon_count;
-    LinearLayout ll_mypage_near,ll_mypage_point,ll_mypage_coupon;
+    LinearLayout ll_mypage_near,ll_mypage_point,ll_mypage_coupon,ll_mypage_app_set;
     LinearLayout ll_mypage_order,ll_mypage_sub_order,ll_mypage_wish,ll_mypage_1by1,ll_mypage_review,ll_mypage_inquiry,ll_mypage_center,ll_mypage_setting;
 
     MyPageDelegate delegate;
@@ -131,6 +136,8 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         ll_mypage_inquiry = (LinearLayout)v.findViewById(R.id.ll_mypage_inquiry);
         ll_mypage_center = (LinearLayout)v.findViewById(R.id.ll_mypage_center);
 
+        ll_mypage_app_set = (LinearLayout)v.findViewById(R.id.ll_mypage_app_set);
+
 
         tv_email_address.setOnClickListener(this);
         tv_mypage_near_count.setOnClickListener(this);
@@ -146,10 +153,11 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         ll_mypage_review.setOnClickListener(this);
         ll_mypage_inquiry.setOnClickListener(this);
         ll_mypage_center.setOnClickListener(this);
+        ll_mypage_app_set.setOnClickListener(this);
         // ll_mypage_setting.setOnClickListener(this);
 
         url = "http://petbox.kr/petboxjson/member_info.php";
-        params3 = "?m_id="+ Constants.PREF_KEY_ID;
+        params3 = "?m_id="+ STPreferences.getString(Constants.PREF_KEY_ID);
         params3 += "&mypage_info=" + 809;
         InsertDB = "mypage_coupon_list";
 
@@ -161,19 +169,21 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
             mypage_list = new JsonParse.JsonLoadingTask(getActivity().getApplicationContext()).execute(url, params3, InsertDB).get();
 
             Log.e("order_list", mypage_list);
-            JSONArray MypageArray = new JSONArray(mypage_list);
-            JSONObject  Mypage_object = MypageArray.getJSONObject(0);
+            if(mypage_list.equals("null")){
+            }else {
+                JSONArray MypageArray = new JSONArray(mypage_list);
+                JSONObject Mypage_object = MypageArray.getJSONObject(0);
 
-            Log.e("tv_mypage_near_count", Mypage_object.getString("order_count"));
-            Log.e("tv_mypage_point_count",Mypage_object.getString("data_emoney"));
-            Log.e("tv_mypage_coupon_count",Mypage_object.getString("coupon_ck"));
+                Log.e("tv_mypage_near_count", Mypage_object.getString("order_count"));
+                Log.e("tv_mypage_point_count", Mypage_object.getString("data_emoney"));
+                Log.e("tv_mypage_coupon_count", Mypage_object.getString("coupon_ck"));
 
-            tv_mypage_near_count.setText(Mypage_object.getString("order_count"));
-            tv_mypage_point_count.setText(Mypage_object.getString("data_emoney"));
-            tv_mypage_coupon_count.setText(Mypage_object.getString("coupon_ck"));
-            tv_email_address.setText(Mypage_object.getString("data_email"));
+                tv_mypage_near_count.setText(Mypage_object.getString("order_count"));
+                tv_mypage_point_count.setText(Mypage_object.getString("data_emoney"));
+                tv_mypage_coupon_count.setText(Mypage_object.getString("coupon_ck"));
+                tv_email_address.setText(Mypage_object.getString("data_email"));
 
-
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -194,33 +204,39 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
         Intent review_intnet = new Intent(getActivity().getApplicationContext(), MypageMyReviewActivity.class);
         Intent qna_intnet = new Intent(getActivity().getApplicationContext(), MypageQnaListActivity.class);
         Intent center_intent = new Intent(getActivity().getApplicationContext(), MypageCusomerActivity.class);
+        Intent order_intent = new Intent(getActivity().getApplicationContext(), MypageOrderListActivity.class);
+        Intent emoney_intent = new Intent(getActivity().getApplicationContext(), MypageEmoneyActivity.class);
+        Intent coupon_intent = new Intent(getActivity().getApplicationContext(), MypageCouponList.class);
+        Intent appset_intent = new Intent(getActivity().getApplicationContext(), MypageAppSettingActivity.class);
 
         switch(id) {
 
             case R.id.ll_mypage_near:
                 Log.e("Onclick", "----------------------ll_mypage_near");
-                delegate.setFragmentItem(1);
+                startActivity(order_intent);
+                //delegate.setFragmentItem(1);
                 // ((MainActivity) getActivity()).setMyPageOrderList();
                 break;
             case R.id.ll_mypage_point:
                 Log.e("Onclick", "----------------------ll_mypage_near");
-                delegate.setFragmentItem(2);
+                startActivity(emoney_intent);
                 // ((MainActivity) getActivity()).setMyPageOrderList();
                 break;
             case R.id.ll_mypage_coupon:
                 Log.e("Onclick", "----------------------ll_mypage_near");
-                delegate.setFragmentItem(3);
+                startActivity(coupon_intent);
                 // ((MainActivity) getActivity()).setMyPageOrderList();
                 break;
 
             case R.id.ll_mypage_order:
                 Log.e("Onclick", "----------------------ll_mypage_near");
-                delegate.setFragmentItem(4);
+                //delegate.setFragmentItem(4);
+                startActivity(order_intent);
                 // ((MainActivity) getActivity()).setMyPageOrderList();
+                break;
 
             case R.id.ll_mypage_wish:
                 Log.e("Onclick", "----------------------ll_mypage_near");
-                wish_list.putExtra("m_no", "1");
                 startActivity(wish_list);
                 // ((MainActivity) getActivity()).setMyPageOrderList();
                 break;
@@ -241,6 +257,12 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                 Log.e("Onclick", "----------------------ll_mypage_near");
                 startActivity(center_intent);
                 // ((MainActivity) getActivity()).setMyPageOrderList();
+                break;
+
+            case R.id.ll_mypage_app_set:
+                Log.e("Onclick", "----------------------ll_mypage_near");
+                Log.e("AppSet", "Constants.REQ_LOGIN = "+ Constants.REQ_LOGIN);
+                startActivityForResult(appset_intent, Constants.REQ_LOGIN);
                 break;
 
         }

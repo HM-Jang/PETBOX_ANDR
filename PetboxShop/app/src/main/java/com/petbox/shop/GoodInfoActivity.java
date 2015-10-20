@@ -75,6 +75,8 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     FrameLayout frame_good_info_top_time;
     FrameLayout fl_rate;
 
+    TextView tv_title;  // 상단 타이틀
+
     /* 컨텐츠(상) */
     ImageView iv_good, iv_icon1, iv_icon2, iv_icon3; // 상품이미지, 상품특성 아이콘
     ImageButton ibtn_top, ibtn_zoom;    // 맨위로, 확대
@@ -225,6 +227,8 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         goodsno = Integer.parseInt(intent.getStringExtra("goodsno"));
 
         colorPrimary = getResources().getColor(R.color.colorPrimary);
+
+        tv_title = (TextView) findViewById(R.id.tv_good_info_title);
 
         /*
         ibtn_search = (ImageButton) findViewById(R.id.ibtn_good_info_search);
@@ -595,7 +599,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         }
 
         order_price = returnAllPrice();
-        tv_all_price.setText("총상품가 : " + order_price + "원");
+        tv_all_price.setText("총상품가 : " + Utility.replaceComma(""+order_price) + "원");
 
     }
 
@@ -640,7 +644,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         order_price = params.get("all_price");
 
-        tv_all_price.setText("총상품가 : " + order_price + "원");
+        tv_all_price.setText("총상품가 : " + Utility.replaceComma(""+order_price) + "원");
     }
 
     @Override
@@ -651,7 +655,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         order_price = params.get("all_price");
 
-        tv_all_price.setText("총상품가 : " + order_price + "원");
+        tv_all_price.setText("총상품가 : " + Utility.replaceComma(""+order_price) + "원");
     }
 
     @Override
@@ -660,7 +664,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         order_price = price;
 
-        tv_all_price.setText("총상품가 : " + order_price + "원");
+        tv_all_price.setText("총상품가 : " + Utility.replaceComma(""+order_price) + "원");
     }
 
     @Override
@@ -681,7 +685,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         }
 
-        tv_all_price.setText("총상품가 : " + order_price + "원");
+        tv_all_price.setText("총상품가 : " + Utility.replaceComma(""+order_price) + "원");
     }
 
     @Override
@@ -840,6 +844,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
                 goodsno = Integer.parseInt(data.getString("goodsno"));  //상품번호
                 goodsnm = data.getString("goodsnm"); //상품명
+                tv_title.setText(goodsnm);
                 goods_status = data.getString("goods_status");   // 상품상태 ex) 신상품
                 goodscd = Integer.parseInt(data.getString("goodscd"));  //제품코드
                 origin = data.getString("origin");   // 원산지
@@ -869,8 +874,9 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 open_mobile = Integer.parseInt(data.getString("open_mobile"));  // 상품 노출 여부(0 : 노출x, 1: : 노출o)
 
                 goods_price = Integer.parseInt(data.getString("goods_price"));  // 상품 판매가
+                //tv_price.setText(Utility.replaceComma(""+goods_price)+"원");
                 goods_consumer = Integer.parseInt(data.getString("goods_consumer"));    //상품 소비자가
-
+                //tv_price_dc.setText(Utility.replaceComma(""+goods_consumer)+"원");
                 use_option = Integer.parseInt(data.getString("use_option"));    //옵션 사용여부
                 use_goods_discount = Integer.parseInt(data.getString("use_goods_discount"));  // 해당 옵션 상품 할인
                 ts_amount = Integer.parseInt(data.getString("ts_amount"));  // 타임할인 할인 금액
@@ -1095,8 +1101,8 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
 
-            tv_price_dc.setText(output_price+ "원");  //판매가 설정
-            tv_price.setText(goods_consumer + "원");   //소비자가
+            tv_price_dc.setText(Utility.replaceComma(""+output_price)+ "원");  //판매가 설정
+            tv_price.setText(Utility.replaceComma(""+goods_consumer) + "원");   //소비자가
 
             if (dc_rate == 0) {
                 tv_rate.setText("펫박스가");

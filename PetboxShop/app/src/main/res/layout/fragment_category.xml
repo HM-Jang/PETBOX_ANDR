@@ -45,17 +45,20 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:background="@drawable/border_right_gray"
+                        android:paddingLeft="5dp"
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_feed">
                         </ImageView>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:paddingLeft="5dp"
                             android:text="애견 사료"
                             android:layout_gravity="center_vertical" />
 
@@ -66,15 +69,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="5dp"
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_snack">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="간식"
@@ -99,15 +105,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="5dp"
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_nutrients">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="영양제"
@@ -120,15 +129,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="5dp"
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_medicine">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="의약부외품"
@@ -147,6 +159,7 @@
                     android:background="@drawable/border_bottom_gray">
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:background="@drawable/border_right_gray"
                         android:id="@+id/btn_category_dog_hygienic"
                         android:layout_width="match_parent"
@@ -155,12 +168,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_hygienic">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="위생/배변"
@@ -169,6 +184,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:id="@+id/btn_category_dog_bath"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -176,12 +192,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_bath">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="목욕용품"
@@ -201,6 +219,7 @@
                     android:background="@drawable/border_bottom_gray">
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:background="@drawable/border_right_gray"
                         android:id="@+id/btn_category_dog_house"
                         android:layout_width="match_parent"
@@ -209,12 +228,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_house">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="하우스/가구"
@@ -223,6 +244,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:id="@+id/btn_category_dog_fence"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -230,12 +252,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_fence">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="이동장/철장"
@@ -254,6 +278,7 @@
                     android:background="@drawable/border_bottom_gray">
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:background="@drawable/border_right_gray"
                         android:id="@+id/btn_category_dog_line"
                         android:layout_width="match_parent"
@@ -262,12 +287,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_line">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="줄/이름표"
@@ -280,15 +307,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
+                        android:paddingLeft="5dp"
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_accessory">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="패션/액세서리/팬시"
@@ -307,6 +337,7 @@
                     android:background="@drawable/border_bottom_gray">
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:background="@drawable/border_right_gray"
                         android:id="@+id/btn_category_dog_drinkers"
                         android:layout_width="match_parent"
@@ -315,12 +346,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_drinkers">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="급식기/급수기"
@@ -329,6 +362,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:id="@+id/btn_category_dog_beauty"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -336,12 +370,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_beauty">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="미용용품"
@@ -359,6 +395,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:background="@drawable/border_right_gray"
                         android:id="@+id/btn_category_dog_toy"
                         android:layout_width="match_parent"
@@ -367,12 +404,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/dog_category_toy">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="장난감/훈련용품"
@@ -428,6 +467,7 @@
                     android:background="@drawable/border_bottom_gray">
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:background="@drawable/border_right_gray"
                         android:id="@+id/btn_category_cat_feed"
                         android:layout_width="match_parent"
@@ -436,12 +476,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_feed">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="고양이 사료"
@@ -450,6 +492,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:id="@+id/btn_category_cat_snack"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -457,12 +500,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_snack">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="간식/캔"
@@ -482,6 +527,7 @@
                     android:background="@drawable/border_bottom_gray">
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:background="@drawable/border_right_gray"
                         android:id="@+id/btn_category_cat_nutrients"
                         android:layout_width="match_parent"
@@ -490,12 +536,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_nutrients">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="영양제"
@@ -504,6 +552,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:id="@+id/btn_category_cat_medicine"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -511,12 +560,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_medicine">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="의약부외품"
@@ -536,6 +587,7 @@
                     android:background="@drawable/border_bottom_gray">
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:background="@drawable/border_right_gray"
                         android:id="@+id/btn_category_cat_hygienic"
                         android:layout_width="match_parent"
@@ -544,12 +596,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_hygienic">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="위생/배변"
@@ -558,6 +612,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:id="@+id/btn_category_cat_bath"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -565,12 +620,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_bath">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="목욕용품"
@@ -590,6 +647,7 @@
                     android:background="@drawable/border_bottom_gray">
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:background="@drawable/border_right_gray"
                         android:id="@+id/btn_category_cat_house"
                         android:layout_width="match_parent"
@@ -598,12 +656,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_house">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="이동장/하우스"
@@ -612,6 +672,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:id="@+id/btn_category_cat_tower"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -619,12 +680,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_tower">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="캣타워/스크래쳐"
@@ -643,6 +706,7 @@
                     android:background="@drawable/border_bottom_gray">
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:background="@drawable/border_right_gray"
                         android:id="@+id/btn_category_cat_maddaddabi"
                         android:layout_width="match_parent"
@@ -651,12 +715,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_maddaddabi">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="캣닙/마따따비"
@@ -665,6 +731,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:id="@+id/btn_category_cat_drinkers"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -672,12 +739,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_drinkers">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="급식기/급수기"
@@ -696,6 +765,7 @@
                     android:background="@drawable/border_bottom_gray">
 
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:background="@drawable/border_right_gray"
                         android:id="@+id/btn_category_cat_beauty"
                         android:layout_width="match_parent"
@@ -704,12 +774,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_beauty">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="미용용품"
@@ -717,6 +789,7 @@
 
                     </LinearLayout>
                     <LinearLayout
+                        android:paddingLeft="5dp"
                         android:id="@+id/btn_category_cat_toy"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -724,12 +797,14 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
                             android:src="@drawable/cat_category_toy">
                         </ImageView>
 
                         <TextView
+                            android:paddingLeft="5dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="장난감"

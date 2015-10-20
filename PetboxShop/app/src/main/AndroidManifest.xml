@@ -104,10 +104,25 @@
             android:name=".MypageCusomerActivity"
             android:theme="@style/AppTheme" >
         </activity>
-        <activity android:name=".DescTest" >
+        <activity
+            android:name=".DescTest" >
         </activity>
-        <activity android:name=".GoodsReviewActivity" >
+        <activity
+            android:name=".GoodsReviewActivity" >
         </activity>
+        <activity
+            android:name=".MypageAppSettingActivity">
+        </activity>
+        <activity
+            android:name=".MypageCouponList">
+        </activity>
+        <activity
+            android:name=".MypageEmoneyActivity">
+        </activity>
+        <activity
+            android:name=".MypageOrderListActivity">
+        </activity>
+
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -103,6 +104,16 @@ public class Utility {
             isValid = true;
         }
         return isValid;
+    }
+
+    //1000원 단위로 comma 추가
+    public static String replaceComma(String data)
+    {
+        int convert = Integer.parseInt(data);
+        DecimalFormat df = new DecimalFormat("#,###");
+
+        String formatNum=(String)df.format(convert);
+        return formatNum;
     }
 
 

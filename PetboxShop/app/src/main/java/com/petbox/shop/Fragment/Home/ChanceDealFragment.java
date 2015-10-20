@@ -165,11 +165,11 @@ public class ChanceDealFragment extends Fragment implements View.OnClickListener
         Log.e("ChanceDealFragment", "-------------------------ChanceDealFragment");
         // Inflate the layout for this fragment
 
-
+        /*
         mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
         mTracker.setScreenName("찬스딜");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        */
 
         View v = inflater.inflate(R.layout.fragment_chance_deal, container, false);
 

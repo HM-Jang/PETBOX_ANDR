@@ -36,6 +36,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="상품명 tete상품명 tete상"
+                    android:ellipsize="end"
+                    android:maxLines="2"
                     android:id="@+id/tv_list_name"
                     android:textSize="14sp"
                     android:textColor="#ff000000" />
@@ -89,6 +91,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:id="@+id/tv_list_orgin_price"
+                        android:background="@drawable/text_cancel"
                         android:text="12,000원"
                         android:textSize="11sp"/>
 

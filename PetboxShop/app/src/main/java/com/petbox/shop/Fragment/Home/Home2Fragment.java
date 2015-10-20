@@ -170,10 +170,6 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         Log.e("Home2Fragment", "-------------------------Home2Fragment");
 
-        mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
-        mTracker.setScreenName("펫박스홈");
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
 
