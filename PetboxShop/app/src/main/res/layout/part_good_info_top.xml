@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text=""
-                    android:background="@drawable/text_cancel"
+                    android:background="@drawable/text_cancel2"
                     android:id="@+id/tv_good_info_price"/>
 
                 <TextView

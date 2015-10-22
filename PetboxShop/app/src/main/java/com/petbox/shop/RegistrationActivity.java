@@ -393,6 +393,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     isVisible_use = true;
                     frame_use_contract.setVisibility(View.VISIBLE);
                     btn_use_contract.setText("내용접기 ▲");
+                    mTracker.send(new HitBuilders.EventBuilder().setCategory("회원가입").setAction("이용약관 펼치기").build());
                     //sc_main.fullScroll(View.FOCUS_DOWN);
 
                 } else {  //보임 상태일때,
@@ -408,6 +409,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     isVisible_info = true;
                     frame_info_contract.setVisibility(View.VISIBLE);
                     btn_info_contract.setText("내용접기 ▲");
+                    mTracker.send(new HitBuilders.EventBuilder().setCategory("회원가입").setAction("개인정보 수집 및 이용안내 펼치기").build());
                     //sc_main.fullScroll(View.FOCUS_DOWN);
 
                 } else {  //보임 상태일때,
@@ -533,8 +535,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         }
 
-        if(!recommend_id.equals(""))
+        if(!recommend_id.equals("")) {
             nameValuePairs.add(new BasicNameValuePair("recommid", recommend_id));
+
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("회원가입").setAction("추천인 입력").build());
+        }
 
         //System.out.println("malling : " + mailling + "// sms : " + sms);
 

@@ -11,6 +11,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.petbox.shop.Application.PetboxApplication;
+import com.petbox.shop.CustomView.WebProgressDialog;
 import com.petbox.shop.DB.Constants;
 
 public class MypageMyReviewActivity extends AppCompatActivity implements WebView.OnKeyListener {
@@ -18,18 +23,48 @@ public class MypageMyReviewActivity extends AppCompatActivity implements WebView
     WebView webView;
     ImageView review_back;
 
+    Tracker mTracker;
+
+    WebProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage_my_review);
 
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("마이페이지 - 나의 상품 후기");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         review_back = (ImageView) findViewById(R.id.ibtn_good_info_back);
 
         webView = (WebView) findViewById(R.id.wv_review);
         //webView.loadUrl(Constants.HTTP_URL_CART);
         webView.getSettings().setJavaScriptEnabled(true);
+
+        progressDialog = WebProgressDialog.show(this, "", "", true, true, null);
+
         webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onPageFinished(WebView view, String url){
+                webView.setVisibility(View.VISIBLE);
+                if(progressDialog!=null) {
+                    progressDialog.dismiss();
+
+                    /*
+                    if(Build.VERSION.SDK_INT >= 21){
+                        view.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+                        CookieManager cookieManager = CookieManager.getInstance();
+                        cookieManager.setAcceptCookie(true);
+                        cookieManager.setAcceptThirdPartyCookies(view, true);
+                    }
+                    */
+                }
+            }
+
+
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
@@ -54,7 +89,17 @@ public class MypageMyReviewActivity extends AppCompatActivity implements WebView
         review_back.setOnClickListener(buttonListener);
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
 
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {

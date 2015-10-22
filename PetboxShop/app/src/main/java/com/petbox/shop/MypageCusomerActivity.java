@@ -11,17 +11,28 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.Constants;
 
+//고객센터
 public class MypageCusomerActivity extends AppCompatActivity implements WebView.OnKeyListener {
 
     WebView webView;
     ImageView cusomer_back;
 
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage_cusomer);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("마이페이지 - 고객센터");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         webView = (WebView) findViewById(R.id.wv_customer);
         webView.loadUrl(Constants.HTTP_URL_CUSTOMER);
@@ -49,6 +60,18 @@ public class MypageCusomerActivity extends AppCompatActivity implements WebView.
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
 
     @Override

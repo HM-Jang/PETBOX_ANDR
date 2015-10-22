@@ -14,9 +14,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.petbox.shop.Adapter.Pager.MyPagePagerAdapter;
 import com.petbox.shop.Adapter.Pager.SearchPagerAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.CustomView.NonSwipeableViewPager;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Network.LoginManager;
@@ -34,7 +38,7 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
 
     private Toolbar toolbar;
     ImageButton ibtn_home, ibtn_category, ibtn_search, ibtn_login, ibtn_mypage;
-    ImageButton ibtn_menu_wish, ibtn_menu_cart;
+    ImageButton ibtn_back, ibtn_menu_cart;
 
     EditText edit_search;
     ImageView iv_logo, iv_search;
@@ -43,18 +47,24 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
 
     String bf="";
 
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("마이페이지");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         Intent intent = getIntent();
         bf = intent.getStringExtra("activity");
 
         mainColor = getResources().getColor(R.color.colorPrimary);
 
-        ibtn_menu_wish = (ImageButton)findViewById(R.id.ibtn_menu_wish);
-        ibtn_menu_wish.setOnClickListener(this);
+        ibtn_back = (ImageButton)findViewById(R.id.ibtn_mypage_back);
+        ibtn_back.setOnClickListener(this);
 
         ibtn_home = (ImageButton)findViewById(R.id.ibtn_home);
         ibtn_home.setOnClickListener(this);
@@ -76,25 +86,7 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
         myPagePagerAdapter = new MyPagePagerAdapter(fragmentManager);
 
         mViewPager.setAdapter(myPagePagerAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-            @Override
-            public void onPageSelected(int state) {
-                Log.e("onPageSelected", String.valueOf(state));
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.e("onPageScrolled position", String.valueOf(position));
-                Log.e("onPageScrolled positionOffset", String.valueOf(positionOffset));
-                Log.e("onPageScrolled positionOffsetPixels", String.valueOf(positionOffsetPixels));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int position) {
-                Log.e("onPageScrollStateChanged position", String.valueOf(position));
-            }
-        });
     }
 
     @Override
@@ -106,24 +98,28 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.ibtn_menu_cart:
                 Intent cart_intnet = new Intent(this, CartListWebView.class);
                 startActivity(cart_intnet);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                overridePendingTransition(0, 0);
                 //Toast.makeText(getApplicationContext(), "menu_cart", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.ibtn_menu_wish:
-                category_intnet.putExtra("activity","mypage");
+            case R.id.ibtn_mypage_back:
+                category_intnet.putExtra("activity", "mypage");
                 startActivity(category_intnet);
                 finish();
+                overridePendingTransition(0, 0);
 
                 break;
             case R.id.ibtn_home:
                 //Toast.makeText(getApplicationContext(), "home", Toast.LENGTH_SHORT).show();
                 finish();
+                overridePendingTransition(0, 0);
                 break;
             case R.id.ibtn_category:
-                category_intnet.putExtra("activity","mypage");
+                category_intnet.putExtra("activity", "mypage");
                 startActivity(category_intnet);
                 finish();
+                overridePendingTransition(0, 0);
                 break;
         }
     }
@@ -132,14 +128,19 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
     public void onStart(){
         super.onStart();
         Log.i(TAG, "++ ON START ++");
+        mTracker.setScreenName("마이페이지");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
     }
 
     @Override
     public void onStop(){
+        super.onStop();
         Log.i(TAG, "++ ON STOP ++");
         //FlurryAgent.onEndSession(this);
-        super.onStop();
-        Log.e("MAinActivity", "===========================================================onStop");
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+
+        Log.e("MyPageActivity", "===========================================================onStop");
     }
 
     @Override
@@ -183,4 +184,11 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
     public void setFragmentItem(int fragmentItem) {
         mViewPager.setCurrentItem(fragmentItem);
     }
+
+    @Override
+    public void onBackPressed(){
+        finish();
+        overridePendingTransition(0, 0);
+    }
+
 }

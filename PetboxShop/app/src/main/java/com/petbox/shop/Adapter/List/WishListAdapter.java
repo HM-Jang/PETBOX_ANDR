@@ -20,6 +20,7 @@ import com.petbox.shop.ImageDownloader;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.Item.WishInfo;
 import com.petbox.shop.R;
+import com.petbox.shop.Utility.Utility;
 
 import java.util.ArrayList;
 
@@ -138,11 +139,11 @@ public class WishListAdapter extends BaseAdapter implements View.OnClickListener
 
         if(rete_per == 0){
             holder.tv_origin_price.setVisibility(View.INVISIBLE);
-            holder.tv_price.setText(item.goods_consumer + "원");
+            holder.tv_price.setText(Utility.replaceComma(item.goods_consumer) + "원");
         }else{
             holder.tv_origin_price.setVisibility(View.VISIBLE);
-            holder.tv_origin_price.setText(item.goods_consumer + "원");
-            holder.tv_price.setText(item.goods_price + "원");
+            holder.tv_origin_price.setText(Utility.replaceComma(item.goods_consumer) + "원");
+            holder.tv_price.setText(Utility.replaceComma(item.goods_price) + "원");
         }
 
         int rating_person = Integer.parseInt(item.point_count);
@@ -158,6 +159,7 @@ public class WishListAdapter extends BaseAdapter implements View.OnClickListener
             holder.tv_rate_person.setText("(" + item.point_count + ")");
         }
 
+        Log.e("item.goodsno",item.goodsno);
         holder.ll_list_item.setTag(holder.ll_list_item.getId(),item.goodsno);
 
         return convertView;

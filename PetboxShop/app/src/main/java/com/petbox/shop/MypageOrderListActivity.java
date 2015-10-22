@@ -4,11 +4,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.petbox.shop.Adapter.List.OrderListAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Item.OrderItemInfo;
 
@@ -19,7 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class MypageOrderListActivity extends AppCompatActivity {
+public class MypageOrderListActivity extends AppCompatActivity implements View.OnClickListener {
 
     //private OnFragmentInteractionListener mListener;
 
@@ -35,10 +40,21 @@ public class MypageOrderListActivity extends AppCompatActivity {
     String order_list="";
     String url,params3,InsertDB;
 
+    ImageButton ibtn_back;
+
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage_order_list);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("마이페이지 - 주문내역");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        ibtn_back = (ImageButton) findViewById(R.id.ibtn_mypage_order_back);
+        ibtn_back.setOnClickListener(this);
 
         lv_mypage_order_list = (ListView)findViewById(R.id.lv_mypage_order_list);
         ll_mypage_order_list = (LinearLayout)findViewById(R.id.ll_mypage_order_list);
@@ -161,6 +177,29 @@ public class MypageOrderListActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+
+        switch(id){
+            case R.id.ibtn_mypage_order_back:
+                finish();
+                break;
         }
     }
 }

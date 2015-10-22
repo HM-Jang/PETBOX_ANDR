@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.petbox.shop.MypageActivity">
+    <include
+        layout="@layout/mypage_toolbar"
+        android:id="@+id/main_toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.petbox.shop.CustomView.NonSwipeableViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:layout_below="@+id/main_toolbar"
+        android:layout_above="@+id/linear_bottom_menu"
+        android:elevation="1dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/linear_bottom_menu"
+        android:elevation="5dp">
+
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/ibtn_home"
+                android:scaleType="fitXY"
+                android:background="#0000"
+                android:layout_weight="1"
+                android:layout_gravity="bottom"
+                android:src="@drawable/bot_home_off" />
+
+
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/ibtn_category"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:src="@drawable/bot_category_off"
+            android:scaleType="fitXY"
+            android:background="#0000" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/ibtn_search"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
+            android:src="@drawable/bot_search_off"
+            android:scaleType="fitXY"
+            android:background="#0000" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/ibtn_mypage"
+                android:src="@drawable/bot_mypage_on"
+                android:layout_gravity="bottom"
+                android:background="#0000"
+                android:scaleType="fitXY" />
+        </FrameLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String _regId;
 
     private Tracker mTracker; // 구글 트래커
+    private String CurrentScreenName = "";
 
     /* FLURRY
     FlurryAdInterstitialListener interstitialListener = new FlurryAdInterstitialListener() {
@@ -198,9 +199,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         main = false;
 
         mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        /*
         mTracker.setScreenName("펫박스홈");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
-
+        */
         sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sp.edit();
 
@@ -299,9 +301,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
-        tabLayout.setSelectedTabIndicatorColor(mainColor);
+        tabLayout.setSelectedTabIndicatorColor(0xffff571f);
         //tabLayout.setTabTextColors(0xff4e91ff, 0xff000000);
-        tabLayout.setTabTextColors(0xff7c7c7c, 0xff000000);
+        tabLayout.setTabTextColors(0xff7c7c7c, mainColor);
         tabLayout.setupWithViewPager(mViewPager);
         page_num = 1;
     }
@@ -312,11 +314,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onStart(){
-        Log.i(TAG, "++ ON START ++");
         super.onStart();
+        Log.i(TAG, "++ ON START ++");
 
         try{
-           //GoogleAnalytics.getInstance(this).reportActivityStart(this);
+
+            switch(mViewPager.getCurrentItem()){
+                case 0:
+                    CurrentScreenName = "펫박스홈";
+                    mTracker.setScreenName("펫박스홈");
+                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+                   break;
+                case 1:
+                    CurrentScreenName = "베스트상품";
+                    mTracker.setScreenName("베스트상품");
+                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+                   break;
+                case 2:
+                    CurrentScreenName = "찬스딜";
+                    mTracker.setScreenName("찬스딜");
+                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+                    break;
+                case 3:
+                    CurrentScreenName = "기획전";
+                    mTracker.setScreenName("기획전");
+                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+                    break;
+                case 4:
+                    CurrentScreenName = "프리미엄몰";
+                    mTracker.setScreenName("프리미엄몰");
+                    mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+                    break;
+            }
+
+           GoogleAnalytics.getInstance(this).reportActivityStart(this);
 
            // GoogleAnalytics an = GoogleAnalytics.getInstance(this);
             //an.reportActivityStart(this);
@@ -345,11 +376,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onStop(){
+        super.onStop();
         Log.i(TAG, "++ ON STOP ++");
         //FlurryAgent.onEndSession(this);
-        super.onStop();
+
         //FlurryAgent.onEndSession(MainActivity.this);
-        //GoogleAnalytics.getInstance(this).reportActivityStop(this);
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
         //GoogleAnalytics an = GoogleAnalytics.getInstance(this);
         //an.reportActivityStop(this);
     }
@@ -479,8 +511,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String today = format.format(currentTime);
                     new DBConnector(getApplicationContext()).insertToRecentSearch(searchContent, today);
 
+                    String keyword = edit_search.getText().toString();
+
                     Intent intent = new Intent(this, SearchGoodActivity.class);
-                    intent.putExtra("keyword", edit_search.getText().toString());
+                    intent.putExtra("keyword", keyword);
+
+                    mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("검색").setLabel(keyword).build());
+
                     startActivity(intent);
 
                     edit_search.setText("");
@@ -502,6 +539,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.ibtn_menu_wish:
                 //FlurryAgent.logEvent("FLURRY TEST - 찜버튼");
 
+                mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("카테고리 클릭").build());
                 //t.send(new HitBuilders.EventBuilder().setCategory("MainActivity").setAction("Press Button Test").setLabel("Button Test Category").build());
                 //Toast.makeText(getApplicationContext(), "FLURRY TEST", Toast.LENGTH_SHORT).show();
 
@@ -512,6 +550,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 */
 
+                /*
                 menu_selected = 1;
 
                 if(menu_selected == 1 ) {    // 카테고리
@@ -525,21 +564,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (ibtn_mypage.getVisibility() == View.VISIBLE)
                         ibtn_mypage.setImageResource(R.drawable.bot_mypage_off);
                 }
-
-
+                */
+                Intent category_intnet = new Intent(MainActivity.this, CategoryActivity.class);
+                startActivity(category_intnet);
+                overridePendingTransition(0, 0);
                 break;
 
             case R.id.ibtn_menu_cart:
-                Intent cart_intnet = new Intent(MainActivity.this, CartListWebView.class);
-                startActivity(cart_intnet);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("장바구니 클릭").build());
+
+                if(!LoginManager.getIsLogin()){ // 현재 로그인x
+                    Intent cart_intnet = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(cart_intnet);
+                    overridePendingTransition(0,0);
+                }else{  // 현재 로그인 o
+                    Intent cart_intnet = new Intent(MainActivity.this, CartListWebView.class);
+                    startActivity(cart_intnet);
+                    overridePendingTransition(0,0);
+                }
+
+                //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 //Toast.makeText(getApplicationContext(), "menu_cart", Toast.LENGTH_SHORT).show();
                 break;
 
-            case R.id.ibtn_home:
+            //case R.id.ibtn_home:
             case R.id.iv_logo:
                 //Toast.makeText(getApplicationContext(), "home", Toast.LENGTH_SHORT).show();
-
+                mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("로고 클릭").build());
 
                 if(menu_selected == 0 ){    // 홈
                     setHomePagerAdapter();
@@ -553,7 +604,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(ibtn_mypage.getVisibility() == View.VISIBLE)
                         ibtn_mypage.setImageResource(R.drawable.bot_mypage_off);
 
-                    mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+                    CurrentScreenName = "펫박스홈";
                     mTracker.setScreenName("펫박스홈");
                     mTracker.send(new HitBuilders.ScreenViewBuilder().build());
                 }
@@ -563,9 +614,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.ibtn_category:
+                mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("하단 카테고리 클릭").build());
                 //Toast.makeText(getApplicationContext(), "category", Toast.LENGTH_SHORT).show();
 
-
+                /*
                 if(menu_selected != 1 ) {    // 카테고리
                     setCategoryPagerAdapter();
                     setVisibleForTab(View.GONE);
@@ -579,12 +631,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 menu_selected = 1;
+                */
+                category_intnet = new Intent(MainActivity.this, CategoryActivity.class);
+                startActivity(category_intnet);
+                overridePendingTransition(0, 0);
                 break;
 
             case R.id.ibtn_search:
+                mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("하단 검색 클릭").build());
                 //Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
 
-
+                /*
                 if(menu_selected != 2 ) {    // 검색
                     setSearchPagerAdapter();
                     setVisibleForTab(View.VISIBLE);
@@ -598,19 +655,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         ibtn_mypage.setImageResource(R.drawable.bot_mypage_off);
                 }
                 menu_selected = 2;
-
+                */
+                Intent search_intnet = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(search_intnet);
+                overridePendingTransition(0, 0);
                 break;
 
             case R.id.ibtn_login:
+                mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("하단 로그인 클릭").build());
                 Intent login_intnet = new Intent(MainActivity.this, LoginActivity.class);
                 startActivityForResult(login_intnet, Constants.REQ_LOGIN);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                overridePendingTransition(0,0);
                 //Toast.makeText(getApplicationContext(), "login", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.ibtn_mypage:
-
-
+                mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("하단 마이페이지 클릭").build());
+                /*
                 if(menu_selected != 3) {    // 마이페이지
                     //Toast.makeText(getApplicationContext(), "mypage", Toast.LENGTH_SHORT).show();
                     setMyPagePagerAdapter();
@@ -625,7 +687,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         ibtn_mypage.setImageResource(R.drawable.bot_mypage_on);
                 }
                 menu_selected = 3;
-
+                */
+                Intent mypage_intnet = new Intent(MainActivity.this, MypageActivity.class);
+                startActivity(mypage_intnet);
+                overridePendingTransition(0,0);
                 break;
         }
     }
@@ -633,10 +698,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
+        mTracker.setScreenName("펫박스홈");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
         switch(requestCode){
             case Constants.REQ_SPLASH:
-
                 if(resultCode == Constants.RES_SPLASH_CANCEL){
+                    mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("로딩화면 종료").build());
                     finish();
                 }
                 break;
@@ -644,9 +712,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case Constants.REQ_LOGIN:
 
                 if(resultCode == Constants.RES_LOGIN_SUCCESS){
+                    //mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("로그인 성공").build());
                     ibtn_login.setVisibility(View.GONE);
                     ibtn_mypage.setVisibility(View.VISIBLE);
-
                 }
 
                 break;
@@ -654,7 +722,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 131074:
                 Log.e("131074", "requestCode 를 default 값으로 가져오는군.");
                 if(resultCode == Constants.RES_LOGIN_LOGOUT){
-
+                    mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("로그아웃").build());
                     setHomePagerAdapter();
                     setVisibleForTab(View.VISIBLE);
                     tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);

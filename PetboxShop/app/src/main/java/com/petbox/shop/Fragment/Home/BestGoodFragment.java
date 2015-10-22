@@ -122,7 +122,7 @@ public class BestGoodFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-
+        /*
         System.out.println("SEO - BESTGOOD ++ ON START ++");
 
         GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
@@ -150,14 +150,14 @@ public class BestGoodFragment extends Fragment implements View.OnClickListener {
         mItemList = goods_list(params_1);
         gridAdapter = new BestGoodGridAdapter(getContext(), mItemList);
         gridView.setAdapter(gridAdapter);
-
+        */
     }
 
     @Override
     public void onStop(){
         super.onStop();
 
-        GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
+        //GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
     }
 
 
@@ -223,6 +223,30 @@ public class BestGoodFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+
+        params_1 = "?mdesign_no=7";
+        params_3 = "?mdesign_no=20";
+
+        slideList = home_slider(params_3);
+        bestGoodPagerAdapter = new BestGoodPagerAdapter(getContext() ,slideList);
+
+        if(viewPager != null){
+            Log.e("onStart", "onStart -- viewPager null 아님");
+            viewPager.setAdapter(bestGoodPagerAdapter);
+
+            indicator = circlePageIndicator;
+            indicator.setViewPager(viewPager);
+
+            circlePageIndicator.setPageColor(0xFF6d6d6d);   // Normal 원 색상
+            circlePageIndicator.setFillColor(mainColor);   //선택된 원 색상
+            circlePageIndicator.setStrokeColor(0x00000000); //테두리 INVISIBLE
+        }else{
+            Log.e("onStart", "onStart -- viewPager null");
+        }
+
+        mItemList = goods_list(params_1);
+        gridAdapter = new BestGoodGridAdapter(getContext(), mItemList);
+        gridView.setAdapter(gridAdapter);
 
         timerThread.start();
         return  v;

@@ -23,13 +23,13 @@
             android:layout_centerVertical="true"/>
 
         <TextView
+            android:layout_gravity="center_vertical"
             android:layout_toRightOf="@id/ibtn_good_review_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#ffff"
             android:text="상품 보기"
-            android:textSize="20sp"
-            android:layout_centerVertical="true" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 

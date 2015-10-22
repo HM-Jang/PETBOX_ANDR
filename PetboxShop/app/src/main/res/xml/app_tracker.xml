@@ -4,7 +4,7 @@
     <!-- Replace placeholder ID with your tracking ID -->
     <string name="ga_trackingId">UA-69008860-2</string>
 
-    <bool name="ga_autoActivityTracking">true</bool>
+    <bool name="ga_autoActivityTracking">false</bool>
     <bool name="ga_reportUncaughtExceptions">true</bool>
 
     <string name="ga_appName">펫박스(안드로이드)</string>

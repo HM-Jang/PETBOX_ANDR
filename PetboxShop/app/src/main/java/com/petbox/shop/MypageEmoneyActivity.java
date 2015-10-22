@@ -8,7 +8,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.petbox.shop.Adapter.List.EmoneyListAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Item.EmoneyInfo;
 
@@ -38,11 +42,16 @@ public class MypageEmoneyActivity extends AppCompatActivity implements View.OnCl
 
     ImageView ibtn_good_info_back;
 
+    Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage_emoney);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("마이페이지 - 나의포인트");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         //tv_mypage_emoney_extinc = (TextView)v.findViewById(R.id.tv_mypage_emoney_extinc);
         tv_mypage_emoney = (TextView)findViewById(R.id.tv_mypage_emoney);
@@ -119,7 +128,18 @@ public class MypageEmoneyActivity extends AppCompatActivity implements View.OnCl
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
 
     @Override

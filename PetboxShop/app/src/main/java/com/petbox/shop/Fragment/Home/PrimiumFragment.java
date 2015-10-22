@@ -115,10 +115,11 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onStart() {
         super.onStart();
-        System.out.println("SEO - PRIMIUM ++ ON START ++");
+        //System.out.println("SEO - PRIMIUM ++ ON START ++");
 
-        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+        //GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
 
+        /*
         params_1 = "?mdesign_no=18";
         params_3 = "?mdesign_no=22";
 
@@ -142,13 +143,14 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
         mItemList = goods_list(params_1);
         gridAdapter = new BestGoodGridAdapter(getContext(), mItemList);
         gridView.setAdapter(gridAdapter);
+        */
 
     }
 
     @Override
     public void onStop(){
         super.onStop();
-        GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
+        //GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
     }
 
     @Override
@@ -211,6 +213,30 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
                 }
             }
         });
+
+        params_1 = "?mdesign_no=18";
+        params_3 = "?mdesign_no=22";
+
+        slideList = home_slider(params_3);
+        bestGoodPagerAdapter = new BestGoodPagerAdapter(getContext() ,slideList);
+
+        if(viewPager != null){
+            Log.e("onStart", "onStart -- viewPager null 아님");
+            viewPager.setAdapter(bestGoodPagerAdapter);
+
+            indicator = circlePageIndicator;
+            indicator.setViewPager(viewPager);
+
+            circlePageIndicator.setPageColor(0xFF6d6d6d);   // Normal 원 색상
+            circlePageIndicator.setFillColor(mainColor);   //선택된 원 색상
+            circlePageIndicator.setStrokeColor(0x00000000); //테두리 INVISIBLE
+        }else{
+            Log.e("onStart", "onStart -- viewPager null");
+        }
+
+        mItemList = goods_list(params_1);
+        gridAdapter = new BestGoodGridAdapter(getContext(), mItemList);
+        gridView.setAdapter(gridAdapter);
 
         timerThread.start();
         return  v;
@@ -376,6 +402,5 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
                 gridView.setAdapter(gridAdapter);
                 break;
         }
-
     }
 }

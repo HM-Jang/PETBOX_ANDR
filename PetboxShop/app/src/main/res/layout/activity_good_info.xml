@@ -54,7 +54,8 @@
             android:src="@drawable/info_wish_off"
             android:scaleType="fitXY"
             android:layout_gravity="center"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btn_good_info_buy"

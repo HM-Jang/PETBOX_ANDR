@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.petbox.shop.GoodInfoActivity;
@@ -73,6 +74,10 @@ public class BestGoodGridAdapter extends BaseAdapter implements View.OnClickList
 
             convertView = inflater.inflate(R.layout.grid_style_item, parent, false);
             holder = new ViewHolder();
+
+            holder.relative_origin_price = (RelativeLayout)convertView.findViewById(R.id.relative_grid_origin_price);
+            holder.linear_ratingbar = (LinearLayout) convertView.findViewById(R.id.linear_grid_ratingbar);
+
             holder.iv_image = (ImageView) convertView.findViewById(R.id.iv_grid_image);
             holder.tv_name = (TextView) convertView.findViewById(R.id.tv_grid_name);
             holder.tv_rate = (TextView) convertView.findViewById(R.id.tv_grid_rate);
@@ -85,9 +90,10 @@ public class BestGoodGridAdapter extends BaseAdapter implements View.OnClickList
             holder.ll_grid_item = (LinearLayout) convertView.findViewById(R.id.ll_grid_item);
             holder.ll_grid_item.setOnClickListener(this);
 
-            LayerDrawable stars = (LayerDrawable) holder.ratingBar.getProgressDrawable();
+            holder.icon1 = (ImageView) convertView.findViewById(R.id.iv_grid_icon1);
+            holder.icon2 = (ImageView) convertView.findViewById(R.id.iv_grid_icon2);
+            holder.icon3 = (ImageView) convertView.findViewById(R.id.iv_grid_icon3);
 
-            stars.getDrawable(2).setColorFilter(mainColor, PorterDuff.Mode.SRC_ATOP);
             convertView.setTag(holder);
 
         }else{
@@ -106,23 +112,23 @@ public class BestGoodGridAdapter extends BaseAdapter implements View.OnClickList
             holder.tv_rate.setText(rete);
             holder.tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             holder.tv_rate_per.setVisibility(convertView.GONE);
+            holder.relative_origin_price.setVisibility(View.GONE);
         }else{
             rete = String.valueOf(rete_per);
             holder.tv_rate.setText(rete);
             holder.tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
             holder.tv_rate_per.setVisibility(convertView.VISIBLE);
+            holder.relative_origin_price.setVisibility(View.VISIBLE);
         }
 
         String urlcon = "";
         urlcon = "http://petbox.kr/shop/data/goods/" + item.imgUrl;
 
         ImageDownloader.download(urlcon, holder.iv_image); //이미지 다운로드 함수. thumbnail_detail url 의 이미지를 다운받아, 이미지뷰 에 노출
-        int img_w = holder.iv_image.getWidth();
-
-        ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) holder.iv_image.getLayoutParams();
-        params.height = img_w;
-        holder.iv_image.setLayoutParams(params);
-
+        //int img_w = holder.iv_image.getWidth();
+        //ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) holder.iv_image.getLayoutParams();
+        //params.height = img_w;
+        //holder.iv_image.setLayoutParams(params);
         holder.iv_image.setScaleType(ImageView.ScaleType.FIT_XY); //이미지 사이즈에 크기 맞춤
 
         Log.e("chancedeal_adapter", "----------------imagedownload" + urlcon);
@@ -135,9 +141,11 @@ public class BestGoodGridAdapter extends BaseAdapter implements View.OnClickList
         int rating_person = item.rating_person;
 
         if(rating_person == 0){
+            holder.linear_ratingbar.setVisibility(View.INVISIBLE);
             holder.ratingBar.setVisibility(View.INVISIBLE);
             holder.tv_rate_person.setVisibility(View.INVISIBLE);
         }else {
+            holder.linear_ratingbar.setVisibility(View.VISIBLE);
             holder.ratingBar.setVisibility(View.VISIBLE);
             holder.tv_rate_person.setVisibility(View.VISIBLE);
 
@@ -146,6 +154,25 @@ public class BestGoodGridAdapter extends BaseAdapter implements View.OnClickList
         }
 
         holder.ll_grid_item.setTag(holder.ll_grid_item.getId() ,item.goodsno);
+
+        ArrayList<Integer> iconList = Utility.parseValidBinary(item.icon);
+
+        for(int i=1; i<=iconList.size(); i++){
+            int id = mContext.getResources().getIdentifier("s_icon_"+iconList.get(i-1),"drawable" , "com.petbox.shop");
+
+            System.out.println("아이콘 세팅");
+
+            if(i==1){
+                holder.icon1.setImageResource(id);
+                holder.icon1.setVisibility(View.VISIBLE);
+            }else if(i==2){
+                holder.icon2.setImageResource(id);
+                holder.icon2.setVisibility(View.VISIBLE);
+            }else if(i==3){
+                holder.icon3.setImageResource(id);
+                holder.icon3.setVisibility(View.VISIBLE);
+            }
+        }
 
         return convertView;
     }
@@ -164,14 +191,22 @@ public class BestGoodGridAdapter extends BaseAdapter implements View.OnClickList
     }
 
     public class ViewHolder{
-        ImageView iv_image; //상품 이미지
+        LinearLayout ll_grid_item;
+        RelativeLayout relative_origin_price;   // 삭선 가격 텍스트뷰 들어있는 레이아웃
+        LinearLayout linear_ratingbar;     // 레이팅바 들어있는 레이아웃
+
+        ImageView iv_image; //상품 이미지    // 레이팅바 들어있는 레이아웃
         TextView tv_name ; // 상품 명
+
         TextView tv_rate; // 할인율
         TextView tv_rate_per; // 할인율
         TextView tv_origin_price; //원래 가격
         TextView tv_price; // 할인적용된 실제 판매 가격
         RatingBar ratingBar;    //레이팅바
         TextView tv_rate_person; // 점수준 사람
-        LinearLayout ll_grid_item;
+
+        ImageView icon1;    // 아이콘1
+        ImageView icon2;    // 아이콘2
+        ImageView icon3;    // 아이콘3
     }
 }

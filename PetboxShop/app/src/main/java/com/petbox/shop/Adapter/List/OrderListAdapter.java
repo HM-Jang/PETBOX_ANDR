@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.petbox.shop.Item.CategoryGoodInfo;
 import com.petbox.shop.Item.OrderItemInfo;
 import com.petbox.shop.R;
+import com.petbox.shop.Utility.Utility;
 
 import java.util.ArrayList;
 
@@ -92,7 +93,7 @@ public class OrderListAdapter extends BaseAdapter {
 
         holder.tv_mypage_order_list_ordernum.setText(item.ordno);
         holder.tv_mypage_order_list_ordernm.setText(item.goodsnm);
-        holder.tv_mypage_order_list_orderprice.setText(item.prn_settleprice);
+        holder.tv_mypage_order_list_orderprice.setText(Utility.replaceComma(item.prn_settleprice)+"원");
         holder.tv_mypage_order_list_orderpg.setText(item.str_settlekind);
         holder.tv_mypage_order_list_status.setText(item.str_step);
         Log.e("item.str_step", item.str_step);

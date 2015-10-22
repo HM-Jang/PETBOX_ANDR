@@ -114,6 +114,7 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
     public void onStart() {
         super.onStart();
 
+        /*
         System.out.println("SEO - HOME2 ++ ON START ++");
 
         GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
@@ -143,7 +144,7 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
         list_dc.setAdapter(bestListAdapter);
         Utility.setListViewHeightBasedOnChildren(list_dc);
 
-
+        */
     }
 
     @Override
@@ -162,7 +163,7 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStop(){
         super.onStop();
-        GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
+        //GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
     }
 
     @Override
@@ -221,6 +222,35 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+
+
+        Log.e("Home2Fragment","%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%onStart");
+        /** 시작한다 시작해 ! **/
+        params_1 = "?mdesign_no=1";
+        params_2 = "?mdesign_no=14";
+        params_3 = "?mdesign_no=5";
+
+        slideList = home_slider(params_3);
+        bestGoodPagerAdapter = new BestGoodPagerAdapter(getContext() ,slideList);
+        viewPager.setAdapter(bestGoodPagerAdapter);
+
+        indicator = circlePageIndicator;
+        indicator.setViewPager(viewPager);
+
+        circlePageIndicator.setPageColor(0xFF6d6d6d);   // Normal 원 색상
+        circlePageIndicator.setFillColor(mainColor);   //선택된 원 색상
+        circlePageIndicator.setStrokeColor(0x00000000); //테두리 INVISIBLE
+
+        bestItemList = goods_list(params_1);
+        bestListAdapter = new GoodsListAdapter(getContext(), bestItemList);
+        list_best.setAdapter(bestListAdapter);
+        Utility.setListViewHeightBasedOnChildren(list_best);
+
+        bestItemList = goods_list(params_2);
+        bestListAdapter = new GoodsListAdapter(getContext(), bestItemList);
+        list_dc.setAdapter(bestListAdapter);
+        Utility.setListViewHeightBasedOnChildren(list_dc);
+        /** 혼란하다 혼란해! **/
 
         timerThread.start();
 

@@ -7,9 +7,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.petbox.shop.Adapter.List.GoodsListAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.Item.BestGoodInfo;
 
 import org.json.JSONArray;
@@ -30,13 +37,26 @@ public class SearchGoodActivity extends AppCompatActivity implements View.OnClic
 
     ListView lv_search_goods_list;
 
+    FrameLayout frame_no;   //검색된것이 없을 시 set Visible
+    Button btn_home;
+    ImageView iv_back;
+
+    Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_good);
 
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+
         lv_search_goods_list = (ListView)findViewById(R.id.lv_search_goods_list);
+        frame_no = (FrameLayout)findViewById(R.id.frame_search_no);
+        btn_home = (Button)findViewById(R.id.btn_search_good_home);
+        btn_home.setOnClickListener(this);
+
+        iv_back = (ImageView)findViewById(R.id.iv_search_good_back);
+        iv_back.setOnClickListener(this);
 
         Intent intent = getIntent();
         String keyword = intent.getStringExtra("keyword");
@@ -102,6 +122,11 @@ public class SearchGoodActivity extends AppCompatActivity implements View.OnClic
         listAdapter = new GoodsListAdapter(getApplicationContext(), mItemList);
         lv_search_goods_list.setAdapter(listAdapter);
 
+        if(mItemList.size() == 0){
+            frame_no.setVisibility(View.VISIBLE);
+            lv_search_goods_list.setVisibility(View.GONE);
+        }
+
         /********
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -117,7 +142,30 @@ public class SearchGoodActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        mTracker.setScreenName("검색결과");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
+
+    @Override
     public void onClick(View v) {
+
+        int id = v.getId();
+
+        switch(id){
+            case R.id.btn_search_good_home :
+            case R.id.iv_search_good_back:
+                finish();
+                break;
+        }
 
     }
 }

@@ -256,6 +256,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_name", cate_name);
                 intent.putExtra("cate_mode", 0);
 
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("애견 사료").build());
+
                 System.out.println("cate_name  : " + cate_name + "// cate_num : " + param);
 
 
@@ -270,6 +272,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("간식").build());
                 startActivity(intent);
                 break;
 
@@ -280,6 +284,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("영양제").build());
                 startActivity(intent);
                 break;
 
@@ -290,6 +295,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("의약부외품").build());
                 startActivity(intent);
                 break;
 
@@ -299,6 +305,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("위생/배변").build());
                 startActivity(intent);
                 break;
 
@@ -308,6 +315,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("목욕용품").build());
                 startActivity(intent);
                 break;
 
@@ -317,6 +325,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("하우스/가구").build());
                 startActivity(intent);
                 break;
 
@@ -326,6 +335,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("이동장/철장").build());
                 startActivity(intent);
                 break;
 
@@ -335,6 +345,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("줄/이름표").build());
                 startActivity(intent);
                 break;
 
@@ -344,6 +355,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("패션/액세서리/팬시").build());
                 startActivity(intent);
 
             case R.id.btn_category_dog_drinkers:
@@ -352,6 +364,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("급식기/급수기").build());
                 startActivity(intent);
                 break;
 
@@ -361,6 +374,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("미용용품").build());
                 startActivity(intent);
 
             case R.id.btn_category_dog_toy:
@@ -369,6 +383,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("장난감/푼련용품").build());
                 startActivity(intent);
                 break;
 
@@ -378,6 +393,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("고양이 사료").build());
                 startActivity(intent);
                 break;
 
@@ -387,6 +403,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("간식/캔").build());
                 startActivity(intent);
                 break;
 
@@ -396,6 +413,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("영양제").build());
                 startActivity(intent);
                 break;
 
@@ -405,6 +423,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("의약부외품").build());
                 startActivity(intent);
                 break;
 
@@ -414,6 +433,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("위생/배변").build());
                 startActivity(intent);
                 break;
 
@@ -423,6 +443,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("목욕용품").build());
                 startActivity(intent);
                 break;
 
@@ -459,6 +480,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("급식기/급수기").build());
                 startActivity(intent);
                 break;
 
@@ -468,6 +490,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("미용용품").build());
                 startActivity(intent);
                 break;
 
@@ -477,6 +500,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("장난감").build());
                 startActivity(intent);
                 break;
         }

@@ -12,14 +12,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.petbox.shop.Adapter.List.CategoryAdapter;
 import com.petbox.shop.Adapter.List.CategoryListAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.CustomView.ListDialog;
 import com.petbox.shop.CustomView.SortDialog;
 import com.petbox.shop.DataStructure.Tree.Node;
@@ -73,12 +78,17 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
 
     ArrayList<Node<PlanningItemInfo>> planningList;
 
+    Tracker mTracker;
+
+    ImageView iv_back;
     //CategoryManager categoryManager;
 
     @Override
     protected void onStart() {
         super.onStart();
-
+        mTracker.setScreenName("카테고리 상품 리스트");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
         //Intent intent = getIntent();
         //String cate_num = "?category=" + intent.getStringExtra("cate_num");
 
@@ -97,6 +107,13 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ctegory_goods);
 
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+
+        /*
+        mTracker.setScreenName("카테고리 상품 리스트");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        */
+
         where = getIntent().getIntExtra("where", 0);
         param = getIntent().getStringExtra("cate_num");
         category_mode = getIntent().getIntExtra("cate_mode", 0);
@@ -112,7 +129,8 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
 
         //CategoryManager.setDelegate(this);  // 싱글톤 카테고리 매니저 세팅
 
-
+        iv_back = (ImageView)findViewById(R.id.iv_category_good_back);
+        iv_back.setOnClickListener(this);
 
         mContext =  getApplicationContext();
 
@@ -225,6 +243,10 @@ public class CtegoryGoodsActivity extends AppCompatActivity implements View.OnCl
         int id = v.getId();
 
         switch(id){
+            case R.id.iv_category_good_back:
+                finish();
+                break;
+
             case R.id.tv_category_goods_main:
                 if(where == 0){ //카테고리
                     listDialog = new ListDialog(this, category_name, convertArrayList(category1List), this, 2);

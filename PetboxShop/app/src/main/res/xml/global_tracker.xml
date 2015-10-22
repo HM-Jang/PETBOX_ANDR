@@ -6,7 +6,7 @@
     <string name="ga_logLevel">verbose</string>
 
     <!-- Enable automatic Activity measurement -->
-    <bool name="ga_autoActivityTracking">true</bool>
+    <bool name="ga_autoActivityTracking">false</bool>
     <!-- The screen names that will appear in reports -->
 
     <!--  The following value shoul

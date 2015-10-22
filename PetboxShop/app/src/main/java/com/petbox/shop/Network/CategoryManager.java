@@ -250,17 +250,17 @@ public class CategoryManager{
                     switch(item.category_num.length()){
                         case 6:
                             arrCategory1.add(item);
-                            System.out.println("1차 : " + item.category_num + "// " + item.name);
+                           // System.out.println("1차 : " + item.category_num + "// " + item.name);
                             break;
 
                         case 9:
                             arrCategory2.add(item);
-                            System.out.println("2차 : " + item.category_num + "// " + item.name);
+                            //System.out.println("2차 : " + item.category_num + "// " + item.name);
                             break;
 
                         case 12:
                             arrCategory3.add(item);
-                            System.out.println("3차 : " + item.category_num + "// " + item.name);
+                            //System.out.println("3차 : " + item.category_num + "// " + item.name);
                             break;
                     }
                 }
@@ -275,7 +275,7 @@ public class CategoryManager{
                     if(mode == 1)
                         cat_tree.add(cat_tree.root, item);
 
-                    System.out.println("1차 : " + item.getData().name);
+                    //System.out.println("1차 : " + item.getData().name);
                     //ArrayList<ArrayList<CategoryInfo>> itemList = new ArrayList<ArrayList<CategoryInfo>>();
                 }
 
@@ -332,7 +332,7 @@ public class CategoryManager{
 
                             if (parentItem.category_num.equals(split_num)) {
                                 arrList.get(k).addChild(nodeItem);
-                                System.out.println("3차 : " + parentItem.category_num + " - " + item.name + "(" + item.category_num + ")");
+                                //System.out.println("3차 : " + parentItem.category_num + " - " + item.name + "(" + item.category_num + ")");
                                 break;
                             }
                         }

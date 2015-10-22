@@ -140,8 +140,8 @@ public class PlanningFragment extends Fragment implements View.OnClickListener{
         String InsertDB = "planning_list";
         String display_goods_list;
         mitemList = new ArrayList<PlanningItemInfo>();
-        mItemList_dog = PlanningManager.convertArrayList(PlanningManager.dog_tree.root.getChildList());
-        mItemList_cat = PlanningManager.convertArrayList(PlanningManager.cat_tree.root.getChildList());
+        mItemList_dog = PlanningManager.convertArrayList(PlanningManager.getDogTree().root.getChildList());
+        mItemList_cat = PlanningManager.convertArrayList(PlanningManager.getCatTree().root.getChildList());
 
         mitemList = mItemList_dog;
         listAdapter_dog = new PlanningListAdapter(getContext() ,mItemList_dog, 0);

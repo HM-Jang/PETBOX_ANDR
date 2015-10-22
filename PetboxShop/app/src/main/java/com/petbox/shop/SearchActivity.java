@@ -16,11 +16,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.petbox.shop.Adapter.Pager.CategoryPagerAdapter;
 import com.petbox.shop.Adapter.Pager.HomePagerAdapter;
 import com.petbox.shop.Adapter.Pager.MyPagePagerAdapter;
 import com.petbox.shop.Adapter.Pager.SearchPagerAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.CustomView.NonSwipeableViewPager;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.DB.DBConnector;
@@ -29,7 +33,7 @@ import com.petbox.shop.Network.LoginManager;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class SearchActivity extends AppCompatActivity implements View.OnClickListener{
+public class SearchActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
 
     public static final String TAG = "SearchAct";
     public static int page_num = 0;
@@ -44,6 +48,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     ImageButton ibtn_home, ibtn_category, ibtn_search, ibtn_login, ibtn_mypage;
     ImageButton ibtn_menu_wish, ibtn_menu_cart;
 
+
+
     EditText edit_search;
     ImageView iv_logo, iv_search;
 
@@ -51,10 +57,16 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     String bf="";
 
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("인기검색어");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         Intent intent = getIntent();
         bf = intent.getStringExtra("activity");
@@ -95,34 +107,16 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         //tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
-        tabLayout.setSelectedTabIndicatorColor(mainColor);
+        tabLayout.setSelectedTabIndicatorColor(0xffff571f);
         //tabLayout.setTabTextColors(0xff4e91ff, 0xff000000);
-        tabLayout.setTabTextColors(0xff7c7c7c, 0xff000000);
+        tabLayout.setTabTextColors(0xff7c7c7c, mainColor);
 
         mViewPager.setAdapter(searchPagerAdapter);
         tabLayout.setupWithViewPager(mViewPager);
         setVisibleForTab(View.VISIBLE);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int state) {
-                Log.e("onPageSelected", String.valueOf(state));
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Log.e("onPageScrolled position", String.valueOf(position));
-                Log.e("onPageScrolled positionOffset", String.valueOf(positionOffset));
-                Log.e("onPageScrolled positionOffsetPixels", String.valueOf(positionOffsetPixels));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int position) {
-                Log.e("onPageScrollStateChanged position", String.valueOf(position));
-            }
-        });
+        mViewPager.setOnPageChangeListener(this);
     }
 
     @Override
@@ -133,19 +127,22 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.ibtn_home:
                 //Toast.makeText(getApplicationContext(), "home", Toast.LENGTH_SHORT).show();
                     finish();
+                    overridePendingTransition(0, 0);
                 break;
             case R.id.ibtn_category:
                 Intent category_intnet = new Intent(this, CategoryActivity.class);
-                category_intnet.putExtra("activity","search");
+                category_intnet.putExtra("activity", "search");
                 startActivity(category_intnet);
                 finish();
+                overridePendingTransition(0, 0);
                 break;
             case R.id.ibtn_login:
                 Intent login_intnet = new Intent(this, LoginActivity.class);
                 startActivityForResult(login_intnet, Constants.REQ_LOGIN);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 //Toast.makeText(getApplicationContext(), "login", Toast.LENGTH_SHORT).show();
                 finish();
+                overridePendingTransition(0, 0);
                 break;
             case R.id.ibtn_mypage:
 
@@ -153,7 +150,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 mypage_intnet.putExtra("activity", "search");
                 startActivity(mypage_intnet);
                 finish();
-
+                overridePendingTransition(0, 0);
                 break;
 
             case R.id.iv_search:
@@ -170,6 +167,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                     Intent intent = new Intent(this, SearchGoodActivity.class);
                     intent.putExtra("keyword",edit_search.getText().toString());
                     startActivity(intent);
+                    overridePendingTransition(0, 0);
 
                 }else{
                     Toast.makeText(getApplicationContext(), "검색란이 비어있습니다.", Toast.LENGTH_SHORT).show();
@@ -187,7 +185,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         super.onStart();
         Log.i(TAG, "++ ON START ++");
 
-        Log.e("MAinActivity", "===========================================================onStart");
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+
+        Log.e("SearchActivity", "===========================================================onStart");
         LoginManager.getHttpClient();
 
         if(LoginManager.getIsLogin()){
@@ -201,10 +201,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onStop(){
+        super.onStop();
         Log.i(TAG, "++ ON STOP ++");
         //FlurryAgent.onEndSession(this);
-        super.onStop();
-        Log.e("MAinActivity", "===========================================================onStop");
+
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+
+        Log.e("SearchActivity", "===========================================================onStop");
     }
 
     @Override
@@ -249,5 +252,40 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         mViewPager.setCurrentItem(fragmentItem);
     }
 
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+
+        switch(position){
+            case 0:
+                mTracker.setScreenName("인기검색어");
+                System.out.println("VIEWPAGER - 인기검색어");
+                break;
+
+            case 1:
+                mTracker.setScreenName("최근검색어");
+                System.out.println("VIEWPAGER - 최근검색어");
+                break;
+        }
+
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onBackPressed(){
+        finish();
+        overridePendingTransition(0, 0);
+    }
 
 }

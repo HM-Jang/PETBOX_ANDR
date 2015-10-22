@@ -18,6 +18,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Network.LoginManager;
 
@@ -29,10 +33,17 @@ public class MypageAppSettingActivity extends AppCompatActivity implements View.
     Button btn_logout;
     SharedPreferences sp;
     PackageInfo info;
+
+    Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage_app_setting);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("마이페이지 - 앱 설정");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         tv_id = (TextView) findViewById(R.id.tv_id);
         tv_nowver = (TextView) findViewById(R.id.tv_nowver);
@@ -61,7 +72,19 @@ public class MypageAppSettingActivity extends AppCompatActivity implements View.
             e.printStackTrace();
             tv_nowver.setText((CharSequence) info);
         }
-}
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
 
     @Override
     public void onClick(View v) {

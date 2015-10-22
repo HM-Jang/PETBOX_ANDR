@@ -17,6 +17,10 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.DB.DBConnector;
 import com.petbox.shop.Delegate.LoginManagerDelegate;
@@ -43,11 +47,17 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
     boolean isRunning = true;
     boolean finishable = false;
 
+    Tracker mTracker;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         iv_splash = (ImageView) findViewById(R.id.iv_splash);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("로딩화면");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         STPreferences.getPref(getApplicationContext());    // 싱글톤 Preferences 초기 세팅
 
@@ -164,6 +174,7 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
 
         //if(!isRunning){
         // isRunning = true;
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
 
         timerThread = new Thread(new Runnable() {
             @Override
@@ -191,6 +202,7 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
     public void onStop(){
         //Log.i(TAG, "++ ON STOP ++");
         super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
         // FlurryAgent.onEndSession(this);
     }
 

@@ -25,9 +25,12 @@
 
         <ImageView
             android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:src="@drawable/best_deal"/>
+            android:layout_height="18dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/petboxhome_best"
+            android:scaleType="fitXY"/>
 
     </LinearLayout>
 
@@ -46,9 +49,12 @@
 
         <ImageView
             android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@drawable/chance_deal"/>
+            android:layout_height="18dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/petboxhome_chancedeal"
+            android:scaleType="fitXY"/>
 
 
     </LinearLayout>

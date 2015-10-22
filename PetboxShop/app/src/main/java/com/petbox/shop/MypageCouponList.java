@@ -11,7 +11,11 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.petbox.shop.Adapter.List.CouponListAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Item.CouponInfo;
 
@@ -40,11 +44,16 @@ public class MypageCouponList extends AppCompatActivity implements View.OnClickL
 
     ImageView ibtn_good_info_back;
 
+    Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage_coupon_list);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("마이페이지 - 쿠폰함");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         tv_mypage_coupon_extinc = (TextView) findViewById(R.id.tv_mypage_coupon_extinc);
         tv_mypage_coupon = (TextView) findViewById(R.id.tv_mypage_coupon);
@@ -130,7 +139,18 @@ public class MypageCouponList extends AppCompatActivity implements View.OnClickL
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
 
     @Override
