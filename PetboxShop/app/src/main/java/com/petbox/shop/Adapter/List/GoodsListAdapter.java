@@ -175,18 +175,27 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
 
         ArrayList<Integer> iconList = Utility.parseValidBinary(item.icon);
 
+        int count = 0;
+
         for(int i=1; i<=iconList.size(); i++){
             int id = mContext.getResources().getIdentifier("s_icon_"+iconList.get(i-1),"drawable" , "com.petbox.shop");
 
             System.out.println("아이콘 세팅");
 
-            if(i==1){
+            int num = iconList.get(i-1);
+
+            if(num == 1)
+                continue;
+
+            count++;
+
+            if(count==1){
                 holder.icon1.setImageResource(id);
                 holder.icon1.setVisibility(View.VISIBLE);
-            }else if(i==2){
+            }else if(count==2){
                 holder.icon2.setImageResource(id);
                 holder.icon2.setVisibility(View.VISIBLE);
-            }else if(i==3){
+            }else if(count==3){
                 holder.icon3.setImageResource(id);
                 holder.icon3.setVisibility(View.VISIBLE);
             }

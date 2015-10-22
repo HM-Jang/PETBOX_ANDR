@@ -363,6 +363,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(LoginManager.getIsLogin()){
             ibtn_login.setVisibility(View.GONE);
             ibtn_mypage.setVisibility(View.VISIBLE);
+        }else{
+            ibtn_login.setVisibility(View.VISIBLE);
+            ibtn_mypage.setVisibility(View.GONE);
         }
 
         //FlurryAgent.onStartSession(this, Constants.FLURRY_APIKEY);

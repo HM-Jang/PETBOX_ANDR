@@ -89,6 +89,23 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode){
+
+            case Constants.REQ_LOGIN:
+
+                if(resultCode == Constants.RES_LOGIN_LOGOUT){
+                    //mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("로그인 성공").build());
+                    ibtn_login.setVisibility(View.GONE);
+                    ibtn_mypage.setVisibility(View.VISIBLE);
+                    finish();
+                }
+                break;
+        }
+    }
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -121,6 +138,12 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
                 finish();
                 overridePendingTransition(0, 0);
                 break;
+
+            case R.id.ibtn_search:
+                Intent search_intnet = new Intent(MypageActivity.this, SearchActivity.class);
+                startActivity(search_intnet);
+                overridePendingTransition(0, 0);
+                break;
         }
     }
 
@@ -128,6 +151,12 @@ public class MypageActivity extends AppCompatActivity implements View.OnClickLis
     public void onStart(){
         super.onStart();
         Log.i(TAG, "++ ON START ++");
+
+        if(!LoginManager.getIsLogin()){
+            setResult(Constants.RES_LOGIN_LOGOUT);
+            finish();
+        }
+
         mTracker.setScreenName("마이페이지");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         GoogleAnalytics.getInstance(this).reportActivityStart(this);

@@ -125,6 +125,7 @@ public class Utility {
             int check = (int)Math.pow(2, i);
 
             if((check&icon) == check){
+
                 System.out.println("아이콘 추출 : " + check);
                 itemList.add(check);
             }

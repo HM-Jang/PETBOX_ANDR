@@ -42,6 +42,7 @@ import com.petbox.shop.Item.AddOptionInfo;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.Item.GoodOptionInfo;
 import com.petbox.shop.Item.OptionInfo;
+import com.petbox.shop.Network.LoginManager;
 import com.petbox.shop.Utility.Utility;
 
 import org.apache.http.HttpEntity;
@@ -488,25 +489,42 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.btn_good_info_buy:
+
                 linear_bottom2.setVisibility(View.VISIBLE);
                 relative_bottom.setVisibility(View.INVISIBLE);
+
                 //Toast.makeText(this, "buy", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.btn_good_info_buy_ok:
                 //Toast.makeText(this, "buy_ok", Toast.LENGTH_SHORT).show();
-                HttpPostManager httpPostManager = new HttpPostManager(this);
-                httpPostManager.start();
 
-                Intent gocart = new Intent(this,CartListWebView.class);
-                startActivity(gocart);
+                if(LoginManager.getIsLogin()){
+                    HttpPostManager httpPostManager = new HttpPostManager(this);
+                    httpPostManager.start();
+
+                    Intent gocart = new Intent(this,CartListWebView.class);
+                    startActivity(gocart);
+                }else{
+                    Intent intent = new Intent(GoodInfoActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
 
                 break;
 
             case R.id.btn_good_info_cart_ok:
-                Toast.makeText(this, "장바구니에 추가 되었습니다.", Toast.LENGTH_SHORT).show();
-                httpPostManager = new HttpPostManager(this);
-                httpPostManager.start();
+
+                //로그인 되어있을 시
+                if(LoginManager.getIsLogin()){
+                    Toast.makeText(this, "장바구니에 추가 되었습니다.", Toast.LENGTH_SHORT).show();
+                    HttpPostManager httpPostManager = new HttpPostManager(this);
+                    httpPostManager.start();
+                }else{ // 로그인 안되어있을 시
+                    Intent intent = new Intent(GoodInfoActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
                 break;
 
             case R.id.tv_good_info_submenu_on:
@@ -648,7 +666,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         order_price = params.get("all_price");
 
-        tv_all_price.setText("총상품가 : " + Utility.replaceComma(""+order_price) + "원");
+        tv_all_price.setText("총상품가 : " + Utility.replaceComma("" + order_price) + "원");
     }
 
     @Override
@@ -741,18 +759,39 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 nameValuePairs.add(new BasicNameValuePair("multi_opt[0][]", "나우스몰브리드퍼피2.72kg"));
                 */
 
-                if(optionNamesSize <= 1){   // 구매옵션 0~1개
-                    nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", item.name));
-                    nameValuePairs.add(new BasicNameValuePair("multi_ea[" + count + "]", Integer.toString(item.order_count)));
-                }else if(optionNamesSize == 2){  // 구매옵션 2개짜리(이중옵션)
+                /*
+                if(optionNamesSize == 2){  // 구매옵션 2개짜리(이중옵션)
                     String[] optionNames = item.name.split("/");
                     nameValuePairs.add(new BasicNameValuePair("multi_ea[" + count + "]", Integer.toString(item.order_count)));
                     nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", optionNames[0]));
                     nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", optionNames[1]));
-
-                }else{  // 필요없음
+                    //count++;
+                    //continue;
+                }else if(optionNamesSize == 1 || optionNamesSize == 0){
+                    nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", item.name));
+                    nameValuePairs.add(new BasicNameValuePair("multi_ea[" + count + "]", Integer.toString(item.order_count)));
+                }else{
                     nameValuePairs.add(new BasicNameValuePair("ea",Integer.toString(item.order_count)));
                 }
+                */
+
+                if(optionNamesSize != 0 ){   // 구매옵션 0개 이상?
+
+                    if(optionNamesSize == 2){  // 구매옵션 2개짜리(이중옵션)
+                        String[] optionNames = item.name.split("/");
+                        nameValuePairs.add(new BasicNameValuePair("multi_ea[" + count + "]", Integer.toString(item.order_count)));
+                        nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", optionNames[0]));
+                        nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", optionNames[1]));
+                        count++;
+                        continue;
+                    }
+
+                    nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", item.name));
+                    nameValuePairs.add(new BasicNameValuePair("multi_ea[" + count + "]", Integer.toString(item.order_count)));
+                }else{  // 필요없음 // 구매옵션 0개
+                    nameValuePairs.add(new BasicNameValuePair("ea",Integer.toString(item.order_count)));
+                }
+
 
                 System.out.println("multi_ea[" + count + "]" + " : " + item.order_count);
                 System.out.println("multi_opt[" + count + "][]" + " : " + item.name);

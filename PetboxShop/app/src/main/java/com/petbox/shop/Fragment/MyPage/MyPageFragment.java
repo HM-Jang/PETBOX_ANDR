@@ -27,6 +27,7 @@ import com.petbox.shop.Delegate.MyPageDelegate;
 import com.petbox.shop.Item.CouponInfo;
 import com.petbox.shop.JsonParse;
 import com.petbox.shop.MainActivity;
+import com.petbox.shop.MypageActivity;
 import com.petbox.shop.MypageAppSettingActivity;
 import com.petbox.shop.MypageCouponList;
 import com.petbox.shop.MypageCusomerActivity;
@@ -264,7 +265,6 @@ public class MyPageFragment extends Fragment implements View.OnClickListener{
                 Log.e("AppSet", "Constants.REQ_LOGIN = "+ Constants.REQ_LOGIN);
                 startActivityForResult(appset_intent, Constants.REQ_LOGIN);
                 break;
-
         }
     }
 
