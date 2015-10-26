@@ -178,6 +178,8 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
         list_best = (ListView)v.findViewById(R.id.list_home_best);
         list_dc = (ListView)v.findViewById(R.id.list_home_dc);
 
+
+
         /***슬라이드**/
         viewPager = (ViewPager)v.findViewById(R.id.pager_best_good);
         circlePageIndicator = (CirclePageIndicator)v.findViewById(R.id.indicator_best_good);
@@ -394,9 +396,9 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
             case R.id.btn_slide_dog:
                 Log.e("Home2Fragment", "-------------------------onClick");
 
-                mTracker.send(new HitBuilders.EventBuilder().setCategory("펫박스 홈").setAction("강아지 버튼 클릭").build());
+                //mTracker.send(new HitBuilders.EventBuilder().setCategory("펫박스 홈").setAction("강아지 버튼 클릭").build());
 
-                Toast.makeText(getContext(), "GA TEST - 강아지 버튼", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "GA TEST - 강아지 버튼", Toast.LENGTH_SHORT).show();
 
                 params_1 = "?mdesign_no=1";
                 params_2 = "?mdesign_no=14";

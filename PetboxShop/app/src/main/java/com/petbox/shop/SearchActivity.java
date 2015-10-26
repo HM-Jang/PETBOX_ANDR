@@ -1,5 +1,6 @@
 package com.petbox.shop;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -8,9 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,7 +36,7 @@ import com.petbox.shop.Network.LoginManager;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class SearchActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
+public class SearchActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, View.OnKeyListener{
 
     public static final String TAG = "SearchAct";
     public static int page_num = 0;
@@ -76,6 +79,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         edit_search = (EditText)findViewById(R.id.edit_search);
 
         edit_search.setOnClickListener(this);
+        edit_search.setOnKeyListener(this);
 
         iv_search = (ImageView)findViewById(R.id.iv_search);
         iv_search.setOnClickListener(this);
@@ -289,6 +293,49 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     public void onBackPressed(){
         finish();
         overridePendingTransition(0, 0);
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+        if(keyCode == event.KEYCODE_ENTER){
+
+            String searchContent = edit_search.getText().toString();
+
+            if(!searchContent.isEmpty()){   //검색란이 비어있지 않을 때
+                //edit_search.setText("");
+                SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+                Date currentTime = new Date ( );
+
+                String today = format.format(currentTime);
+                new DBConnector(getApplicationContext()).insertToRecentSearch(searchContent, today);
+
+                String keyword = edit_search.getText().toString();
+
+                Intent intent = new Intent(this, SearchGoodActivity.class);
+                intent.putExtra("keyword", keyword);
+
+                //mTracker.send(new HitBuilders.EventBuilder().setCategory("검색").setAction("검색").setLabel(keyword).build());
+                startActivity(intent);
+
+                edit_search.setText("");
+
+                if(iv_logo.getVisibility() == View.GONE){
+                    iv_logo.setVisibility(View.VISIBLE);
+
+                    edit_search.setMovementMethod(null);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(edit_search.getWindowToken(), 0);
+                }
+
+            }else{
+                Toast.makeText(getApplicationContext(), "검색란이 비어있습니다.", Toast.LENGTH_SHORT).show();
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
 }

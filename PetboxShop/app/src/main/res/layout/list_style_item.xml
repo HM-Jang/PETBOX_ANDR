@@ -54,7 +54,7 @@
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:layout_gravity="right"
+                        android:layout_gravity="left"
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
@@ -102,6 +102,7 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:id="@+id/tv_list_orgin_price"
                             android:background="@drawable/text_cancel2"
+                            android:textColor="#8e8e8e"
                             android:text="12,000원"
                             android:textSize="11sp"/>
 
@@ -147,6 +148,7 @@
                         style="@style/customRatingBar"
                         android:numStars="5"
                         android:stepSize="0.5"
+                        android:isIndicator="true"
                         android:layout_gravity="bottom" />
 
                     <TextView

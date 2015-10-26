@@ -39,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:ems="10"
-                android:text="petbox1"
                 android:id="@+id/edit_login_id"
                 android:padding="10dp"
                 android:background="@drawable/border_set_1"
@@ -62,7 +61,6 @@
                 android:ems="10"
                 android:id="@+id/edit_login_pw"
                 android:layout_weight="1"
-                android:text="petbox8787"
                 android:background="@drawable/border_set_1"
                 android:hint="  비밀번호" />
         </LinearLayout>

@@ -571,7 +571,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                     OptionInfo optionItem = arrOption2List.get(firstOptionSelected).get(position);
 
                     item.sno = optionItem.sno;
-                    item.name = optionItem.opt1 + "/" + optionItem.opt2;
+                    item.name = optionItem.opt1 + "|" + optionItem.opt2;
                     item.count = optionItem.stock;
                     item.price = optionItem.price;
                     item.order_count = 1;
@@ -778,7 +778,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 if(optionNamesSize != 0 ){   // 구매옵션 0개 이상?
 
                     if(optionNamesSize == 2){  // 구매옵션 2개짜리(이중옵션)
-                        String[] optionNames = item.name.split("/");
+                        String[] optionNames = item.name.split("[|]");
                         nameValuePairs.add(new BasicNameValuePair("multi_ea[" + count + "]", Integer.toString(item.order_count)));
                         nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", optionNames[0]));
                         nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", optionNames[1]));
@@ -888,7 +888,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 }
                 */
                 String urlcon = "";
-                urlcon = "http://petbox.kr/shop/data/goods/" + data.getString("img_i");
+                urlcon = "http://petbox.kr/shop/data/goods/" + data.getString("img_l");     // 10-23 img_i img_l
                 ImageDownloader.download(urlcon, iv_good);
                 iv_good.setScaleType(ImageView.ScaleType.FIT_XY);
 
@@ -908,7 +908,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 */
                 //System.out.println("longdesc : " + longdesc);
 
-
+                /*
                 if(Build.VERSION.SDK_INT < 18){
                     webView.loadData(longdesc, "text/html", "UTF-8");
 
@@ -922,8 +922,25 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                     webView.setWebViewClient(new WebViewClient());
                     webView.loadData(longdesc, "text/html", "UTF-8");
                 }
+                */
 
-                img_i = data.getString("img_i");// 상품 이미지
+                longdesc = "<style>img{width:100%;} pi_1 iframe{width:100%;height:400px;}</style><div style='width:100%;text-align:center;'>"+longdesc+"</div>";
+                WebSettings settings = webView.getSettings();
+                if(Build.VERSION.SDK_INT < 18){
+                    settings.setJavaScriptEnabled(true);
+                    settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+                    webView.loadData(longdesc, "text/html", "UTF-8");
+                }else{
+                    settings.setUseWideViewPort(true);
+                    settings.setLoadWithOverviewMode(true);
+                    settings.setJavaScriptEnabled(true);
+                    webView.setWebViewClient(new WebViewClient());
+                    webView.loadData(longdesc, "text/html", "UTF-8");
+                }
+
+                /* 10-23일 img_i -> img_l */
+                img_i = data.getString("img_l");// 상품 이미지
+
                 int icon = Integer.parseInt(data.getString("icon"));    //상품 특성 아이콘
                 iconList = Utility.parseValidBinary(icon);
 
@@ -1109,10 +1126,18 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 }
 
 
+                int count = 0;
+
                 for(int i=1; i<=iconList.size(); i++){
                     int id = getResources().getIdentifier("icon"+iconList.get(i-1),"drawable" , "com.petbox.shop");
 
                     System.out.println("아이콘 세팅");
+                    int num = iconList.get(i-1);
+
+                    if(num == 1)
+                        continue;
+
+                    count++;
 
                     if(i==1){
                         iv_icon1.setImageResource(id);

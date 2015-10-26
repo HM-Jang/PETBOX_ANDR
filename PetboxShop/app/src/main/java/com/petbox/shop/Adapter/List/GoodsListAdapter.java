@@ -111,7 +111,7 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
 
         Log.e("rete_per",String.valueOf(rete_per));
 
-        if(rete_per == 0){
+        if(rete_per <= 0){
             rete = "펫박스가";
             holder.tv_rate.setText(rete);
             holder.tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
@@ -152,7 +152,7 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
             holder.tv_origin_price.setText(Utility.replaceComma(""+item.origin_price) + "원");
         }
 
-        holder.tv_price.setText(Utility.replaceComma(""+item.origin_price) + "원");
+        holder.tv_price.setText(Utility.replaceComma(""+item.price) + "원");
 
 
         int rating_person = item.rating_person;
@@ -167,6 +167,7 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
             holder.tv_rate_person.setVisibility(View.VISIBLE);
 
             holder.ratingBar.setRating(item.rating);
+            //holder.ratingBar.setRating(4);
             holder.tv_rate_person.setText("(" + item.rating_person + ")");
         }
 
@@ -176,6 +177,10 @@ public class GoodsListAdapter extends BaseAdapter implements View.OnClickListene
         ArrayList<Integer> iconList = Utility.parseValidBinary(item.icon);
 
         int count = 0;
+
+        holder.icon1.setVisibility(View.GONE);
+        holder.icon2.setVisibility(View.GONE);
+        holder.icon3.setVisibility(View.GONE);
 
         for(int i=1; i<=iconList.size(); i++){
             int id = mContext.getResources().getIdentifier("s_icon_"+iconList.get(i-1),"drawable" , "com.petbox.shop");

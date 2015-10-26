@@ -1,5 +1,6 @@
 package com.petbox.shop;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -7,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,11 +26,14 @@ import com.petbox.shop.Adapter.Pager.MyPagePagerAdapter;
 import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.CustomView.NonSwipeableViewPager;
 import com.petbox.shop.DB.Constants;
+import com.petbox.shop.DB.DBConnector;
 import com.petbox.shop.Network.LoginManager;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
-public class CategoryActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener{
+public class CategoryActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, View.OnKeyListener{
 
     public static final String TAG = "CategoryAct";
     public static int page_num = 0;
@@ -46,7 +52,6 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
     ImageView iv_logo, iv_search;
 
     int mainColor = 0;
-
     String bf="";
 
     Tracker mTracker;
@@ -68,8 +73,11 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
         mainColor = getResources().getColor(R.color.colorPrimary);
 
         edit_search = (EditText)findViewById(R.id.edit_search);
+        edit_search.setMovementMethod(null);
 
         edit_search.setOnClickListener(this);
+        edit_search.setOnKeyListener(this);
+
 
         iv_logo = (ImageView)findViewById(R.id.iv_logo);
         iv_logo.setOnClickListener(this);
@@ -165,6 +173,69 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
                 startActivity(mypage_intnet);
                 finish();
                 overridePendingTransition(0, 0);
+                break;
+
+            case R.id.edit_search:
+
+                // 검색창 short -> long
+                if(iv_logo.getVisibility() == View.VISIBLE){
+                    iv_logo.setVisibility(View.GONE);
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(edit_search, 0);
+
+
+                    // edit_search.setFocusable(true);
+                    //edit_search.setClickable(true);
+
+                    //검색창 long -> short
+                }else if(iv_logo.getVisibility() == View.GONE){
+                    iv_logo.setVisibility(View.VISIBLE);
+
+                    edit_search.setMovementMethod(null);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(edit_search.getWindowToken(), 0);
+                    //edit_search.setFocusable(false);
+                    //edit_search.setClickable(true);
+                    edit_search.setText("");
+                }
+
+                break;
+
+
+            case R.id.iv_search:
+                String searchContent = edit_search.getText().toString();
+
+                if(!searchContent.isEmpty()){   //검색란이 비어있지 않을 때
+                    //edit_search.setText("");
+                    SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+                    Date currentTime = new Date ( );
+
+                    String today = format.format(currentTime);
+                    new DBConnector(getApplicationContext()).insertToRecentSearch(searchContent, today);
+
+                    String keyword = edit_search.getText().toString();
+
+                    Intent intent = new Intent(this, SearchGoodActivity.class);
+                    intent.putExtra("keyword", keyword);
+
+                    mTracker.send(new HitBuilders.EventBuilder().setCategory("전체 카테고리").setAction("검색").setLabel(keyword).build());
+
+                    startActivity(intent);
+
+                    edit_search.setText("");
+
+                    if(iv_logo.getVisibility() == View.GONE){
+                        iv_logo.setVisibility(View.VISIBLE);
+
+                        edit_search.setMovementMethod(null);
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(edit_search.getWindowToken(), 0);
+                    }
+
+                }else{
+                    Toast.makeText(getApplicationContext(), "검색란이 비어있습니다.", Toast.LENGTH_SHORT).show();
+                }
 
                 break;
         }
@@ -274,5 +345,52 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+        if(keyCode == event.KEYCODE_ENTER){
+
+            String searchContent = edit_search.getText().toString();
+
+            if(!searchContent.equals("")){   //검색란이 비어있지 않을 때
+                //edit_search.setText("");
+                SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+                Date currentTime = new Date ( );
+
+                String today = format.format(currentTime);
+                new DBConnector(getApplicationContext()).insertToRecentSearch(searchContent, today);
+
+                String keyword = edit_search.getText().toString();
+
+                Intent intent = new Intent(this, SearchGoodActivity.class);
+                intent.putExtra("keyword", keyword);
+
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("전체 카테고리").setAction("검색").setLabel(keyword).build());
+
+
+
+                edit_search.setText("");
+
+                if(iv_logo.getVisibility() == View.GONE){
+                    iv_logo.setVisibility(View.VISIBLE);
+
+                    edit_search.setMovementMethod(null);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(edit_search.getWindowToken(), 0);
+                }
+
+                startActivity(intent);
+                return true;
+
+            }else{
+                Toast.makeText(getApplicationContext(), "검색란이 비어있습니다.", Toast.LENGTH_SHORT).show();
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

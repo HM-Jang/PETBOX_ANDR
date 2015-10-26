@@ -98,19 +98,21 @@ public class MypageCouponList extends AppCompatActivity implements View.OnClickL
             if(coupon_list.equals("null")){
 
             }else {
-                JSONArray CouponListArray = new JSONArray(coupon_list);
                 mItemList = new ArrayList<CouponInfo>();
+                JSONArray CouponListArray = new JSONArray(coupon_list);
+                JSONObject Coupon_obs = CouponListArray.getJSONObject(0);
+                JSONArray CouponListArrayobj = Coupon_obs.getJSONArray("goods");
                 CouponInfo info[] = new CouponInfo[CouponListArray.length()];
 
                 for (int k = 0; k < CouponListArray.length(); k++) {
-                    JSONObject Coupon_object = CouponListArray.getJSONObject(k);
+                    JSONObject Coupon_object = CouponListArrayobj.getJSONObject(k);
 
                     info[k] = new CouponInfo(sno, coupon_name, coupon_type, coupon_price, status, sdate, edate);
 
                     info[k].sno = Coupon_object.getString("sno");
                     info[k].coupon_name = Coupon_object.getString("coupon");
-                    info[k].coupon_type = Coupon_object.getString("coupon_type");
-                    info[k].coupon_price = Coupon_object.getString("coupon_price");
+                    info[k].coupon_type = Coupon_object.getString("coupontype");
+                    info[k].coupon_price = Coupon_object.getString("price");
                     info[k].status = Coupon_object.getString("cnt");
                     info[k].sdate = Coupon_object.getString("sdate");
                     info[k].edate = Coupon_object.getString("edate");

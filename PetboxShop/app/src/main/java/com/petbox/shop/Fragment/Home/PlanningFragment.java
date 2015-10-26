@@ -143,6 +143,12 @@ public class PlanningFragment extends Fragment implements View.OnClickListener{
         mItemList_dog = PlanningManager.convertArrayList(PlanningManager.getDogTree().root.getChildList());
         mItemList_cat = PlanningManager.convertArrayList(PlanningManager.getCatTree().root.getChildList());
 
+        if(mItemList_dog.size() == 0){
+            PlanningManager.init();
+        }else if(mItemList_cat.size() == 0){
+            PlanningManager.init();
+        }
+
         mitemList = mItemList_dog;
         listAdapter_dog = new PlanningListAdapter(getContext() ,mItemList_dog, 0);
         listAdapter_cat = new PlanningListAdapter(getContext() ,mItemList_cat, 1);

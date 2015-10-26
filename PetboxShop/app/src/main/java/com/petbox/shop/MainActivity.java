@@ -24,6 +24,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,7 +74,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, CategoryDelegate, MyPageDelegate, ViewPager.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, CategoryDelegate, MyPageDelegate, ViewPager.OnPageChangeListener, View.OnKeyListener {
 
     public static final String TAG = "MainAct";
 
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-    private static final String SENDER_ID = "1097126896520";
+    private static final String SENDER_ID = "965353967497";
     private String myResult;
 
     private GoogleCloudMessaging _gcm;
@@ -218,6 +219,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
 
+        if (checkPlayServices())
+        {
+            _gcm = GoogleCloudMessaging.getInstance(this);
+            _regId = getRegistrationId();
+            if (TextUtils.isEmpty(_regId))
+                registerInBackground();
+        }
+        else
+        {
+            Log.i("MainActivity.java | onCreate", "|No valid Google Play Services APK found.|");
+        }
+
         String strDate = dateFormat.format(date1);
 
         /*
@@ -249,11 +262,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //setSupportActionBar(toolbar);
 
         edit_search = (EditText)findViewById(R.id.edit_search);
+        edit_search.setMovementMethod(null);
         //edit_search.setFocusable(false);
         //edit_search.setClickable(true);
 
         edit_search.setOnClickListener(this);
-
+        edit_search.setOnKeyListener(this);
         iv_search = (ImageView)findViewById(R.id.iv_search);
         iv_search.setOnClickListener(this);
 
@@ -286,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentManager = getSupportFragmentManager();
         mViewPager.setOffscreenPageLimit(5);
 
-        edit_search.setMovementMethod(null);
+
 
         homePagerAdapter = new HomePagerAdapter(fragmentManager);
         categoryPagerAdapter = new CategoryPagerAdapter(fragmentManager, this);
@@ -880,7 +894,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void HttpPostData(String reg_id) {
 
         try { //원래는 서버url 쓰라고 써있었음
-            URL url = new URL("http://dd.innopolis.or.kr/gcm_msg/gcm_reg_insert.php");       // URL 설정
+            URL url = new URL("http://petbox.kr/service/gcm_insert.php");       // URL 설정
             HttpURLConnection http = (HttpURLConnection) url.openConnection();   // 접속
 
             //--------------------------
@@ -891,7 +905,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             http.setDoInput(true);
             http.setDoOutput(true);
             http.setRequestMethod("POST");
-
 
             http.setRequestProperty("content-type", "application/x-www-form-urlencoded");
             StringBuffer buffer = new StringBuffer();
@@ -1048,6 +1061,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+        if(keyCode == event.KEYCODE_ENTER){
+
+            String searchContent = edit_search.getText().toString();
+
+            if(!searchContent.isEmpty()){   //검색란이 비어있지 않을 때
+                //edit_search.setText("");
+                SimpleDateFormat format = new SimpleDateFormat("MM-dd");
+                Date currentTime = new Date ( );
+
+                String today = format.format(currentTime);
+                new DBConnector(getApplicationContext()).insertToRecentSearch(searchContent, today);
+
+                String keyword = edit_search.getText().toString();
+
+                Intent intent = new Intent(this, SearchGoodActivity.class);
+                intent.putExtra("keyword", keyword);
+
+                mTracker.send(new HitBuilders.EventBuilder().setCategory(CurrentScreenName).setAction("검색").setLabel(keyword).build());
+
+                edit_search.setText("");
+
+                if(iv_logo.getVisibility() == View.GONE){
+                    iv_logo.setVisibility(View.VISIBLE);
+
+                    edit_search.setMovementMethod(null);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(edit_search.getWindowToken(), 0);
+                }
+
+                startActivity(intent);
+                return true;
+
+            }else{
+                Toast.makeText(getApplicationContext(), "검색란이 비어있습니다.", Toast.LENGTH_SHORT).show();
+            }
+
+            return true;
+        }
+
+        return false;
     }
     // End of Back method
 }

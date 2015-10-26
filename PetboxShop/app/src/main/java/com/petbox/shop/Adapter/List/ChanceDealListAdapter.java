@@ -108,7 +108,7 @@ public class ChanceDealListAdapter extends BaseAdapter implements View.OnClickLi
 
         String rete="";
         int rete_per = (int)(100- Math.ceil((Float.parseFloat(item.price) / Float.parseFloat(item.origin_price) * 100)));
-        if(rete_per == 0){
+        if(rete_per <= 0){
             rete = "펫박스가";
         }else{
             rete = String.valueOf(rete_per);

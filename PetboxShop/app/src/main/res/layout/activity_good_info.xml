@@ -162,7 +162,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/linear_good_info_bottom2_bottom"

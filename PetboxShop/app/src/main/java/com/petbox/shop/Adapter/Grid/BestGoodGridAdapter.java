@@ -107,7 +107,8 @@ public class BestGoodGridAdapter extends BaseAdapter implements View.OnClickList
 
         String rete="";
         int rete_per = (int)(100- Math.ceil((Float.parseFloat(item.price) / Float.parseFloat(item.origin_price) * 100)));
-        if(rete_per == 0){
+
+        if(rete_per <= 0){
             rete = "펫박스가";
             holder.tv_rate.setText(rete);
             holder.tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
@@ -157,8 +158,11 @@ public class BestGoodGridAdapter extends BaseAdapter implements View.OnClickList
 
         ArrayList<Integer> iconList = Utility.parseValidBinary(item.icon);
 
-        int count = 0;
+        holder.icon1.setVisibility(View.GONE);
+        holder.icon2.setVisibility(View.GONE);
+        holder.icon3.setVisibility(View.GONE);
 
+        int count = 0;
         for(int i=1; i<=iconList.size(); i++){
             int id = mContext.getResources().getIdentifier("s_icon_"+iconList.get(i-1),"drawable" , "com.petbox.shop");
 

@@ -496,7 +496,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         nameValuePairs.add(new BasicNameValuePair("id_chk", "1"));
         nameValuePairs.add(new BasicNameValuePair("pwd_chk", "1"));
         nameValuePairs.add(new BasicNameValuePair("passwordSkin", "y"));
-        nameValuePairs.add(new BasicNameValuePair("ex_en", "y"));   // 웹서버에서 한글 인코딩 처리 유/무
+        nameValuePairs.add(new BasicNameValuePair("ex_en", "hm"));   // 웹서버에서 한글 인코딩 처리 유/무
         nameValuePairs.add(new BasicNameValuePair("android", "y"));
 
         nameValuePairs.add(new BasicNameValuePair("m_id", email_id));
@@ -569,7 +569,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             dialog.show();
         }else if(responseCode == Constants.HTTP_RESPONSE_REGIST_ERROR_INPUT_TYPE_ID){
             //Toast.makeText(this, "서버(804) : 비밀번호 형식 틀림", Toast.LENGTH_SHORT).show();
-            dialog = new RegistFailedDialog(this, "회원가입 실패", "서버(804) \n 비밀번호 형식 틀림");
+            dialog = new RegistFailedDialog(this, "회원가입 실패", "서버(804) \n 아이디 형식 틀림");
             dialog.show();
         }else if(responseCode == Constants.HTTP_RESPONSE_REGIST_SUCCESS){
             //Toast.makeText(this, "서버(805) : 가입 성공 ", Toast.LENGTH_SHORT).show();

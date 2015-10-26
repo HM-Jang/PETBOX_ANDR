@@ -311,7 +311,7 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:layout_weight="1"
                         android:textStyle="bold"
-                        android:text="앱셋팅"
+                        android:text="앱 설정"
                         android:textSize="20sp"
                         android:padding="15dp"
                         android:id="@+id/tv_app_setting" />

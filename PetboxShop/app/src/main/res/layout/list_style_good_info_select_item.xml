@@ -18,6 +18,7 @@
             android:textColor="#f000" />
 
         <TextView
+            android:visibility="invisible"
             android:id="@+id/tv_list_good_option_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,6 +40,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="6500원"
+            android:textSize="15sp"
             android:textColor="#f000" />
 
     </FrameLayout>
