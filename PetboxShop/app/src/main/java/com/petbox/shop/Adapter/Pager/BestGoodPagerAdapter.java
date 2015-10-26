@@ -2,6 +2,7 @@ package com.petbox.shop.Adapter.Pager;
 
 import android.content.Context;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -14,11 +15,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.petbox.shop.CtegoryGoodsActivity;
 import com.petbox.shop.DB.DBConnector;
+import com.petbox.shop.GoodInfoActivity;
 import com.petbox.shop.ImageDownloader;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.Item.SlideInfo;
 import com.petbox.shop.R;
+import com.petbox.shop.SearchGoodActivity;
 
 import java.util.ArrayList;
 
@@ -96,11 +100,24 @@ public class BestGoodPagerAdapter extends PagerAdapter {
 
         final int pos = position;
 
+        Intent slider_link = null;
+        if(item.type.equals("kw")){
+            slider_link = new Intent(mContext, SearchGoodActivity.class);
+            slider_link.putExtra("keyword", item.type_data);
+        }else if(item.type.equals("goodsno")){
+            slider_link = new Intent(mContext, GoodInfoActivity.class);
+            slider_link.putExtra("goodsno", item.type_data);
+        }else if(item.type.equals("category")){
+            slider_link = new Intent(mContext, CtegoryGoodsActivity.class);
+            slider_link.putExtra("cate_num", item.type_data);
+        }
+
+        final Intent finalSlider_link = slider_link;
         imageView.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, pos + "번째, 이미지 클릭", Toast.LENGTH_SHORT).show();
+                mContext.startActivity(finalSlider_link);
             }
         });
 

@@ -10,8 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.petbox.shop.Adapter.List.PopularSearchListAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.Item.CouponInfo;
 import com.petbox.shop.Item.PlanningItemInfo;
 import com.petbox.shop.Item.PopularSearchInfo;
@@ -51,6 +55,7 @@ public class PopularSearchFragment extends Fragment {
     String InsertDB = "";
     String search_best_list="";
 
+    Tracker mTracker;
 
     /**
      * Use this factory method to create a new instance of
@@ -75,6 +80,18 @@ public class PopularSearchFragment extends Fragment {
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -87,6 +104,10 @@ public class PopularSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
+        mTracker.setScreenName("인기검색어");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
         View v = inflater.inflate(R.layout.fragment_popular_search, container, false);
 
         mItemList = new ArrayList<PopularSearchInfo>();

@@ -22,6 +22,7 @@ public class RegistFailedDialog extends Dialog implements View.OnClickListener{
 
     Context mContext;
     Button btn_ok;
+    boolean isSuccess = false;
 
     public RegistFailedDialog(Context context) {
         super(context);
@@ -34,6 +35,14 @@ public class RegistFailedDialog extends Dialog implements View.OnClickListener{
         this.title = title;
         this.content = content;
     }
+
+    public RegistFailedDialog(Context context, String title, String content, boolean isSuccess){
+        super(context);
+        mContext = context;
+        this.title = title;
+        this.content = content;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -55,6 +64,14 @@ public class RegistFailedDialog extends Dialog implements View.OnClickListener{
 
         btn_ok = (Button)findViewById(R.id.btn_dialog_regist_ok);
         btn_ok.setOnClickListener(this);
+
+        if(!isSuccess){
+
+        }else{
+            btn_ok.setVisibility(View.INVISIBLE);
+        }
+
+
     }
 
     @Override

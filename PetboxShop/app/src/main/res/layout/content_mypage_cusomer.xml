@@ -7,10 +7,58 @@
     tools:showIn="@layout/activity_mypage_cusomer"
     tools:context="com.petbox.shop.MypageCusomerActivity">
 
-    <WebView
+    <LinearLayout
+        android:id="@+id/linear_service_center"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingBottom="30dp">
+
+
+        <LinearLayout
+            android:paddingTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_service_center_call"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#ff8c7c77"
+                android:text="문의전화"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#ffff"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_service_center_email"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/colorPrimary"
+                android:text="메일 보내기"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#ffff"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_above="@id/linear_service_center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/wv_customer"
-        android:layout_gravity="center_horizontal" />
+        android:src="@drawable/img_service_center"
+        android:scaleType="fitCenter"/>
+
 
 </RelativeLayout>

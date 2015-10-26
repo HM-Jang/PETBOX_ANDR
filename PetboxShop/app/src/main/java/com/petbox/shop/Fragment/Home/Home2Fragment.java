@@ -16,9 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.petbox.shop.Adapter.List.GoodsListAdapter;
 import com.petbox.shop.Adapter.Pager.BestGoodPagerAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.DB.DBConnector;
 import com.petbox.shop.Item.BestGoodInfo;
@@ -82,7 +86,7 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
 
     String params_1,params_2,params_3;
 
-
+    Tracker mTracker;
 
     /**
      * Use this factory method to create a new instance of
@@ -109,6 +113,12 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
+
+        /*
+        System.out.println("SEO - HOME2 ++ ON START ++");
+
+        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+
         params_1 = "?mdesign_no=1";
         params_2 = "?mdesign_no=14";
         params_3 = "?mdesign_no=5";
@@ -134,17 +144,26 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
         list_dc.setAdapter(bestListAdapter);
         Utility.setListViewHeightBasedOnChildren(list_dc);
 
-
+        */
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e("Home2Fragment", "-------------------------onCreate");
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        //GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
     }
 
     @Override
@@ -158,6 +177,8 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
         mainColor = getResources().getColor(R.color.colorPrimary);
         list_best = (ListView)v.findViewById(R.id.list_home_best);
         list_dc = (ListView)v.findViewById(R.id.list_home_dc);
+
+
 
         /***슬라이드**/
         viewPager = (ViewPager)v.findViewById(R.id.pager_best_good);
@@ -203,6 +224,35 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+
+
+        Log.e("Home2Fragment","%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%onStart");
+        /** 시작한다 시작해 ! **/
+        params_1 = "?mdesign_no=1";
+        params_2 = "?mdesign_no=14";
+        params_3 = "?mdesign_no=5";
+
+        slideList = home_slider(params_3);
+        bestGoodPagerAdapter = new BestGoodPagerAdapter(getContext() ,slideList);
+        viewPager.setAdapter(bestGoodPagerAdapter);
+
+        indicator = circlePageIndicator;
+        indicator.setViewPager(viewPager);
+
+        circlePageIndicator.setPageColor(0xFF6d6d6d);   // Normal 원 색상
+        circlePageIndicator.setFillColor(mainColor);   //선택된 원 색상
+        circlePageIndicator.setStrokeColor(0x00000000); //테두리 INVISIBLE
+
+        bestItemList = goods_list(params_1);
+        bestListAdapter = new GoodsListAdapter(getContext(), bestItemList);
+        list_best.setAdapter(bestListAdapter);
+        Utility.setListViewHeightBasedOnChildren(list_best);
+
+        bestItemList = goods_list(params_2);
+        bestListAdapter = new GoodsListAdapter(getContext(), bestItemList);
+        list_dc.setAdapter(bestListAdapter);
+        Utility.setListViewHeightBasedOnChildren(list_dc);
+        /** 혼란하다 혼란해! **/
 
         timerThread.start();
 
@@ -345,6 +395,10 @@ public class Home2Fragment extends Fragment implements View.OnClickListener {
         switch(id){
             case R.id.btn_slide_dog:
                 Log.e("Home2Fragment", "-------------------------onClick");
+
+                //mTracker.send(new HitBuilders.EventBuilder().setCategory("펫박스 홈").setAction("강아지 버튼 클릭").build());
+
+                //Toast.makeText(getContext(), "GA TEST - 강아지 버튼", Toast.LENGTH_SHORT).show();
 
                 params_1 = "?mdesign_no=1";
                 params_2 = "?mdesign_no=14";

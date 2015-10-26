@@ -1,6 +1,7 @@
 package com.petbox.shop.Adapter.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.util.Log;
@@ -9,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.petbox.shop.GoodInfoActivity;
 import com.petbox.shop.ImageDownloader;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.R;
@@ -21,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Created by petbox on 2015-09-16.
  */
-public class ChanceDealListAdapter extends BaseAdapter {
+public class ChanceDealListAdapter extends BaseAdapter implements View.OnClickListener{
 
     Context mContext;
     ArrayList<BestGoodInfo> mItemList;
@@ -85,6 +88,9 @@ public class ChanceDealListAdapter extends BaseAdapter {
             holder.ratingBar = (RatingBar) convertView.findViewById(R.id.rb_list);
             holder.tv_rate_person = (TextView) convertView.findViewById(R.id.tv_list_rate_person);
 
+            holder.ll_list_item = (LinearLayout) convertView.findViewById(R.id.ll_list_item);
+            holder.ll_list_item.setOnClickListener(this);
+
             LayerDrawable stars = (LayerDrawable) holder.ratingBar.getProgressDrawable();
 
             stars.getDrawable(2).setColorFilter(mainColor, PorterDuff.Mode.SRC_ATOP);
@@ -102,7 +108,7 @@ public class ChanceDealListAdapter extends BaseAdapter {
 
         String rete="";
         int rete_per = (int)(100- Math.ceil((Float.parseFloat(item.price) / Float.parseFloat(item.origin_price) * 100)));
-        if(rete_per == 0){
+        if(rete_per <= 0){
             rete = "펫박스가";
         }else{
             rete = String.valueOf(rete_per);
@@ -135,7 +141,22 @@ public class ChanceDealListAdapter extends BaseAdapter {
             holder.tv_rate_person.setText("(" + item.rating_person + ")");
         }
 
+        holder.ll_list_item.setTag(holder.ll_list_item.getId(), item.goodsno);
+
         return convertView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        Intent goodsinfointent = new Intent(mContext, GoodInfoActivity.class);
+        goodsinfointent.setFlags(goodsinfointent.FLAG_ACTIVITY_NEW_TASK);
+        switch(id){
+            case R.id.ll_grid_item:
+                goodsinfointent.putExtra("goodsno",String.valueOf(v.getTag(id)));
+                mContext.startActivity(goodsinfointent);
+                break;
+        }
     }
 
     public class ViewHolder{
@@ -146,5 +167,6 @@ public class ChanceDealListAdapter extends BaseAdapter {
         TextView tv_price; // 할인적용된 실제 판매 가격
         RatingBar ratingBar;    //레이팅바
         TextView tv_rate_person; // 점수준 사람
+        LinearLayout ll_list_item;
     }
 }

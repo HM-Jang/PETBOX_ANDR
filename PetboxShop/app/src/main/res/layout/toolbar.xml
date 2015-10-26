@@ -18,7 +18,7 @@
                 android:layout_height="30dp"
                 android:id="@+id/ibtn_menu_wish"
                 android:layout_gravity="left|center_vertical"
-                android:src="@drawable/nav_wish"
+                android:src="@drawable/ibtn_menu_category"
                 android:layout_margin="5dp"
                 android:background="#00ffffff"
                 android:layout_alignParentLeft="true"
@@ -59,7 +59,7 @@
                 android:layout_toLeftOf="@+id/ibtn_menu_cart"
                 android:layout_centerVertical="true">
 
-                <FrameLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingLeft="3dp"
@@ -67,23 +67,32 @@
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp">
 
-                    <EditText
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/edit_search"
-                        android:layout_gravity="center"
-                        android:background="@drawable/bg_search"
-                        android:editable="true"
-                        android:enabled="true" />
-                </FrameLayout>
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_search">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:id="@+id/iv_search"
-                    android:layout_gravity="center_vertical|right"
-                    android:src="@drawable/btn_search"
-                    android:paddingRight="6dp" />
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/iv_search"
+                            android:layout_alignParentRight="true"
+                            android:src="@drawable/btn_search"
+                            android:paddingRight="6dp" />
+
+                        <EditText
+                            android:layout_toLeftOf="@id/iv_search"
+                            android:background="#0000"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/edit_search"
+                            android:gravity="center_vertical"
+                            android:singleLine="true" />
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
+
 
             </FrameLayout>
         </RelativeLayout>

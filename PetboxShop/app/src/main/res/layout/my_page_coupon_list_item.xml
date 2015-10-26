@@ -7,13 +7,13 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="70dp"
         android:background="@drawable/border_set_1">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:gravity="center_vertical"
-            android:layout_height="30dp">
+            android:layout_height="25dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -21,7 +21,8 @@
                 android:text="[2,000원] 펫박스 앱 전용 캐시 2,000원 지급"
                 android:id="@+id/tv_coupon_name"
                 android:textStyle="bold"
-                android:textSize="10sp"
+                android:textColor="#000000"
+                android:textSize="13sp"
                 android:padding="5dp"
                 android:layout_weight="1"/>
 
@@ -32,7 +33,7 @@
                 android:src="@drawable/coupon_unser"
                 android:scaleType="fitXY"/>
 
-            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
@@ -43,6 +44,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="2015.09.01~2015.09.30 /*3,000원 할인 *2만원 이상 구매시"
+                android:textColor="#000000"
                 android:id="@+id/tv_coupon_info"
                 android:textSize="10sp"
                 android:padding="5dp"/>
@@ -50,6 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#737373"
                 android:text="*9월30일까지 사용 가능"
                 android:id="@+id/tv_coupon_limit"
                 android:textSize="10sp"

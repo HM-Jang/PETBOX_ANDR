@@ -20,45 +20,117 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linear_home_best"
-        android:layout_below="@id/header_home_slide">
+        android:id="@+id/linear_home_dog"
+        android:layout_below="@id/header_home_slide"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <ImageView
-            android:layout_width="170dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linear_home_best">
+
+                <ImageView
+                    android:layout_width="170dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/petboxhome_best"
+                    android:scaleType="fitXY"/>
+
+            </LinearLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:id="@+id/list_home_best"
+                android:layout_below="@id/linear_home_best"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linear_home_dc"
+                    android:layout_below="@id/list_home_best">
+
+                <ImageView
+                    android:layout_width="170dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/petboxhome_chancedeal"
+                    android:scaleType="fitXY"/>
+
+
+            </LinearLayout>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:id="@+id/list_home_dc"
+                android:layout_below="@id/linear_home_dc"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:src="@drawable/best_deal"/>
+            android:id="@+id/linear_home_cat"
+            android:layout_below="@id/header_home_slide"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linear_home_best_cat">
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:id="@+id/list_home_best"
-        android:layout_below="@id/linear_home_best"/>
+                <ImageView
+                    android:layout_width="170dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/petboxhome_best"
+                    android:scaleType="fitXY"/>
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linear_home_dc"
-        android:layout_below="@id/list_home_best">
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:id="@+id/list_home_best_cat"
+                android:layout_below="@id/linear_home_best_cat"/>
 
-        <ImageView
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:src="@drawable/chance_deal"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/linear_home_dc_cat"
+                android:layout_below="@id/list_home_best_cat">
 
+                <ImageView
+                    android:layout_width="170dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/petboxhome_chancedeal"
+                    android:scaleType="fitXY"/>
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:id="@+id/list_home_dc"
-        android:layout_below="@id/linear_home_dc"/>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:id="@+id/list_home_dc_cat"
+                android:layout_below="@id/linear_home_dc_cat"/>
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 

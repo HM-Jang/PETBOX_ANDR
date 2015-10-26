@@ -74,13 +74,23 @@
                 android:inputType="textPassword"
                 android:hint=" * 비밀번호"/>
 
-            <EditText
-                android:id="@+id/edit_regist_pw_re"
+            <LinearLayout
+                android:paddingTop="1dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_black"
-                android:inputType="textPassword"
-                android:hint=" * 비밀번호 확인"/>
+                android:layout_height="wrap_content">
+
+                <EditText
+
+                    android:id="@+id/edit_regist_pw_re"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_black"
+                    android:inputType="textPassword"
+                    android:hint=" * 비밀번호 확인"/>
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 

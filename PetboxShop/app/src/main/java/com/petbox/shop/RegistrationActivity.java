@@ -23,6 +23,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.CustomView.RegistFailedDialog;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Delegate.HttpPostDelegate;
@@ -74,12 +78,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     /*Http Post*/
     String email_id, name, pw, phone, animal_type,varieties, age, weight, allergy, allergy_etc, recommend_id, mailling, sms = "";
 
-    ImageView iv_regist_ok;
+    RegistFailedDialog dialog;
+
+    Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("회원가입");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         edit_email = (EditText) findViewById(R.id.edit_regist_email);
         edit_name = (EditText) findViewById(R.id.edit_regist_name);
@@ -195,11 +205,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
+        /*
         iv_regist_ok = (ImageView) findViewById(R.id.iv_regist_ok);
-
-        //iv_regist_ok.setImageBitmap(getBitmapFromURL("http://petbox.godohosting.com/files/petbox_images/reg_ok.jpg"));
-
         ImageDownloader.download("http://petbox.godohosting.com/files/petbox_images/reg_ok.jpg", iv_regist_ok);
+        */
 
         /*
         URL imageURL = null;
@@ -222,6 +231,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
         */
     }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -371,6 +393,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     isVisible_use = true;
                     frame_use_contract.setVisibility(View.VISIBLE);
                     btn_use_contract.setText("내용접기 ▲");
+                    mTracker.send(new HitBuilders.EventBuilder().setCategory("회원가입").setAction("이용약관 펼치기").build());
                     //sc_main.fullScroll(View.FOCUS_DOWN);
 
                 } else {  //보임 상태일때,
@@ -386,6 +409,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     isVisible_info = true;
                     frame_info_contract.setVisibility(View.VISIBLE);
                     btn_info_contract.setText("내용접기 ▲");
+                    mTracker.send(new HitBuilders.EventBuilder().setCategory("회원가입").setAction("개인정보 수집 및 이용안내 펼치기").build());
                     //sc_main.fullScroll(View.FOCUS_DOWN);
 
                 } else {  //보임 상태일때,
@@ -472,7 +496,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         nameValuePairs.add(new BasicNameValuePair("id_chk", "1"));
         nameValuePairs.add(new BasicNameValuePair("pwd_chk", "1"));
         nameValuePairs.add(new BasicNameValuePair("passwordSkin", "y"));
-        nameValuePairs.add(new BasicNameValuePair("ex_en", "y"));   // 웹서버에서 한글 인코딩 처리 유/무
+        nameValuePairs.add(new BasicNameValuePair("ex_en", "hm"));   // 웹서버에서 한글 인코딩 처리 유/무
         nameValuePairs.add(new BasicNameValuePair("android", "y"));
 
         nameValuePairs.add(new BasicNameValuePair("m_id", email_id));
@@ -511,8 +535,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         }
 
-        if(!recommend_id.equals(""))
+        if(!recommend_id.equals("")) {
             nameValuePairs.add(new BasicNameValuePair("recommid", recommend_id));
+
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("회원가입").setAction("추천인 입력").build());
+        }
 
         //System.out.println("malling : " + mailling + "// sms : " + sms);
 
@@ -526,29 +553,34 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void afterRunningHttpPost(int responseCode) {
-        Toast.makeText(this, responseCode+"", Toast.LENGTH_SHORT).show();
+        //.makeText(this, responseCode+"", Toast.LENGTH_SHORT).show();
 
         if(responseCode == Constants.HTTP_RESPONSE_REGIST_ERROR_INPUT_TYPE_ID){
             //Toast.makeText(this, "서버(801) : 이메일 형식 틀림", Toast.LENGTH_SHORT).show();
-            RegistFailedDialog dialog = new RegistFailedDialog(this, "회원가입 실패", "서버(801) \n 이메일 형식 틀림");
+            dialog = new RegistFailedDialog(this, "회원가입 실패", "서버(801) \n 이메일 형식 틀림");
             dialog.show();
         }else if(responseCode == Constants.HTTP_RESPONSE_REGIST_ERROR_EXIST){
             //Toast.makeText(this, "서버(802) : 이미 가입된 아이디(중복)", Toast.LENGTH_SHORT).show();
-            RegistFailedDialog dialog = new RegistFailedDialog(this, "회원가입 실패", "서버(802) \n 이미 가입된 아이디(중복)");
+            dialog = new RegistFailedDialog(this, "회원가입 실패", "서버(802) \n 이미 가입된 아이디(중복)");
             dialog.show();
         }else if(responseCode == Constants.HTTP_RESPONSE_REGIST_ERROR_INPUT_TYPE_PW){
             //Toast.makeText(this, "서버(803) : 비밀번호 형식 틀림", Toast.LENGTH_SHORT).show();
-            RegistFailedDialog dialog = new RegistFailedDialog(this, "회원가입 실패", "서버(803) \n 비밀번호 형식 틀림");
+            dialog = new RegistFailedDialog(this, "회원가입 실패", "서버(803) \n 비밀번호 형식 틀림");
             dialog.show();
         }else if(responseCode == Constants.HTTP_RESPONSE_REGIST_ERROR_INPUT_TYPE_ID){
             //Toast.makeText(this, "서버(804) : 비밀번호 형식 틀림", Toast.LENGTH_SHORT).show();
-            RegistFailedDialog dialog = new RegistFailedDialog(this, "회원가입 실패", "서버(804) \n 비밀번호 형식 틀림");
+            dialog = new RegistFailedDialog(this, "회원가입 실패", "서버(804) \n 아이디 형식 틀림");
             dialog.show();
         }else if(responseCode == Constants.HTTP_RESPONSE_REGIST_SUCCESS){
             //Toast.makeText(this, "서버(805) : 가입 성공 ", Toast.LENGTH_SHORT).show();
             //RegistFailedDialog dialog = new RegistFailedDialog(this, "회원가입 성공", "서버(805) \n 가입 성공");
             //dialog.show();
-            iv_regist_ok.setVisibility(View.VISIBLE);
+
+            //iv_regist_ok.setVisibility(View.VISIBLE);
+
+            //dialog = new RegistFailedDialog(this, "회원가입 성공", "로그인 처리 중..");
+            //dialog.show();
+
             LoginManager.setDelegate(this);
             LoginManager.connectAndLogin(email_id, pw, true);
 
@@ -591,16 +623,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             STPreferences.putString(Constants.PREF_KEY_ID, email_id);
             STPreferences.putString(Constants.PREF_KEY_PASSWORD, pw);
 
-            Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
-
             try {
                 Thread.sleep(500);  // CookieManager Sync Time 500ms
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            //dialog.dismiss();
+
             setResult(Constants.RES_REGIST_LOGIN_SUCCESS);
             this.finish();
         }
     }
-
 }

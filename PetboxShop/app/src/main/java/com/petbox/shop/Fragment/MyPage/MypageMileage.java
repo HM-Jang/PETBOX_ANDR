@@ -15,11 +15,13 @@ import android.widget.TextView;
 import android.support.v4.app.Fragment;
 import com.petbox.shop.Adapter.List.EmoneyListAdapter;
 import com.petbox.shop.Adapter.List.OrderListAdapter;
+import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Delegate.MyPageDelegate;
 import com.petbox.shop.Fragment.Home.IntegrationPlanningFragment;
 import com.petbox.shop.Item.EmoneyInfo;
 import com.petbox.shop.JsonParse;
 import com.petbox.shop.R;
+import com.petbox.shop.STPreferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +50,7 @@ public class MypageMileage extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
 
-   // TextView tv_mypage_emoney_extinc,tv_mypage_emoney;
+    // TextView tv_mypage_emoney_extinc,tv_mypage_emoney;
     TextView tv_mypage_emoney;
     ListView lv_emoney_list;
     TextView tv_emoney_date,tv_emoney_info,tv_emoney_plus_emoney,tv_emoney_minus_emoney;
@@ -122,42 +124,52 @@ public class MypageMileage extends Fragment implements View.OnClickListener {
             String idx = "";
 
             url = "http://petbox.kr/petboxjson/member_info.php";
-            params3 = "?m_no="+1;
+            params3 = "?m_id="+ STPreferences.getString(Constants.PREF_KEY_ID);
             params3 += "&mypage_info="+803;
             InsertDB = "mypage_emoney_list";
 
             //order_list = new JsonParse.JsonLoadingTask().execute(url,params3).get();
             emoney_list = new JsonParse.JsonLoadingTask(getActivity().getApplicationContext()).execute(url, params3,InsertDB).get();
             Log.e("order_list", emoney_list);
-            JSONArray EmoneyListArray = new JSONArray(emoney_list);
-            mItemList = new ArrayList<EmoneyInfo>();
-            EmoneyInfo info[] = new EmoneyInfo[EmoneyListArray.length()];
+            if(emoney_list.equals("")){
 
-            for (int k = 0; k < EmoneyListArray.length(); k++) {
-                JSONObject Emoney_object = EmoneyListArray.getJSONObject(k);
+            }else {
+                JSONArray EmoneyListArray = new JSONArray(emoney_list);
+                mItemList = new ArrayList<EmoneyInfo>();
+                EmoneyInfo info[] = new EmoneyInfo[EmoneyListArray.length()];
 
-                info[k] = new EmoneyInfo(sort,ordno,emoney,memo,regdt,regdts,idx);
+                for (int k = 0; k < EmoneyListArray.length(); k++) {
+                    JSONObject Emoney_object = EmoneyListArray.getJSONObject(k);
 
-                info[k].sort = Emoney_object.getString("sno");
-                info[k].ordno = Emoney_object.getString("ordno");
-                info[k].emoney = Emoney_object.getString("emoney");
-                info[k].memo = Emoney_object.getString("memo");
-                info[k].regdt = Emoney_object.getString("regdt");
-                info[k].regdts = Emoney_object.getString("regdts");
-                info[k].idx = Emoney_object.getString("idx");
+                    info[k] = new EmoneyInfo(sort, ordno, emoney, memo, regdt, regdts, idx);
+
+                    info[k].sort = Emoney_object.getString("sno");
+                    info[k].ordno = Emoney_object.getString("ordno");
+                    info[k].emoney = Emoney_object.getString("emoney");
+                    info[k].memo = Emoney_object.getString("memo");
+                    info[k].regdt = Emoney_object.getString("regdt");
+                    info[k].regdts = Emoney_object.getString("regdts");
+                    info[k].idx = Emoney_object.getString("idx");
 
 
-                if(Emoney_object.getString("emoney").contains("-")){
-                    emoney_totalmult = Integer.parseInt(Emoney_object.getString("emoney").replace("-",""));
-                    emoney_total -= emoney_totalmult;
-                }else{
-                    emoney_totalmult = Integer.parseInt(Emoney_object.getString("emoney").replace("-",""));
-                    emoney_total += emoney_totalmult;
+                    if (Emoney_object.getString("emoney").contains("-")) {
+                        emoney_totalmult = Integer.parseInt(Emoney_object.getString("emoney").replace("-", ""));
+                        emoney_total -= emoney_totalmult;
+                    } else {
+                        emoney_totalmult = Integer.parseInt(Emoney_object.getString("emoney").replace("-", ""));
+                        emoney_total += emoney_totalmult;
+                    }
+
+                    mItemList.add(info[k]);
+
                 }
 
-                mItemList.add(info[k]);
-
+                tv_mypage_emoney.setText(emoney_total+"P");
+                //lv_emoney_list = (ListView) v.findViewById(R.id.lv_emoney_list);
+                listAdapter = new EmoneyListAdapter(getContext(), mItemList);
+                lv_emoney_list.setAdapter(listAdapter);
             }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -165,12 +177,7 @@ public class MypageMileage extends Fragment implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.e("mItemList = ",  "// size : " + mItemList.size());
 
-        tv_mypage_emoney.setText(emoney_total+"P");
-        //lv_emoney_list = (ListView) v.findViewById(R.id.lv_emoney_list);
-        listAdapter = new EmoneyListAdapter(getContext(), mItemList);
-        lv_emoney_list.setAdapter(listAdapter);
 
         return v;
     }

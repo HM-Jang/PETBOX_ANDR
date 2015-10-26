@@ -10,20 +10,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/slide_tabs"
+    <FrameLayout
+        android:id="@+id/frame_tabs"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        app:tabIndicatorHeight="4dp"
-        app:tabIndicatorColor="#9e9e9e"
         android:layout_below="@+id/main_toolbar"
-        android:elevation="5dp"
-        />
+        android:background="@drawable/border_bottom_d8d8d8"
+        android:layout_height="48dp">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/slide_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:tabIndicatorHeight="4dp"
+            app:tabIndicatorColor="#9e9e9e"
+            android:elevation="5dp"/>
+
+    </FrameLayout>
+
 
     <com.petbox.shop.CustomView.NonSwipeableViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent" android:layout_height="match_parent"
-        android:layout_below="@+id/slide_tabs"
+        android:layout_below="@+id/frame_tabs"
         android:layout_above="@+id/linear_bottom_menu"
         android:elevation="1dp"/>
 
@@ -36,22 +44,15 @@
         android:elevation="5dp">
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
         <ImageButton
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:id="@+id/ibtn_home"
-            android:layout_gravity="center"
             android:scaleType="fitXY"
             android:background="#0000"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"
             android:src="@drawable/bot_home_on" />
-
-    </FrameLayout>
-
 
 
         <ImageButton

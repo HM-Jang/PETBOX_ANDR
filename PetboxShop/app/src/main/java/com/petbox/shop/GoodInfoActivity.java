@@ -1,13 +1,20 @@
 package com.petbox.shop;
 
+import android.app.Application;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -35,6 +42,7 @@ import com.petbox.shop.Item.AddOptionInfo;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.Item.GoodOptionInfo;
 import com.petbox.shop.Item.OptionInfo;
+import com.petbox.shop.Network.LoginManager;
 import com.petbox.shop.Utility.Utility;
 
 import org.apache.http.HttpEntity;
@@ -54,6 +62,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +76,11 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
     ScrollView sc_main;
 
+    FrameLayout frame_good_info_top_time;
+    FrameLayout fl_rate;
+
+    TextView tv_title;  // 상단 타이틀
+
     /* 컨텐츠(상) */
     ImageView iv_good, iv_icon1, iv_icon2, iv_icon3; // 상품이미지, 상품특성 아이콘
     ImageButton ibtn_top, ibtn_zoom;    // 맨위로, 확대
@@ -77,7 +91,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     FrameLayout frame_time; //타임할인 Section
     TextView tv_time;   // 남은 시간
     //String str_finished_time = "1444600000";
-    long finished_time = 1444740000;    //타임할인 종료 시각
+    long finished_time = 0;    //타임할인 종료 시각
     Handler timerHandler;
     TimerThread timerThread;
     Boolean isRunning = true;
@@ -92,7 +106,8 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     Button btn_intro, btn_review, btn_ship; // 상품소개, 리뷰보기, 상품/배송정보
     FrameLayout frame_middle_content;       // 컨텐츠
     //ImageView iv_intro;
-    //WebView webView;
+    WebView webView;
+    LinearLayout frame_good_info_middle_content_delivery; //배송정보
 
     /* 컨텐츠(하) */
     ListView listView; // 추천상품리스트
@@ -110,10 +125,13 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     WishImageThread wishThread;
     Handler wishHandler;
 
+    //공유하기
+    Intent share;
+
     //바로 구매하기, 장바구니 담기
     LinearLayout linear_bottom2;
     Button btn_buy_ok, btn_cart_ok;
-    TextView tv_submenu_onoff; // 서브메뉴 on/off
+    //TextView tv_submenu_onoff; // 서브메뉴 on/off
 
     LinearLayout linear_list1;    // 구매, 추가옵션
     LinearLayout linear_list_default, linear_list_add;
@@ -145,7 +163,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
     ArrayList<GoodOptionInfo> selectedGoodList; //선택된
     SelectedGoodListAdapter selectedGoodListAdapter;
 
-
+    int colorPrimary; //텍스트 컬러
 
     int order_price = 0;    // 주문금액
     TextView tv_all_price;
@@ -198,6 +216,9 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
     int firstOptionSelected = 0;    // 2단 구매옵션 시, 1차 구매옵션 클릭했던 position
 
+    ImageView tv_submenu_onoff; //옵션 닫기
+    ImageView tv_good_info_opt_off; //옵션 선택 닫기
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,12 +227,23 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         ibtn_back = (ImageButton) findViewById(R.id.ibtn_good_info_back);
         ibtn_back.setOnClickListener(this);
 
+        Intent intent = getIntent();
+        goodsno = Integer.parseInt(intent.getStringExtra("goodsno"));
+
+        colorPrimary = getResources().getColor(R.color.colorPrimary);
+
+        tv_title = (TextView) findViewById(R.id.tv_good_info_title);
+
+        /*
         ibtn_search = (ImageButton) findViewById(R.id.ibtn_good_info_search);
         ibtn_search.setOnClickListener(this);
 
         ibtn_cart = (ImageButton) findViewById(R.id.ibtn_good_info_cart);
         ibtn_cart.setOnClickListener(this);
+        */
 
+        frame_good_info_top_time = (FrameLayout) findViewById(R.id.frame_good_info_top_time);
+        fl_rate = (FrameLayout) findViewById(R.id.fl_rate);
         sc_main = (ScrollView) findViewById(R.id.sc_good_info);
 
         iv_good = (ImageView) findViewById(R.id.iv_good_info);
@@ -259,26 +291,18 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
        // webView = (WebView) findViewById(R.id.webview_good_info);
         //webView.getSettings().setJavaScriptEnabled(true);
 
+        tv_good_info_opt_off = (ImageView)findViewById(R.id.tv_good_info_opt_off);
+        tv_good_info_opt_off.setOnClickListener(this);
+
+        webView = (WebView) findViewById(R.id.webview_good_info);
+        //webView.getSettings().setJavaScriptEnabled(true);
+
+        frame_good_info_middle_content_delivery = (LinearLayout) findViewById(R.id.frame_good_info_middle_content_delivery);
+
         mItemList = new ArrayList<BestGoodInfo>();
 
-        for(int i=0; i<5; i++){
-            BestGoodInfo item  = new BestGoodInfo();
-
-            item.name = "상품명\n"+i;
-            item.rate = ""+i;
-            item.origin_price = (i+1)+ "5,000";
-            item.price = (i+1)+"0,000";
-            item.rating = 3;
-            item.rating_person = i;
-
-            mItemList.add(item);
-        }
-
-        listView = (ListView)findViewById(R.id.list_good_info_recommend);
-        listAdapter = new RecommendListAdapter(this, mItemList);
-        listView.setAdapter(listAdapter);
-
-        Utility.setListViewHeightBasedOnChildren(listView);
+        share = new Intent(Intent.ACTION_SEND);
+        share.addCategory(Intent.CATEGORY_DEFAULT);
 
         relative_bottom = (RelativeLayout) findViewById(R.id.relative_good_info_bottom);
         linear_bottom2 = (LinearLayout) findViewById(R.id.linear_good_info_bottom2);
@@ -304,8 +328,12 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         btn_cart_ok = (Button) findViewById(R.id.btn_good_info_cart_ok);
         btn_cart_ok.setOnClickListener(this);
 
-        tv_submenu_onoff = (TextView) findViewById(R.id.tv_good_info_submenu_onoff);
+        //tv_submenu_onoff = (TextView) findViewById(R.id.tv_good_info_submenu_onoff);
+        //tv_submenu_onoff.setOnClickListener(this);
+
+        tv_submenu_onoff = (ImageView) findViewById(R.id.tv_good_info_submenu_on);
         tv_submenu_onoff.setOnClickListener(this);
+
 
         linear_list1 = (LinearLayout) findViewById(R.id.linear_good_info_list1);
 
@@ -346,20 +374,13 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         /* JSON Data 불러와서 세팅, option_count, add_optoin_count */
 
-        JsonParseTask task = new JsonParseTask(Constants.HTTP_URL_GOOD_INFO);
+        JsonParseTask task = new JsonParseTask(Constants.HTTP_URL_GOOD_INFO +"?goodsno="+goodsno);
         task.execute();
 
         //타임할인 쓰레드 초기화
         timerHandler = new Handler();
         timerThread = new TimerThread();
         timerThread.start();
-
-        //추천상품 리스트 초기화
-        listAdapter = new RecommendListAdapter(this, mItemList);
-        listView.setAdapter(listAdapter);
-
-        Utility.setListViewHeightBasedOnChildren(listView);
-
 
     }
 
@@ -399,9 +420,11 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         switch(id){
             case R.id.ibtn_good_info_back:  // 뒤로
-                Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "back", Toast.LENGTH_SHORT).show();
+                finish();
                 break;
 
+            /*
             case R.id.ibtn_good_info_search:    // 검색
                 Toast.makeText(this, "search", Toast.LENGTH_SHORT).show();
                 break;
@@ -409,6 +432,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             case R.id.ibtn_good_info_cart:  // 장바구니
                 Toast.makeText(this, "cart", Toast.LENGTH_SHORT).show();
                 break;
+               */
 
             case R.id.ibtn_good_info_top:   // 맨위로
                 sc_main.fullScroll(View.FOCUS_UP);
@@ -420,19 +444,31 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.ibtn_good_info_share: //공유하기
-                Toast.makeText(this, System.currentTimeMillis()+"", Toast.LENGTH_SHORT).show();
+                startActivity(Intent.createChooser(share, "공유"));
                 break;
 
             case R.id.btn_good_info_intro:  //상품소개
-                Toast.makeText(this, "intro", Toast.LENGTH_SHORT).show();
+                frame_good_info_middle_content_delivery.setVisibility(View.GONE);
+                frame_middle_content.setVisibility(View.VISIBLE);
+                btn_intro.setBackgroundResource(R.drawable.g_on);
+                btn_ship.setBackgroundResource(R.drawable.g_off);
+                btn_intro.setTextColor(colorPrimary);
+                btn_ship.setTextColor(Color.parseColor("#000000"));
                 break;
 
             case R.id.btn_good_info_review: //
-                Toast.makeText(this, "review", Toast.LENGTH_SHORT).show();
+                Intent reviewintent = new Intent(this,GoodsReviewActivity.class);
+                reviewintent.putExtra("goodsno", Integer.toString(goodsno));
+                startActivity(reviewintent);
                 break;
 
             case R.id.btn_good_info_ship:
-                Toast.makeText(this, "ship", Toast.LENGTH_SHORT).show();
+                frame_good_info_middle_content_delivery.setVisibility(View.VISIBLE);
+                frame_middle_content.setVisibility(View.GONE);
+                btn_intro.setBackgroundResource(R.drawable.g_off);
+                btn_ship.setBackgroundResource(R.drawable.g_on);
+                btn_intro.setTextColor(Color.parseColor("#000000"));
+                btn_ship.setTextColor(colorPrimary);
                 break;
 
             case R.id.ibtn_good_info_wish:
@@ -453,25 +489,55 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.btn_good_info_buy:
+
                 linear_bottom2.setVisibility(View.VISIBLE);
                 relative_bottom.setVisibility(View.INVISIBLE);
+
                 //Toast.makeText(this, "buy", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.btn_good_info_buy_ok:
                 //Toast.makeText(this, "buy_ok", Toast.LENGTH_SHORT).show();
-                HttpPostManager httpPostManager = new HttpPostManager(this);
-                httpPostManager.start();
+
+                if(LoginManager.getIsLogin()){
+                    HttpPostManager httpPostManager = new HttpPostManager(this);
+                    httpPostManager.start();
+
+                    Intent gocart = new Intent(this,CartListWebView.class);
+                    startActivity(gocart);
+                }else{
+                    Intent intent = new Intent(GoodInfoActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
 
                 break;
 
             case R.id.btn_good_info_cart_ok:
-                Toast.makeText(this, "cart_ok", Toast.LENGTH_SHORT).show();
+
+                //로그인 되어있을 시
+                if(LoginManager.getIsLogin()){
+                    Toast.makeText(this, "장바구니에 추가 되었습니다.", Toast.LENGTH_SHORT).show();
+                    HttpPostManager httpPostManager = new HttpPostManager(this);
+                    httpPostManager.start();
+                }else{ // 로그인 안되어있을 시
+                    Intent intent = new Intent(GoodInfoActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
                 break;
 
-            case R.id.tv_good_info_submenu_onoff:
+            case R.id.tv_good_info_submenu_on:
                 linear_bottom2.setVisibility(View.GONE);
                 relative_bottom.setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.tv_good_info_opt_off:   // 옵션 선택 닫기기
+                tv_good_info_opt_off.setVisibility(View.GONE);
+                linear_list1.setVisibility(View.VISIBLE);
+                list_select_good.setVisibility(View.VISIBLE);
+                list_select_item.setVisibility(View.GONE);
+                //Toast.makeText(this, "top", Toast.LENGTH_SHORT).show();
                 break;
 
         }
@@ -488,7 +554,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 item.name = optionItem.opt1;
                 item.count = optionItem.stock;
                 item.price = optionItem.price;
-                item.order_count = 0;
+                item.order_count = 1;
             }else if(optionNamesSize == 2){
 
                 if(selected_num == 0){  //구매옵션 1차
@@ -505,16 +571,12 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                     OptionInfo optionItem = arrOption2List.get(firstOptionSelected).get(position);
 
                     item.sno = optionItem.sno;
-                    item.name = optionItem.opt1 + "/" + optionItem.opt2;
+                    item.name = optionItem.opt1 + "|" + optionItem.opt2;
                     item.count = optionItem.stock;
                     item.price = optionItem.price;
-                    item.order_count = 0;
-
+                    item.order_count = 1;
                 }
-
             }
-
-
         }
         else if(selected_what == 1) {   //추가옵션
             System.out.println("추가옵션 클릭");
@@ -524,7 +586,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             item.name = addOptionItem.opt;
             item.count = 999;
             item.price = addOptionItem.addprice;
-            item.order_count = 0;
+            item.order_count = 1;
             item.isAddOption = true;
             item.optionName = addOptionItem.optionName;
         }
@@ -557,6 +619,22 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 list_select_good.setAdapter(selectedGoodListAdapter);
             }
         }
+
+        order_price = returnAllPrice();
+        tv_all_price.setText("총상품가 : " + Utility.replaceComma(""+order_price) + "원");
+
+    }
+
+    public int returnAllPrice(){
+        int all_price = 0;
+
+        for(int i=0; i<selectedGoodList.size(); i++){
+            GoodOptionInfo item = selectedGoodList.get(i);
+
+            all_price += item.price * item.order_count;
+        }
+
+        return all_price;
     }
 
     public void holdSelectedIGoodList(GoodOptionInfo item){
@@ -577,35 +655,38 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 return true;
             }
         }
-
         return false;
-
-
-
     }
 
     @Override
     public void clickIncrease(HashMap<String, Integer> params) {
         //Toast.makeText(getApplicationContext(), "+버튼", Toast.LENGTH_SHORT).show();
-        int price = params.get("price");
-        order_price += price;
+        //int price = params.get("price");
+        //order_price += price;
 
-        tv_all_price.setText("총상품가 : " + order_price + "원");
+        order_price = params.get("all_price");
+
+        tv_all_price.setText("총상품가 : " + Utility.replaceComma("" + order_price) + "원");
     }
 
     @Override
     public void clickDecrease(HashMap<String, Integer> params) {
         //Toast.makeText(getApplicationContext(), "-버튼", Toast.LENGTH_SHORT).show();
-        int price = params.get("price");
-        order_price -= price;
+        //int price = params.get("price");
+        //order_price -= price;
 
-        tv_all_price.setText("총상품가 : " + order_price + "원");
+        order_price = params.get("all_price");
+
+        tv_all_price.setText("총상품가 : " + Utility.replaceComma(""+order_price) + "원");
     }
 
     @Override
     public void deleteItem(int price) {
-        order_price -= price;
-        tv_all_price.setText("총상품가 : " + order_price + "원");
+        //order_price -= price;
+
+        order_price = price;
+
+        tv_all_price.setText("총상품가 : " + Utility.replaceComma(""+order_price) + "원");
     }
 
     @Override
@@ -626,7 +707,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         }
 
-        tv_all_price.setText("총상품가 : " + order_price + "원");
+        tv_all_price.setText("총상품가 : " + Utility.replaceComma(""+order_price) + "원");
     }
 
     @Override
@@ -644,12 +725,14 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
         /* 고정값 */
+        String id = STPreferences.getString(Constants.PREF_KEY_ID);
 
         nameValuePairs.add(new BasicNameValuePair("mode", "addItem"));
         nameValuePairs.add(new BasicNameValuePair("goodsno", Integer.toString(goodsno)));
-        //nameValuePairs.add(new BasicNameValuePair("goodsno", "2755"));
         nameValuePairs.add(new BasicNameValuePair("goodsCoupon", "0"));
 
+        nameValuePairs.add(new BasicNameValuePair("m_id", id));
+        nameValuePairs.add(new BasicNameValuePair("app", "1"));
         /*
         nameValuePairs.add(new BasicNameValuePair("min_ea", "1"));
         nameValuePairs.add(new BasicNameValuePair("max_ea", "200"));
@@ -675,8 +758,40 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 nameValuePairs.add(new BasicNameValuePair("multi_ea[0]", "1"));
                 nameValuePairs.add(new BasicNameValuePair("multi_opt[0][]", "나우스몰브리드퍼피2.72kg"));
                 */
-                nameValuePairs.add(new BasicNameValuePair("multi_ea[" + count + "]", Integer.toString(item.order_count)));
-                nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", item.name));
+
+                /*
+                if(optionNamesSize == 2){  // 구매옵션 2개짜리(이중옵션)
+                    String[] optionNames = item.name.split("/");
+                    nameValuePairs.add(new BasicNameValuePair("multi_ea[" + count + "]", Integer.toString(item.order_count)));
+                    nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", optionNames[0]));
+                    nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", optionNames[1]));
+                    //count++;
+                    //continue;
+                }else if(optionNamesSize == 1 || optionNamesSize == 0){
+                    nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", item.name));
+                    nameValuePairs.add(new BasicNameValuePair("multi_ea[" + count + "]", Integer.toString(item.order_count)));
+                }else{
+                    nameValuePairs.add(new BasicNameValuePair("ea",Integer.toString(item.order_count)));
+                }
+                */
+
+                if(optionNamesSize != 0 ){   // 구매옵션 0개 이상?
+
+                    if(optionNamesSize == 2){  // 구매옵션 2개짜리(이중옵션)
+                        String[] optionNames = item.name.split("[|]");
+                        nameValuePairs.add(new BasicNameValuePair("multi_ea[" + count + "]", Integer.toString(item.order_count)));
+                        nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", optionNames[0]));
+                        nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", optionNames[1]));
+                        count++;
+                        continue;
+                    }
+
+                    nameValuePairs.add(new BasicNameValuePair("multi_opt[" + count + "][]", item.name));
+                    nameValuePairs.add(new BasicNameValuePair("multi_ea[" + count + "]", Integer.toString(item.order_count)));
+                }else{  // 필요없음 // 구매옵션 0개
+                    nameValuePairs.add(new BasicNameValuePair("ea",Integer.toString(item.order_count)));
+                }
+
 
                 System.out.println("multi_ea[" + count + "]" + " : " + item.order_count);
                 System.out.println("multi_opt[" + count + "][]" + " : " + item.name);
@@ -688,8 +803,12 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                     param += "^" + item.price;
                 else
                     param += "#" + item.order_count + "^" + item.price;
-                nameValuePairs.add(new BasicNameValuePair("multi_addopt[0][]", param));
 
+                if(optionNamesSize != 0){
+                    nameValuePairs.add(new BasicNameValuePair("multi_addopt[0][]", param));
+                }else{
+                    nameValuePairs.add(new BasicNameValuePair("addopt[]", param));
+                }
                 System.out.println("multi_addopt[0][]" + " : " + param);
             }
         }
@@ -768,8 +887,14 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                     System.out.println("체크 : " + arr_data.getString(i) + "\n");
                 }
                 */
+                String urlcon = "";
+                urlcon = "http://petbox.kr/shop/data/goods/" + data.getString("img_l");     // 10-23 img_i img_l
+                ImageDownloader.download(urlcon, iv_good);
+                iv_good.setScaleType(ImageView.ScaleType.FIT_XY);
+
                 goodsno = Integer.parseInt(data.getString("goodsno"));  //상품번호
                 goodsnm = data.getString("goodsnm"); //상품명
+                tv_title.setText(goodsnm);
                 goods_status = data.getString("goods_status");   // 상품상태 ex) 신상품
                 goodscd = Integer.parseInt(data.getString("goodscd"));  //제품코드
                 origin = data.getString("origin");   // 원산지
@@ -778,12 +903,46 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
                 String longdesc = data.getString("longdesc");
 
-                //webView.loadData(longdesc, "text/html", "UTF-8");
-                System.out.println("longdesc : " + longdesc);
+                /*
 
-                img_i = data.getString("img_i");// 상품 이미지
+                */
+                //System.out.println("longdesc : " + longdesc);
+
+                /*
+                if(Build.VERSION.SDK_INT < 18){
+                    webView.loadData(longdesc, "text/html", "UTF-8");
+
+                    webView.getSettings().setJavaScriptEnabled(true);
+                    webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+                }else{
+                    WebSettings settings = webView.getSettings();
+                    settings.setUseWideViewPort(true);
+                    settings.setLoadWithOverviewMode(true);
+
+                    webView.setWebViewClient(new WebViewClient());
+                    webView.loadData(longdesc, "text/html", "UTF-8");
+                }
+                */
+
+                longdesc = "<style>img{width:100%;} pi_1 iframe{width:100%;height:400px;}</style><div style='width:100%;text-align:center;'>"+longdesc+"</div>";
+                WebSettings settings = webView.getSettings();
+                if(Build.VERSION.SDK_INT < 18){
+                    settings.setJavaScriptEnabled(true);
+                    settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+                    webView.loadData(longdesc, "text/html", "UTF-8");
+                }else{
+                    settings.setUseWideViewPort(true);
+                    settings.setLoadWithOverviewMode(true);
+                    settings.setJavaScriptEnabled(true);
+                    webView.setWebViewClient(new WebViewClient());
+                    webView.loadData(longdesc, "text/html", "UTF-8");
+                }
+
+                /* 10-23일 img_i -> img_l */
+                img_i = data.getString("img_l");// 상품 이미지
+
                 int icon = Integer.parseInt(data.getString("icon"));    //상품 특성 아이콘
-                iconList = parseValidBinary(icon);
+                iconList = Utility.parseValidBinary(icon);
 
                 option_name = data.getString("option_name"); // 구매옵션 이름들
                 opttype = data.getString("opttype"); // 구매 옵션(single : 일체형, double : 분리형)
@@ -796,13 +955,22 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 open_mobile = Integer.parseInt(data.getString("open_mobile"));  // 상품 노출 여부(0 : 노출x, 1: : 노출o)
 
                 goods_price = Integer.parseInt(data.getString("goods_price"));  // 상품 판매가
+                //tv_price.setText(Utility.replaceComma(""+goods_price)+"원");
                 goods_consumer = Integer.parseInt(data.getString("goods_consumer"));    //상품 소비자가
-
+                //tv_price_dc.setText(Utility.replaceComma(""+goods_consumer)+"원");
                 use_option = Integer.parseInt(data.getString("use_option"));    //옵션 사용여부
                 use_goods_discount = Integer.parseInt(data.getString("use_goods_discount"));  // 해당 옵션 상품 할인
                 ts_amount = Integer.parseInt(data.getString("ts_amount"));  // 타임할인 할인 금액
 
                 review_cnt = Integer.parseInt(data.getString("review_cnt"));
+
+                /**공유하기 내용**/
+                share.putExtra(Intent.EXTRA_SUBJECT, "펫박스 상품 추천");
+                share.putExtra(Intent.EXTRA_TEXT, "http://petbox.kr/shop/goods/goods_view.php?&goodsno="+goodsno);
+                share.putExtra(Intent.EXTRA_TITLE, goodsnm);
+                share.setType("text/plain");
+                /**END 공유하기 내용 END**/
+
 
                 String str_discount_time = data.getString("discount_time");
 
@@ -958,10 +1126,18 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 }
 
 
+                int count = 0;
+
                 for(int i=1; i<=iconList.size(); i++){
                     int id = getResources().getIdentifier("icon"+iconList.get(i-1),"drawable" , "com.petbox.shop");
 
                     System.out.println("아이콘 세팅");
+                    int num = iconList.get(i-1);
+
+                    if(num == 1)
+                        continue;
+
+                    count++;
 
                     if(i==1){
                         iv_icon1.setImageResource(id);
@@ -988,8 +1164,11 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
             tv_rating.setText((point*20) +"/100");
 
-            if(review_cnt == 0)
-                frame_review.setVisibility(View.GONE);
+            if(review_cnt != 0){
+                fl_rate.setVisibility(View.VISIBLE);
+            }else{
+                fl_rate.setVisibility(View.GONE);
+            }
 
             int output_price = 0;
             double rate = ((double)(goods_consumer-goods_price)/goods_consumer) * 100;
@@ -1011,12 +1190,13 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
 
-            tv_price_dc.setText(output_price+ "원");  //판매가 설정
-            tv_price.setText(goods_consumer + "원");   //소비자가
+            tv_price_dc.setText(Utility.replaceComma(""+output_price)+ "원");  //판매가 설정
+            tv_price.setText(Utility.replaceComma(""+goods_consumer) + "원");   //소비자가
 
             if (dc_rate == 0) {
                 tv_rate.setText("펫박스가");
-                tv_price.setVisibility(View.INVISIBLE);
+                tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+                tv_price.setVisibility(View.GONE);
             }else
             tv_rate.setText(dc_rate + "%");
 
@@ -1025,6 +1205,12 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
             // 구매옵션이 없을 경우, 해당 상품을 리스트2에 추가
             if(optionNamesSize == 0) {
+
+                /**seo 옵션이 없을 경우 총상품가 미리설정**/
+                order_price = goods_price;
+                tv_all_price.setText("총상품가 : " + order_price + "원");
+                /**END 옵션이 없을 경우 총상품가 미리설정 END**/
+
                 linear_list_default.setVisibility(View.GONE);
                 bool_option = true;
 
@@ -1036,8 +1222,6 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                 item.order_count = 0;
 
                 holdSelectedIGoodList(item);
-
-
             }else{
                 listOptionAdapter = new SelectOptionListAdpater(getApplicationContext(), optionNames);
                 list_default.setAdapter(listOptionAdapter);
@@ -1053,21 +1237,6 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    // icon값에서 숫자 추출
-    public ArrayList<Integer> parseValidBinary(int icon){
-        ArrayList<Integer> itemList = new ArrayList<Integer>();
-
-        for(int i=0; i<10; i++){
-            int check = (int)Math.pow(2, i);
-
-            if((check&icon) == check){
-                System.out.println("아이콘 추출 : " + check);
-                itemList.add(check);
-            }
-        }
-        return itemList;
-    }
-
 
     // 상품, 옵션
     class DefaultOptionItemClickListener implements AdapterView.OnItemClickListener{
@@ -1077,13 +1246,22 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
             selected_num = position;
             selected_what = 0;  // 구매옵션 선택
-            if(optionNamesSize == 1){
+
+            tv_good_info_opt_off.setVisibility(View.VISIBLE);
+
+            if(optionNamesSize == 1){   // 구매옵션 1개
                 //defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertSimpleOptionInfo(option1List));
-                defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertOptionInfo(arrOption2List.get(0), 1));
+                /**옵션 선택 닫기 버튼**/
+
+                /**END 옵션 선택 닫기 버튼 END **/
+
+                defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertOptionInfo(arrOption2List.get(0), 1), 0);
                 list_select_item.setAdapter(defaultOptionListAdapter);
-            }else if(optionNamesSize == 2){
+            }else if(optionNamesSize == 2){ // 구매옵션 2개
+                tv_good_info_opt_off.setVisibility(View.VISIBLE);
+
                 if(selected_num == 0){ //1차 옵션
-                    defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertSimpleOptionInfo(option1List));
+                    defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertSimpleOptionInfo(option1List), 0);
                     defaultOptionListAdapter.setMode(1);    // 심플모드
 
                 }else if(selected_num == 1){ // 2차 구매옵션
@@ -1093,8 +1271,9 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
                         return;
                     }else if(!optionNames.get(0).equals(optionOriginFirstName)){  // 1차 구매옵션 선택 완료.
 
-                        defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertOptionInfo(arrOption2List.get(firstOptionSelected), 2));
+                        defaultOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertOptionInfo(arrOption2List.get(firstOptionSelected), 2), 0);
                         System.out.println("firstOptionSelected : " + firstOptionSelected);
+
                         for(int i=0; i<arrOption2List.get(position).size(); i++){
                             System.out.println(arrOption2List.get(position).get(i).opt2);
                         }
@@ -1116,6 +1295,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             linear_list1.setVisibility(View.GONE);
             list_select_good.setVisibility(View.GONE);
             list_select_item.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -1152,7 +1332,7 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             item.sno = optionItem.sno;
             item.count = optionItem.stock;
             item.price = optionItem.price;
-            item.dc_price = goods_price - optionItem.price; // 할인 금액
+            item.dc_price = optionItem.price - goods_price; // 할인 금액
             item.order_count = 0;
 
             itemList.add(item);
@@ -1180,11 +1360,27 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
         return itemList;
     }
 
+    @Override
+    public void onBackPressed(){
+        if (linear_bottom2.getVisibility() == View.VISIBLE) {
+            // first click
+            linear_bottom2.setVisibility(View.GONE);
+            relative_bottom.setVisibility(View.VISIBLE);
+        }else{
+            finish();
+        }
+    }
+
     // 상품, 옵션
     class AddOptionItemClickListener implements AdapterView.OnItemClickListener{
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            /**옵션 선택 닫기 버튼**/
+            tv_good_info_opt_off.setVisibility(View.VISIBLE);
+            /**END 옵션 선택 닫기 버튼 END **/
+
             linear_list1.setVisibility(View.GONE);
             list_select_good.setVisibility(View.GONE);
             list_select_item.setVisibility(View.VISIBLE);
@@ -1192,20 +1388,16 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             selected_add_num = position;
             selected_what = 1;  // 구매옵션 선택
 
-            addOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertAddOptionInfo(arrAddOptionList.get(position)));
+            addOptionListAdapter = new OptionListAdapter(getApplicationContext(), convertAddOptionInfo(arrAddOptionList.get(position)), 1);
             list_select_item.setAdapter(addOptionListAdapter);
         }
     }
-
-
-
 
     // 상품 정보(가격, 수량)
     class List2ItemClickListener implements AdapterView.OnItemClickListener{
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
 
         }
     }
@@ -1215,6 +1407,11 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            /**옵션 선택 닫기 버튼**/
+            tv_good_info_opt_off.setVisibility(View.GONE);
+            /**END 옵션 선택 닫기 버튼 END **/
+
             linear_list1.setVisibility(View.VISIBLE);
             list_select_good.setVisibility(View.VISIBLE);
             list_select_item.setVisibility(View.GONE);
@@ -1223,8 +1420,6 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
 
         }
     }
-
-
 
     // 찜 등록 이미지 3초 타이머
     class WishImageThread extends Thread{
@@ -1332,4 +1527,6 @@ public class GoodInfoActivity extends AppCompatActivity implements View.OnClickL
             }
         }
     }
+
+
 }

@@ -6,6 +6,8 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -103,6 +105,32 @@ public class Utility {
             isValid = true;
         }
         return isValid;
+    }
+
+    //1000원 단위로 comma 추가
+    public static String replaceComma(String data)
+    {
+        int convert = Integer.parseInt(data);
+        DecimalFormat df = new DecimalFormat("#,###");
+
+        String formatNum=(String)df.format(convert);
+        return formatNum;
+    }
+
+    // icon값에서 숫자 추출
+    public static ArrayList<Integer> parseValidBinary(int icon){
+        ArrayList<Integer> itemList = new ArrayList<Integer>();
+
+        for(int i=0; i<10; i++){
+            int check = (int)Math.pow(2, i);
+
+            if((check&icon) == check){
+
+                System.out.println("아이콘 추출 : " + check);
+                itemList.add(check);
+            }
+        }
+        return itemList;
     }
 
 

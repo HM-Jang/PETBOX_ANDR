@@ -24,14 +24,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="상품명"
+                    android:textSize="20sp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     />
 
                 <TextView
+                    android:visibility="invisible"
                     android:id="@+id/tv_list_select_good_count"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="잔여 : 400개"
+                    android:textSize="15sp"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
 
             </LinearLayout>
@@ -64,6 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
+                android:textSize="20sp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="6500원"/>
 

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#fd5d21"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:layout_gravity="center_vertical">
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/ibtn_mypage_back"
+            android:layout_gravity="left|center_vertical"
+            android:src="@drawable/nav_back"
+            android:layout_margin="5dp"
+            android:background="#00ffffff"
+            android:layout_alignParentLeft="true"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"/>
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/ibtn_menu_cart"
+            android:layout_gravity="center_vertical|right"
+            android:src="@drawable/ibtn_menu_cart"
+            android:layout_margin="5dp"
+            android:background="#00ffffff"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv_pagename"
+            android:layout_gravity="center_vertical"
+            android:textColor="#ffff"
+            android:text="마이페이지"
+            android:textSize="20sp"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/ibtn_mypage_back"
+            android:scaleType="fitXY"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+</LinearLayout>

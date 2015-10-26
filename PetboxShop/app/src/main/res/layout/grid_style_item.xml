@@ -3,33 +3,32 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="3dp"
+    android:id="@+id/ll_grid_item"
     android:background="@drawable/border_set_grid_item">
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/iv_grid_image"
-        android:src="@drawable/no_image"
-        android:scaleType="fitXY"
-        android:layout_weight="1"
-        android:padding="2dp" />
+        android:src="@drawable/loading_m"
+        android:adjustViewBounds="true"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/linear_best_good_grid"
-        android:layout_weight="1.5"
         android:padding="2dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="상품명이 두줄이어도 \n 두줄까지는 노출"
+            android:text=""
             android:id="@+id/tv_grid_name"
             android:textSize="14sp"
-
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="#ff000000" />
 
         <LinearLayout
@@ -42,19 +41,18 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1.5">
+                android:layout_weight="1">
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center">
+                    android:layout_gravity="left|center">
 
                     <LinearLayout
                         android:orientation="horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center">
+                        android:layout_height="match_parent">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -83,55 +81,131 @@
 
             </FrameLayout>
 
+
             <LinearLayout
+                android:paddingLeft="10dp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom"
+                android:layout_height="40dp"
+                android:gravity="center_vertical|right"
                 android:layout_weight="1">
+
+
+                <RelativeLayout
+                    android:id="@+id/relative_grid_origin_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="123123"
+                        android:textSize="11sp"
+                        android:background="@drawable/text_cancel2"
+                        android:id="@+id/tv_grid_origin_price"/>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="123123"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:id="@+id/tv_grid_price"
+                        android:textColor="#ff000000" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linear_grid_ratingbar"
+                android:paddingLeft="5dp"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_height="20dp">
+
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rb_grid"
+                    style="@style/customRatingBar"
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    android:isIndicator="true"
+                    android:layout_gravity="bottom" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="10,000원"
-                    android:textSize="11sp"
-                    android:id="@+id/tv_grid_origin_price"/>
+                    android:text="(0)"
+                    android:id="@+id/tv_grid_rate_person"
+                    android:layout_gravity="bottom"
+                    android:textColor="#A7A7A7"
+                    android:paddingLeft="5dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="9,000원"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:id="@+id/tv_grid_price"
-                    android:textColor="#ff000000" />
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="20dp">
-
-            <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/rb_grid"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_gravity="bottom" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="(13)"
-                android:id="@+id/tv_grid_rate_person"
+            <RelativeLayout
+                android:layout_below="@id/linear_grid_ratingbar"
                 android:layout_gravity="bottom"
-                android:textColor="#A7A7A7"
-                android:paddingLeft="5dp" />
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:paddingTop="5dp">
 
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_grid_icon1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="50dp"
+                    android:layout_height="15dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/s_icon_1"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:layout_toLeftOf="@id/iv_grid_icon1"
+                    android:layout_alignParentBottom="true"
+                    android:id="@+id/iv_grid_icon2"
+                    android:layout_width="50dp"
+                    android:layout_height="15dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/s_icon_2"
+                    android:visibility="gone"/>
+
+                <ImageView
+                    android:layout_toLeftOf="@id/iv_grid_icon2"
+                    android:id="@+id/iv_grid_icon3"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="50dp"
+                    android:layout_height="15dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/s_icon_8"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
     </LinearLayout>
 </LinearLayout>

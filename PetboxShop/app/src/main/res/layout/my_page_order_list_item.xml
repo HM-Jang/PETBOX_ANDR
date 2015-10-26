@@ -74,6 +74,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="주문금액 450,590원"
                     android:id="@+id/tv_mypage_order_list_orderprice"
+                    android:textColor="#8d8d8d"
                     android:layout_weight="1"/>
 
                 <TextView
@@ -81,6 +82,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/tv_mypage_order_list_orderpg"
+                    android:textColor="#5d5d5d"
                     android:text="원클릭 결제"/>
 
             </LinearLayout>
@@ -96,6 +98,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="배송완료"
+                    android:textColor="#5d5d5d"
                     android:id="@+id/tv_mypage_order_list_status"
                     android:layout_weight="1"/>
 
@@ -104,6 +107,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:id="@+id/tv_mypage_order_list_status_view"
+                    android:textColor="#5d5d5d"
                     android:text="배송 조회"/>
 
             </LinearLayout>

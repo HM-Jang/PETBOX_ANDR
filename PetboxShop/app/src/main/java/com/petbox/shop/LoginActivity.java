@@ -3,6 +3,7 @@ package com.petbox.shop;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,8 +17,13 @@ import android.webkit.CookieSyncManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.Delegate.LoginManagerDelegate;
 import com.petbox.shop.Network.LoginManager;
@@ -43,13 +49,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     ImageButton ibtn_login, ibtn_regist;    // 로그인, 회원가입
     CheckBox chk_auto_login;    // 자동로그인 체크박스
 
+    TextView tv_id_search,tv_pass_search;
+
     ProgressDialog pDialog;
     SharedPreferences pref;
+
+    Tracker mTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        /*
+        mTracker.setScreenName("로그인");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        */
 
         pref = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -57,11 +73,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         pDialog.setTitle("로그인 중");
         pDialog.setMessage("로그인 중..");
 
+        tv_id_search = (TextView)findViewById(R.id.tv_id_search);
+        tv_id_search.setOnClickListener(this);
+        tv_pass_search = (TextView)findViewById(R.id.tv_pass_search);
+        tv_pass_search.setOnClickListener(this);
+
         edit_id = (EditText)findViewById(R.id.edit_login_id);
         edit_pw = (EditText)findViewById(R.id.edit_login_pw);
 
-        edit_id.setText("petbox12@nate.com");
-        edit_pw.setText("aaaa11");
+        //edit_id.setText("petbox12@nate.com");
+        //edit_pw.setText("aaaa11");
 
         ibtn_login = (ImageButton) findViewById(R.id.ibtn_login_start);
         ibtn_login.setOnClickListener(this);
@@ -98,6 +119,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     */
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        mTracker.setScreenName("로그인");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,6 +163,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (requestCode) {
             case Constants.REQ_REGIST:
                 if (resultCode == Constants.RES_REGIST_LOGIN_SUCCESS) {
+                    Toast.makeText(this, "회원 가입 완료", Toast.LENGTH_LONG).show();
                     setResult(Constants.RES_LOGIN_SUCCESS);
                     finish();
                 }
@@ -139,11 +175,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         int id = v.getId();
 
+        Intent intent;
+
         switch(id){
+
+            case R.id.tv_id_search:
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("로그인").setAction("아이디 찾기").build());
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://petbox.kr/shop/member/find_id.php?pc"));
+                startActivity(intent);
+                break;
+
+            case R.id.tv_pass_search:
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("로그인").setAction("비밀번호 찾기").build());
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://petbox.kr/shop/member/find_pwd.php?pc"));
+                startActivity(intent);
+                break;
+
+
             case R.id.ibtn_login_start: // 로그인
                 LoginManager.setDelegate(this);
                 LoginManager.getHttpClient();
 
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("로그인").setAction("로그인 클릭").build());
                 Boolean autoLogin = Boolean.parseBoolean(STPreferences.getString(Constants.PREF_KEY_AUTO_LOGIN));
                 LoginManager.connectAndLogin(edit_id.getText().toString(), edit_pw.getText().toString(), autoLogin);
                 // Toast.makeText(getApplicationContext(), "로그인 버튼 누름", Toast.LENGTH_SHORT).show();
@@ -151,7 +204,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.ibtn_login_regist:    //등록
                 //Toast.makeText(getApplicationContext(), "등록버튼 누름", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("로그인").setAction("회원가입 클릭").build());
+                intent = new Intent(LoginActivity.this, RegistrationActivity.class);
                 startActivityForResult(intent, Constants.REQ_REGIST);
                 break;
 
@@ -161,12 +215,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(chk_auto_login.isChecked()){ // 체크할시
                     //chk_v.setSelected(false);
                     //chk_auto_login.setChecked(false);
+                    mTracker.send(new HitBuilders.EventBuilder().setCategory("로그인").setAction("자동로그인 ON").build());
                     STPreferences.putString(Constants.PREF_KEY_AUTO_LOGIN, "true");
                     //Toast.makeText(getApplicationContext(), "true", Toast.LENGTH_SHORT).show();
 
                 }else{  //체크 해제시
                     //chk_v.setSelected(true);
                     //chk_auto_login.setChecked(true);
+                    mTracker.send(new HitBuilders.EventBuilder().setCategory("로그인").setAction("자동로그인 OFF").build());
                     STPreferences.putString(Constants.PREF_KEY_AUTO_LOGIN, "false");
                     //Toast.makeText(getApplicationContext(), "false", Toast.LENGTH_SHORT).show();
                 }
@@ -190,10 +246,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void afterRunningLogin(int responseCode) {
 
         if(responseCode == Constants.HTTP_RESPONSE_LOGIN_ERROR_NOT_MATCH ){
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("로그인").setAction("로그인 실패 - NOT MATCH").build());
             Toast.makeText(this, "아이디나 비밀번호를 확인하세요..", Toast.LENGTH_SHORT).show();
         }else if(responseCode == Constants.HTTP_RESPONSE_LOGIN_ERROR_INPUT_TYPE){
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("로그인").setAction("로그인 실패 - NOT TYPE").build());
             Toast.makeText(this, "아이디나 비밀번호 입력형식이 틀렸습니다..", Toast.LENGTH_SHORT).show();
         }else if(responseCode == Constants.HTTP_RESPONSE_LOGIN_ERROR_DENY){
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("로그인").setAction("로그인 실패 - DENY").build());
             Toast.makeText(this, "해당 아이디는 차단되어있습니다..", Toast.LENGTH_SHORT).show();
         }else if (responseCode == Constants.HTTP_RESPONSE_LOGIN_SUCCESS){
             LoginManager.setIsLogin(true);
@@ -274,7 +333,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             Log.i(TAG, "DECRYPTED_PW : " + decrypted_pw);
             */
-
+            mTracker.send(new HitBuilders.EventBuilder().setCategory("로그인").setAction("로그인 성공").build());
             Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
 
             try {

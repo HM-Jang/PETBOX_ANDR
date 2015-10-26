@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/iv_list_plan_image"
         android:src="@drawable/test1"
-        android:scaleType="fitXY" />
+        android:adjustViewBounds="true" />
 
     </LinearLayout>
 </LinearLayout>

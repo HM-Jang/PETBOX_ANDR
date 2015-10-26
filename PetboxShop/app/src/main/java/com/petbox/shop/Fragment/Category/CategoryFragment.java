@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.CtegoryGoodsActivity;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.DataStructure.Tree.Node;
@@ -51,6 +55,8 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
     private String mParam1;
     private String mParam2;
 
+
+    Tracker mTracker;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -88,6 +94,18 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -100,7 +118,12 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        categoryManager = new CategoryManager();
+
+        mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
+        mTracker.setScreenName("카테고리 메뉴");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        categoryManager = CategoryManager.getManager();
 
         View v = inflater.inflate(R.layout.fragment_category, container, false);
 
@@ -217,188 +240,215 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
         Intent intent = new Intent(getActivity(),CtegoryGoodsActivity.class);
         int id = v.getId();
 
-        Node<CategoryInfo> node = null;
+        Node<CategoryInfo> node = new Node<CategoryInfo>();
 
         switch(id){
             case R.id.btn_category_dog_feed:
                  //HttpGetManager httpGetManager = new HttpGetManager(this);
                 //httpGetManager.start();
 
-                node = categoryManager.scan("애견 사료", 0);
+                node = categoryManager.scan("애견 사료", 0, 0);
                 param = node.getData().category_num;
 
                 intent.putExtra("cate_num",param);
-                intent.putExtra("cate_name", node.getData().name);
+                String cate_name = node.getData().name;
+
+                intent.putExtra("cate_name", cate_name);
                 intent.putExtra("cate_mode", 0);
+
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("애견 사료").build());
+
+                System.out.println("cate_name  : " + cate_name + "// cate_num : " + param);
+
+
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_snack:
                 //param = "035";
-                node = categoryManager.scan("간식", 0);
+                node = categoryManager.scan("간식", 0, 0);
                 param = node.getData().category_num;
 
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("간식").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_nutrients:
                 //param = "035";
-                node = categoryManager.scan("영양제", 0);
+                node = categoryManager.scan("영양제", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("영양제").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_medicine:
                 param = "035";
-                node = categoryManager.scan("의약부외품", 0);
+                node = categoryManager.scan("의약부외품", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("의약부외품").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_hygienic:
-                node = categoryManager.scan("위생/배변", 0);
+                node = categoryManager.scan("위생/배변", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("위생/배변").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_bath:
-                node = categoryManager.scan("목욕용품", 0);
+                node = categoryManager.scan("목욕용품", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("목욕용품").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_house:
-                node = categoryManager.scan("하우스/가구", 0);
+                node = categoryManager.scan("하우스/가구", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("하우스/가구").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_fence:
-                node = categoryManager.scan("이동장/철장", 0);
+                node = categoryManager.scan("이동장/철장", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("이동장/철장").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_line:
-                node = categoryManager.scan("줄/이름표", 0);
+                node = categoryManager.scan("줄/이름표", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("줄/이름표").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_accessory:
-                node = categoryManager.scan("패션/액세서리/팬시", 0);
+                node = categoryManager.scan("패션/액세서리/팬시", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("패션/액세서리/팬시").build());
                 startActivity(intent);
 
             case R.id.btn_category_dog_drinkers:
-                node = categoryManager.scan("급식기/급수기", 0);
+                node = categoryManager.scan("급식기/급수기", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("급식기/급수기").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_dog_beauty:
-                node = categoryManager.scan("미용용품", 0);
+                node = categoryManager.scan("미용용품", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("미용용품").build());
                 startActivity(intent);
 
             case R.id.btn_category_dog_toy:
-                node = categoryManager.scan("장난감/훈련용품", 0);
+                node = categoryManager.scan("장난감/훈련용품", 0, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 0);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("강아지 메뉴").setLabel("장난감/푼련용품").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_feed:
-                node = categoryManager.scan("고양이 사료", 1);
+                node = categoryManager.scan("고양이 사료", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("고양이 사료").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_snack:
-                node = categoryManager.scan("간식/캔", 1);
+                node = categoryManager.scan("간식/캔", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("간식/캔").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_nutrients:
-                node = categoryManager.scan("영양제", 1);
+                node = categoryManager.scan("영양제", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("영양제").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_medicine:
-                node = categoryManager.scan("의약부외품", 1);
+                node = categoryManager.scan("의약부외품", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("의약부외품").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_hygienic:
-                node = categoryManager.scan("위생/배변", 1);
+                node = categoryManager.scan("위생/배변", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("위생/배변").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_bath:
-                node = categoryManager.scan("목욕용품", 1);
+                node = categoryManager.scan("목욕용품", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("목욕용품").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_house:
-                node = categoryManager.scan("이동장/하우스", 1);
+                node = categoryManager.scan("이동장/하우스", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -407,7 +457,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_tower:
-                node = categoryManager.scan("캣타워/스크래쳐", 1);
+                node = categoryManager.scan("캣타워/스크래쳐", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -416,7 +466,7 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_maddaddabi:
-                node = categoryManager.scan("캣닙/마따따비", 1);
+                node = categoryManager.scan("캣닙/마따따비", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
@@ -425,29 +475,32 @@ public class CategoryFragment extends Fragment implements View.OnClickListener{
                 break;
 
             case R.id.btn_category_cat_drinkers:
-                node = categoryManager.scan("급식기/급수기", 1);
+                node = categoryManager.scan("급식기/급수기", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("급식기/급수기").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_beauty:
-                node = categoryManager.scan("미용용품", 1);
+                node = categoryManager.scan("미용용품", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("미용용품").build());
                 startActivity(intent);
                 break;
 
             case R.id.btn_category_cat_toy:
-                node = categoryManager.scan("장난감", 1);
+                node = categoryManager.scan("장난감", 1, 0);
                 param = node.getData().category_num;
                 intent.putExtra("cate_num",param);
                 intent.putExtra("cate_name", node.getData().name);
                 intent.putExtra("cate_mode", 1);
+                mTracker.send(new HitBuilders.EventBuilder().setCategory("카테고리 전체").setAction("고양이 메뉴").setLabel("장난감").build());
                 startActivity(intent);
                 break;
         }

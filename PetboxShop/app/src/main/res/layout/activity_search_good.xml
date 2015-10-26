@@ -6,33 +6,113 @@
     android:layout_height="match_parent" android:fitsSystemWindows="true"
     tools:context="com.petbox.shop.SearchGoodActivity">
 
-    <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
-        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
+    <RelativeLayout
+        android:background="#f2f2f2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
-            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary" app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:elevation="5dp">
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/bar_search_good_top" android:layout_height="wrap_content"
+            android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/nav_back">
+            <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+                android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary" app:popupTheme="@style/AppTheme.PopupOverlay"
+                android:elevation="5dp">
+
+                <ImageView
+                    android:id="@+id/iv_search_good_back"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/nav_back">
                 </ImageView>
 
-            <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="상품 검색 결과"
+                    android:id="@+id/tv_list_name"
+                    android:textSize="20sp"
+                    android:textColor="#ffffff" />
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+
+        <FrameLayout
+            android:id="@+id/frame_search_no"
+            android:visibility="gone"
+            android:layout_below="@id/bar_search_good_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="상품 검색 결과"
-                android:id="@+id/tv_list_name"
-                android:textSize="20sp"
-                android:textColor="#ffffff" />
+                android:orientation="vertical">
 
-        </android.support.v7.widget.Toolbar>
+                <ImageView
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/no_search"/>
 
-    </android.support.design.widget.AppBarLayout>
+                <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="검색 결과가 없습니다."
+                    android:textStyle="bold"
+                    android:textSize="22sp"/>
 
-    <include layout="@layout/content_search_good" />
+                <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="펫박스 홈에서 더 많은 상품을"
+                    android:textColor="#8f8f8f"
+                    android:textStyle="bold"
+                    android:textSize="17sp"/>
 
+                <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="둘러보시는건 어떨까요?"
+                    android:textColor="#8f8f8f"
+                    android:textStyle="bold"
+                    android:textSize="17sp"/>
+
+                <LinearLayout
+                    android:paddingTop="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btn_search_good_home"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="펫박스 홈 가기"
+                        android:background="@color/colorPrimary"
+                        android:textColor="#ffff"
+                        android:textStyle="bold"
+                        android:textSize="17sp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <include layout="@layout/content_search_good"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/bar_search_good_top"/>
+
+    </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -1,6 +1,7 @@
 package com.petbox.shop.Adapter.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.util.Log;
@@ -10,20 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.petbox.shop.GoodInfoActivity;
 import com.petbox.shop.ImageDownloader;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.Item.WishInfo;
 import com.petbox.shop.R;
+import com.petbox.shop.Utility.Utility;
 
 import java.util.ArrayList;
 
 /**
  * Created by 펫박스 on 2015-10-14.
  */
-public class WishListAdapter extends BaseAdapter {
+public class WishListAdapter extends BaseAdapter implements View.OnClickListener{
 
     Context mContext;
     ArrayList<WishInfo> mItemList;
@@ -76,6 +80,9 @@ public class WishListAdapter extends BaseAdapter {
             holder.tv_rate_person = (TextView) convertView.findViewById(R.id.tv_list_rate_person);
             holder.tv_rate_per = (TextView) convertView.findViewById(R.id.tv_list_rate_per);
             holder.tv_list_opt = (TextView) convertView.findViewById(R.id.tv_list_opt);
+
+            holder.ll_list_item = (LinearLayout) convertView.findViewById(R.id.ll_list_item);
+            holder.ll_list_item.setOnClickListener(this);
 
             LayerDrawable stars = (LayerDrawable) holder.ratingBar.getProgressDrawable();
 
@@ -132,11 +139,11 @@ public class WishListAdapter extends BaseAdapter {
 
         if(rete_per == 0){
             holder.tv_origin_price.setVisibility(View.INVISIBLE);
-            holder.tv_price.setText(item.goods_consumer + "원");
+            holder.tv_price.setText(Utility.replaceComma(item.goods_consumer) + "원");
         }else{
             holder.tv_origin_price.setVisibility(View.VISIBLE);
-            holder.tv_origin_price.setText(item.goods_consumer + "원");
-            holder.tv_price.setText(item.goods_price + "원");
+            holder.tv_origin_price.setText(Utility.replaceComma(item.goods_consumer) + "원");
+            holder.tv_price.setText(Utility.replaceComma(item.goods_price) + "원");
         }
 
         int rating_person = Integer.parseInt(item.point_count);
@@ -152,10 +159,28 @@ public class WishListAdapter extends BaseAdapter {
             holder.tv_rate_person.setText("(" + item.point_count + ")");
         }
 
+        Log.e("item.goodsno",item.goodsno);
+        holder.ll_list_item.setTag(holder.ll_list_item.getId(),item.goodsno);
+
         return convertView;
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        Intent goodsinfointent = new Intent(mContext, GoodInfoActivity.class);
+        goodsinfointent.setFlags(goodsinfointent.FLAG_ACTIVITY_NEW_TASK);
+
+        switch(id){
+            case R.id.ll_list_item :
+                goodsinfointent.putExtra("goodsno",String.valueOf(v.getTag(id)));
+                mContext.startActivity(goodsinfointent);
+                break;
+        }
+    }
+
     class ViewHolder{
+        LinearLayout ll_list_item;
         ImageView iv_image; //상품 이미지
         TextView tv_name ; // 상품 명
         TextView tv_rate; // 할인율

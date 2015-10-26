@@ -17,10 +17,16 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.Constants;
 import com.petbox.shop.DB.DBConnector;
 import com.petbox.shop.Delegate.LoginManagerDelegate;
+import com.petbox.shop.Network.CategoryManager;
 import com.petbox.shop.Network.LoginManager;
+import com.petbox.shop.Network.PlanningManager;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -41,15 +47,24 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
     boolean isRunning = true;
     boolean finishable = false;
 
+    Tracker mTracker;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        iv_splash = (ImageView) findViewById(R.id.iv_splash);
+
+        mTracker = ((PetboxApplication)this.getApplication()).getDefaultTracker();
+        mTracker.setScreenName("로딩화면");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         STPreferences.getPref(getApplicationContext());    // 싱글톤 Preferences 초기 세팅
 
         if(!STPreferences.isExist(Constants.PREF_KEY_APP_FIRST)) {// 앱 처음 실행 시
             STPreferences.putString(Constants.PREF_KEY_APP_FIRST, "true");
             STPreferences.putString(Constants.PREF_KEY_AUTO_LOGIN, "false");
+            finishable = true;
         }else{
             boolean auto_login = Boolean.parseBoolean(STPreferences.getString(Constants.PREF_KEY_AUTO_LOGIN));
 
@@ -127,8 +142,6 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
             }
         }
 
-        iv_splash = (ImageView) findViewById(R.id.iv_splash);
-
         handler = new Handler(){
             public void handleMessage(Message msg){
                 Log.e("SPLASH", "메시지 받음");
@@ -136,6 +149,10 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
                 activityFinish();
             }
         };
+
+        CategoryManager.getManager();
+        PlanningManager.getManager();
+
     }
 
     public void activityFinish() {
@@ -157,6 +174,7 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
 
         //if(!isRunning){
         // isRunning = true;
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
 
         timerThread = new Thread(new Runnable() {
             @Override
@@ -184,6 +202,7 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
     public void onStop(){
         //Log.i(TAG, "++ ON STOP ++");
         super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
         // FlurryAgent.onEndSession(this);
     }
 
@@ -219,29 +238,33 @@ public class SplashActivity extends Activity implements LoginManagerDelegate {
 
     @Override
     public void afterRunningLogin(int responseCode) {
+
         if(responseCode == Constants.HTTP_RESPONSE_LOGIN_ERROR_NOT_MATCH ){
             //Toast.makeText(this, "아이디나 비밀번호를 확인하세요..", Toast.LENGTH_SHORT).show();
             setResult(Constants.RES_SPLASH_LOGIN_FAILED);
             LoginManager.setIsLogin(false);
+
         }else if(responseCode == Constants.HTTP_RESPONSE_LOGIN_ERROR_INPUT_TYPE){
             //Toast.makeText(this, "아이디나 비밀번호 입력형식이 틀렸습니다..", Toast.LENGTH_SHORT).show();
             setResult(Constants.RES_SPLASH_LOGIN_FAILED);
             LoginManager.setIsLogin(false);
+
         }else if(responseCode == Constants.HTTP_RESPONSE_LOGIN_ERROR_DENY){
             //Toast.makeText(this, "해당 아이디는 차단되어있습니다..", Toast.LENGTH_SHORT).show();
             setResult(Constants.RES_SPLASH_LOGIN_FAILED);
             LoginManager.setIsLogin(false);
+
         }else if (responseCode == Constants.HTTP_RESPONSE_LOGIN_SUCCESS) {
             //Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show();
 
             LoginManager.setIsLogin(true);
             LoginManager.setDelegate(null);
-
-            if (finishable) {
-                setResult(RESULT_OK);
-                this.finish();
-            }else
-                finishable = true;
         }
+
+        if (finishable) {
+            setResult(RESULT_OK);
+            this.finish();
+        }else
+            finishable = true;
     }
 }

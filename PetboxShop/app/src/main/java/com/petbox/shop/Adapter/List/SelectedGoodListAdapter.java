@@ -15,6 +15,7 @@ import com.petbox.shop.Delegate.GoodInfoDelegate;
 import com.petbox.shop.Delegate.NumberPickerDelegate;
 import com.petbox.shop.Item.GoodOptionInfo;
 import com.petbox.shop.R;
+import com.petbox.shop.Utility.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +51,6 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
         this.mode = mode;
     }
 
-
     @Override
     public int getCount() {
         return mItemList.size();
@@ -77,15 +77,20 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
             holder = new ViewHolder();
 
             holder.tv_name = (TextView)convertView.findViewById(R.id.tv_list_select_good_name);
-            holder.tv_count = (TextView)convertView.findViewById(R.id.tv_list_select_good_count);
+           // holder.tv_count = (TextView)convertView.findViewById(R.id.tv_list_select_good_count);
             holder.picker_count = (CustomNumberPicker)convertView.findViewById(R.id.picker_list_select_good);
             holder.picker_count.setDelegate(this);
+            holder.picker_count.setNum(1);
 
             holder.tv_price = (TextView) convertView.findViewById(R.id.tv_list_select_good_price);
             holder.ibtn_delete = (ImageButton) convertView.findViewById(R.id.ibtn_list_select_good_delete);
 
+            //구매옵션 1단
             if(mode == 0){
                 holder.ibtn_delete.setOnClickListener(this);
+
+
+            //구매옵션 x
             }else if(mode == 1){
                 if(position == 0 ){
                     /*
@@ -97,34 +102,35 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
                     holder.picker_count.setMin(1);
                     holder.picker_count.setOne();
                     */
-                    holder.picker_count.setMin(1);
                     holder.ibtn_delete.setVisibility(View.GONE);
 
                 }else{
                     holder.ibtn_delete.setOnClickListener(this);
                 }
-
             }
-            holder.ibtn_delete.setTag(position);
-
-
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
 
+        holder.picker_count.setMin(1);
+
+        if(item.order_count < 1){
+            item.order_count = 1;
+        }
+
         holder.tv_name.setText(item.name);
-        holder.tv_count.setText("잔여 : " + (item.count - item.order_count) + "개");
-        holder.tv_price.setText((item.order_count * item.price) + "원");
+        //holder.tv_count.setText("잔여 : " + (item.count - item.order_count) + "개");
+        holder.tv_price.setText(Utility.replaceComma(""+item.order_count * item.price) + "원");
         holder.picker_count.setMax(item.count - item.order_count);
         holder.picker_count.setNum(item.order_count);
+
+        holder.ibtn_delete.setTag(position);
 
         HashMap<String, Integer> hash = new HashMap<String, Integer>();
         hash.put("price", item.price);
         hash.put("position", position);
         holder.picker_count.setParam(hash);
-
-
 
         return convertView;
     }
@@ -134,10 +140,11 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
        int position = (Integer)v.getTag();
 
         GoodOptionInfo item = mItemList.get(position);
-
-        delegate.deleteItem(item.price * item.order_count);
+        //delegate.deleteItem(item.price * item.order_count);
         mItemList.get(position).order_count = 0;
         mItemList.remove(position);
+
+        delegate.deleteItem(returnAllPrice());
 
         this.notifyDataSetChanged();
     }
@@ -150,10 +157,22 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
 
         mItemList.get(position).order_count = order_count;
 
+        params.put("all_price", returnAllPrice());
         this.notifyDataSetChanged();
 
         delegate.clickIncrease(params);
         //delegate.refreshAllPrice();
+    }
+
+    public int returnAllPrice(){
+        int all_price = 0;
+
+        for(int i=0; i<mItemList.size(); i++){
+            GoodOptionInfo item = mItemList.get(i);
+            all_price += item.order_count * item.price;
+        }
+
+        return all_price;
     }
 
     @Override
@@ -163,6 +182,7 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
 
         mItemList.get(position).order_count = order_count;
 
+        params.put("all_price", returnAllPrice());
         this.notifyDataSetChanged();
         delegate.clickDecrease(params);
        // delegate.refreshAllPrice();
@@ -185,10 +205,9 @@ public class SelectedGoodListAdapter extends BaseAdapter implements NumberPicker
         delegate.setNum(params);
     }
 
-
     class ViewHolder{
         TextView tv_name;
-        TextView tv_count;
+        //TextView tv_count;
         CustomNumberPicker picker_count;
         TextView tv_price;
         ImageButton ibtn_delete;

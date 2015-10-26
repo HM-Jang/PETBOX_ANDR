@@ -21,17 +21,21 @@
     <application
         android:name=".Application.PetboxApplication"
         android:allowBackup="true"
-        android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher"
+        android:largeHeap="true"
+        android:icon="@mipmap/icon_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+
         <activity
             android:name=".SplashActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,17 +43,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CartActivity"
-            android:label="@string/title_activity_cart" >
+            android:name=".CartActivity" >
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>
         <activity
-            android:name=".CartWebView"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:name=".CartWebView" >
         </activity>
         <activity
             android:name=".GoodInfoActivity"
@@ -58,6 +59,10 @@
         <activity
             android:name=".RegistrationActivity"
             android:label="@string/title_activity_registration" >
+        </activity>
+
+        <activity
+            android:name=".CtegoryGoodsActivity">
         </activity>
 
         <receiver
@@ -78,39 +83,59 @@
         </service>
 
         <activity
-            android:name=".SearchGoodActivity"
-            android:label="@string/title_activity_search_good"
-            android:theme="@style/AppTheme" >
+            android:name=".SearchGoodActivity" >
         </activity>
-        <activity android:name=".CtegoryGoodsActivity" >
-        </activity>
+
         <activity
-            android:name=".WishListActivity"
-            android:label="@string/title_activity_wish_list"
-            android:theme="@style/AppTheme" >
+            android:name=".WishListActivity" >
         </activity>
         <activity
             android:name=".CartListWebView"
-            android:label="@string/title_activity_cart_list_web_view"
             android:theme="@style/AppTheme" >
         </activity>
         <activity
             android:name=".MypageMyReviewActivity"
-            android:label="@string/title_activity_mypage_my_review"
             android:theme="@style/AppTheme" >
         </activity>
         <activity
             android:name=".MypageQnaListActivity"
-            android:label="@string/title_activity_mypage_qna_list"
             android:theme="@style/AppTheme" >
         </activity>
         <activity
             android:name=".MypageCusomerActivity"
-            android:label="@string/title_activity_mypage_cusomer"
             android:theme="@style/AppTheme" >
         </activity>
-        <activity android:name=".DescTest" >
+        <activity
+            android:name=".DescTest" >
         </activity>
+        <activity
+            android:name=".GoodsReviewActivity" >
+        </activity>
+        <activity
+            android:name=".MypageAppSettingActivity">
+        </activity>
+        <activity
+            android:name=".MypageCouponList">
+        </activity>
+        <activity
+            android:name=".MypageEmoneyActivity">
+        </activity>
+        <activity
+            android:name=".MypageOrderListActivity">
+        </activity>
+        <activity
+            android:name=".CategoryActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+        <activity
+            android:name=".MypageActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+        <activity
+            android:name=".SearchActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+        </activity>
+
     </application>
 
 </manifest>

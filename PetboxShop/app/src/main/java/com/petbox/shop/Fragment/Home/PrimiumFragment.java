@@ -14,9 +14,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.petbox.shop.Adapter.Grid.BestGoodGridAdapter;
 import com.petbox.shop.Adapter.Pager.BestGoodPagerAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.DBConnector;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.Item.SlideInfo;
@@ -75,6 +79,8 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
 
     int mainColor = 0;
 
+    Tracker mTracker;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -109,8 +115,13 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onStart() {
         super.onStart();
+        //System.out.println("SEO - PRIMIUM ++ ON START ++");
+
+        //GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+
+        /*
         params_1 = "?mdesign_no=18";
-        params_3 = "?mdesign_no=20";
+        params_3 = "?mdesign_no=22";
 
         slideList = home_slider(params_3);
         bestGoodPagerAdapter = new BestGoodPagerAdapter(getContext() ,slideList);
@@ -132,13 +143,27 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
         mItemList = goods_list(params_1);
         gridAdapter = new BestGoodGridAdapter(getContext(), mItemList);
         gridView.setAdapter(gridAdapter);
+        */
 
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        //GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        /*
+        mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
+        mTracker.setScreenName("프리미엄몰");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        */
+
         View v = inflater.inflate(R.layout.fragment_best_good, container, false);
 
         mainColor = getResources().getColor(R.color.colorPrimary);
@@ -188,6 +213,30 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
                 }
             }
         });
+
+        params_1 = "?mdesign_no=18";
+        params_3 = "?mdesign_no=22";
+
+        slideList = home_slider(params_3);
+        bestGoodPagerAdapter = new BestGoodPagerAdapter(getContext() ,slideList);
+
+        if(viewPager != null){
+            Log.e("onStart", "onStart -- viewPager null 아님");
+            viewPager.setAdapter(bestGoodPagerAdapter);
+
+            indicator = circlePageIndicator;
+            indicator.setViewPager(viewPager);
+
+            circlePageIndicator.setPageColor(0xFF6d6d6d);   // Normal 원 색상
+            circlePageIndicator.setFillColor(mainColor);   //선택된 원 색상
+            circlePageIndicator.setStrokeColor(0x00000000); //테두리 INVISIBLE
+        }else{
+            Log.e("onStart", "onStart -- viewPager null");
+        }
+
+        mItemList = goods_list(params_1);
+        gridAdapter = new BestGoodGridAdapter(getContext(), mItemList);
+        gridView.setAdapter(gridAdapter);
 
         timerThread.start();
         return  v;
@@ -353,6 +402,5 @@ public class PrimiumFragment extends Fragment implements View.OnClickListener{
                 gridView.setAdapter(gridAdapter);
                 break;
         }
-
     }
 }

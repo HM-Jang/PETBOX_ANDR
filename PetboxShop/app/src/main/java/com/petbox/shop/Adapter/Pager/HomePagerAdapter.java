@@ -14,6 +14,7 @@ import com.petbox.shop.Fragment.Home.BestGoodFragment;
 import com.petbox.shop.Fragment.Home.ChanceDealFragment;
 import com.petbox.shop.Fragment.Home.EventFragment;
 import com.petbox.shop.Fragment.Home.Home2Fragment;
+import com.petbox.shop.Fragment.Home.Home2Fragment2;
 import com.petbox.shop.Fragment.Home.HomeFragment;
 import com.petbox.shop.Fragment.Home.IntegrationPlanningFragment;
 import com.petbox.shop.Fragment.Home.PlanningFragment;
@@ -44,7 +45,7 @@ public class HomePagerAdapter extends FragmentStatePagerAdapter {
         switch(position){
 
             case 0: // 펫박스 홈
-                return Home2Fragment.newInstance("", "");
+                return Home2Fragment2.newInstance("", "");
 
             case 1: //베스트상품
                 return BestGoodFragment.newInstance("","");

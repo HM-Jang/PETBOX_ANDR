@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#fd5d21"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:layout_gravity="center_vertical">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/frame_search"
+            android:layout_toRightOf="@+id/iv_logo"
+            android:layout_toLeftOf="@+id/ibtn_menu_cart"
+            android:layout_centerVertical="true">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="검색어를 입력 하세요"
+                    android:paddingLeft="5dp"
+                    android:id="@+id/edit_search"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_search"
+                    android:editable="true"
+                    android:enabled="true" />
+            </FrameLayout>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/iv_search"
+                android:layout_gravity="center_vertical|right"
+                android:src="@drawable/btn_search"
+                android:paddingRight="6dp" />
+
+        </FrameLayout>
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.petbox.shop.MypageOrderListActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:id="@+id/frame_good_info_top"
+        android:background="@color/colorPrimary"
+        android:paddingRight="15dp">
+
+        <ImageButton
+            android:id="@+id/ibtn_mypage_order_back"
+            android:background="#0000"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="15dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/nav_back"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:layout_toRightOf="@id/ibtn_mypage_order_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffff"
+            android:text="주문내역"
+            android:textSize="20sp"
+            android:layout_centerVertical="true" />
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/frame_good_info_top">
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lv_mypage_order_list" />
+    </LinearLayout>
+
+</RelativeLayout>

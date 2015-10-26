@@ -14,10 +14,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.petbox.shop.Adapter.Grid.BestGoodGridAdapter;
 import com.petbox.shop.Adapter.List.GoodsListAdapter;
 import com.petbox.shop.Adapter.Pager.BestGoodPagerAdapter;
+import com.petbox.shop.Application.PetboxApplication;
 import com.petbox.shop.DB.DBConnector;
 import com.petbox.shop.Item.BestGoodInfo;
 import com.petbox.shop.Item.SlideInfo;
@@ -82,6 +86,8 @@ public class BestGoodFragment extends Fragment implements View.OnClickListener {
 
     int mainColor = 0;
 
+    Tracker mTracker;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -116,6 +122,11 @@ public class BestGoodFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
+        /*
+        System.out.println("SEO - BESTGOOD ++ ON START ++");
+
+        GoogleAnalytics.getInstance(getContext()).reportActivityStart(getActivity());
+
         params_1 = "?mdesign_no=7";
         params_3 = "?mdesign_no=20";
 
@@ -139,8 +150,16 @@ public class BestGoodFragment extends Fragment implements View.OnClickListener {
         mItemList = goods_list(params_1);
         gridAdapter = new BestGoodGridAdapter(getContext(), mItemList);
         gridView.setAdapter(gridAdapter);
-
+        */
     }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+
+        //GoogleAnalytics.getInstance(getContext()).reportActivityStop(getActivity());
+    }
+
 
 
     @Override
@@ -148,6 +167,12 @@ public class BestGoodFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
 
         Log.e("BestGoodFragment", "-------------------------onCreateView");
+
+        /*
+        mTracker = ((PetboxApplication)getActivity().getApplication()).getDefaultTracker();
+        mTracker.setScreenName("베스트상품");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        */
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_best_good, container, false);
@@ -198,6 +223,30 @@ public class BestGoodFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+
+        params_1 = "?mdesign_no=7";
+        params_3 = "?mdesign_no=20";
+
+        slideList = home_slider(params_3);
+        bestGoodPagerAdapter = new BestGoodPagerAdapter(getContext() ,slideList);
+
+        if(viewPager != null){
+            Log.e("onStart", "onStart -- viewPager null 아님");
+            viewPager.setAdapter(bestGoodPagerAdapter);
+
+            indicator = circlePageIndicator;
+            indicator.setViewPager(viewPager);
+
+            circlePageIndicator.setPageColor(0xFF6d6d6d);   // Normal 원 색상
+            circlePageIndicator.setFillColor(mainColor);   //선택된 원 색상
+            circlePageIndicator.setStrokeColor(0x00000000); //테두리 INVISIBLE
+        }else{
+            Log.e("onStart", "onStart -- viewPager null");
+        }
+
+        mItemList = goods_list(params_1);
+        gridAdapter = new BestGoodGridAdapter(getContext(), mItemList);
+        gridView.setAdapter(gridAdapter);
 
         timerThread.start();
         return  v;
